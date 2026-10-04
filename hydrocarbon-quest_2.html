@@ -272,7 +272,7 @@ const TYPE={mcq:'Multiple choice',tf:'True or false',sort:'Sort it',num:'Number 
 let i=0,score=0,streak=0,best=0,results=[],player={name:'',cls:''},startedAt=0;
 const HIST_KEY='hq-history';
 // Paste your Google Apps Script web-app URL between the quotes to collect results in your Google Sheet.
-const SCORE_URL='';
+const SCORE_URL='https://script.google.com/macros/s/AKfycbxqxWcG4jS6gWBLKroZBscjhfJEBmSRwIjZ4OtamJe55XvdfLjX0Jj9j2xgfPAr0Mbu6g/exec';
 const loadHist=()=>{try{return JSON.parse(store.get(HIST_KEY)||'[]')}catch(e){return[]}};
 const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const app=document.getElementById('app');
