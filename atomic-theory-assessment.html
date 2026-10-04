@@ -9,38 +9,38 @@
 <title>Atomic Theory Assessment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caladea:wght@400;700&family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 <style>
 /* Layout: title slide as hero (navy atom disc + teal arc with diamond badges), then one part at a time on the cream ground. */
 :root{
-  --bg:#EDE8DA; --surface:#FBF9F3; --sand:#F6E9CC; --ink:#1F2D3A; --muted:#56636D;
-  --head:#224759; --navy:#224759; --on-navy:#EDE8DA; --teal:#7DBFAC;
-  --red:#C8202F; --red-fill:#C8202F; --orange:#F7941D; --sand-fill:#F4D6A0;
-  --line:#D6CDB7; --good:#1C7355; --good-bg:#DCEFE6; --bad:#B81D2B; --bad-bg:#F8DEDF;
-  --btn:#224759; --btn-ink:#FFFFFF; --focus:#F7941D;
+  --bg:#eaf0f8; --grid:#dbe4f1; --surface:#ffffff; --sand:#fdf0dc; --ink:#18233a; --muted:#5b6780;
+  --head:#18233a; --navy:#18233a; --on-navy:#eaf0fb; --teal:#0f8b8d; --tealbg:#dcf2f2;
+  --red:#0f8b8d; --red-fill:#2b59c3; --orange:#e8962a; --sand-fill:#c9d4e6;
+  --line:#c9d4e6; --good:#23915a; --good-bg:#dcf3e6; --bad:#d14343; --bad-bg:#fbe3e3;
+  --btn:#2b59c3; --btn-ink:#FFFFFF; --focus:#e8962a; --bluebg:#e3ebfb; --plum:#8a4fbf;
   color-scheme:light;
-  --serif:"Caladea",Cambria,Georgia,"Times New Roman",serif;
-  --sans:"Carlito",Calibri,"Segoe UI",system-ui,sans-serif;
+  --serif:"Fredoka","Trebuchet MS",sans-serif;
+  --sans:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
 }
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:28px 28px}
 h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0;line-height:1.15}
 button,select,input{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:700}
+.eyebrow{align-self:flex-start;font-family:var(--serif);font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--teal);background:var(--tealbg);border-radius:8px;padding:3px 9px;font-weight:600}
 
 /* HERO */
 .hero{display:grid;grid-template-columns:1.05fr 1fr;overflow:hidden}
 .hero-left{padding:32px 16px 32px max(16px,5vw);display:flex;flex-direction:column;gap:18px;justify-content:center}
 .hero-atom{width:min(230px,52vw)}
-.hero h1{color:var(--red);font-size:clamp(2rem,4.2vw,2.8rem)}
+.hero h1{color:var(--ink);font-weight:700;font-size:clamp(2rem,4.2vw,2.8rem)}.hero h1 span{color:var(--teal)}
 .hero p{margin:0;color:var(--muted);max-width:42ch}
 .name-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .name-row label{font-weight:700;font-size:.9rem}
-.name-row input{padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);min-width:0;flex:1;max-width:260px}
-.hero-right{background:var(--teal);border-left:6px solid var(--orange);border-radius:55% 0 0 55% / 70% 0 0 70%;padding:28px 16px 28px 16%;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.name-row input,.name-row select{padding:10px 14px;border:2px solid var(--line);border-radius:12px;background:var(--surface);min-width:0;flex:1;max-width:260px;width:auto}.name-row label{font-family:var(--serif);font-weight:600}
+.hero-right{background:var(--tealbg);border-left:6px solid var(--teal);border-radius:55% 0 0 55% / 70% 0 0 70%;padding:28px 16px 28px 16%;display:flex;flex-direction:column;justify-content:center;gap:10px}
 .nav-item{display:flex;align-items:center;gap:14px;background:none;border:0;padding:6px 8px;border-radius:10px;cursor:pointer;text-align:left;color:var(--ink)}
 .nav-item:hover{background:color-mix(in srgb,var(--surface) 35%,transparent)}
 .nav-item[aria-current="true"]{background:var(--surface)}
@@ -54,10 +54,10 @@ button,select,input{font:inherit;color:inherit}
 .nav-text small{color:var(--ink);opacity:.8;font-variant-numeric:tabular-nums}
 
 /* STATUS BAR */
-.status{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);color:var(--on-navy);padding:10px 16px}
+.status{font-family:var(--serif);position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);color:var(--on-navy);padding:10px 16px}
 .status-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:.95rem}
 .track{flex:1;min-width:120px;height:8px;border-radius:99px;background:color-mix(in srgb,var(--on-navy) 20%,transparent);overflow:hidden}
-.track i{display:block;height:100%;width:0;background:var(--orange);transition:width .4s}
+.track i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4fd3d5,#7fa2ff);transition:width .4s}
 .status b{font-variant-numeric:tabular-nums}
 
 /* MAIN */
@@ -66,14 +66,14 @@ main{scroll-margin-top:60px;max-width:880px;margin:0 auto;padding:32px 16px 64px
 .part-head{display:flex;flex-direction:column;gap:8px}
 .part-head h2{color:var(--head);font-size:clamp(1.7rem,3.4vw,2.3rem)}
 .part-head p{margin:0;color:var(--muted);max-width:65ch}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:22px;box-shadow:0 6px 0 #c3cfe3;padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .qnum{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .q-text{margin:0;font-weight:700;font-size:1.08rem}
 .hint{margin:0;color:var(--muted);font-size:.92rem}
 .opts{display:grid;gap:8px}
-.opt{text-align:left;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
-.opt:hover:not(:disabled){border-color:var(--orange)}
-.opt .let{font-weight:700;color:var(--red);min-width:1.2em}
+.opt{text-align:left;padding:12px 14px;border:2px solid var(--line);border-radius:14px;background:var(--surface);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.opt:hover:not(:disabled){border-color:var(--btn)}
+.opt .let{flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-family:var(--serif);font-weight:700;background:var(--bluebg);color:var(--btn)}
 .opt:disabled{cursor:default}
 .opt.ok{border-color:var(--good);background:var(--good-bg)}
 .opt.no{border-color:var(--bad);background:var(--bad-bg)}
@@ -82,13 +82,13 @@ main{scroll-margin-top:60px;max-width:880px;margin:0 auto;padding:32px 16px 64px
 .fb .why{color:var(--ink);display:block;margin-top:2px}
 .fig{display:flex;justify-content:center}
 .fig svg{width:130px;height:130px}
-.btn{align-self:flex-start;background:var(--btn);color:var(--btn-ink);border:0;border-radius:10px;padding:10px 18px;font-weight:700;cursor:pointer}
+.btn{align-self:flex-start;background:var(--btn);color:var(--btn-ink);border:0;border-radius:14px;padding:11px 22px;font-family:var(--serif);font-weight:600;font-size:1.05rem;cursor:pointer;box-shadow:0 4px 0 #1b3a86}.btn.go{background:var(--good);box-shadow:0 4px 0 #166b40}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ghost{background:transparent;color:var(--muted);border:2px solid var(--line);box-shadow:none}
 
 /* knowledge box (like "Did you know?") */
-.know{background:var(--sand);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
-.know h3{color:var(--red);font-size:1.25rem}
+.know{background:var(--sand);border:2px solid var(--orange);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.know h3{color:var(--orange);font-size:1.25rem}
 .know p{margin:0}
 .cmp{overflow-x:auto}
 .cmp table{border-collapse:collapse;width:100%;min-width:520px;font-size:.96rem}
@@ -139,8 +139,8 @@ select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-c
 
 /* model svg */
 .m-bg{fill:var(--navy);stroke:var(--orange);stroke-width:3}
-.f-orange{fill:#F7941D} .f-sand{fill:#F4D6A0} .f-red{fill:#C8202F} .f-navy{fill:#224759} .f-cream{fill:#EDE8DA}
-.ring{fill:none;stroke:#EDE8DA;stroke-width:1.2;stroke-dasharray:3 3;opacity:.7}
+.f-orange{fill:#e8962a} .f-sand{fill:#c9d4e6} .f-red{fill:#d14343} .f-navy{fill:#18233a} .f-cream{fill:#eaf0fb}
+.ring{fill:none;stroke:#eaf0fb;stroke-width:1.2;stroke-dasharray:3 3;opacity:.7}
 
 /* SIMULATION */
 .sim{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
@@ -175,7 +175,7 @@ select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-c
 .bar .t{height:14px;border-radius:99px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
 .bar .t i{display:block;height:100%;background:var(--teal)}
 .bar b{font-variant-numeric:tabular-nums;text-align:right}
-.big{font-family:var(--serif);font-size:3rem;color:var(--red);line-height:1}
+.big{font-family:var(--serif);font-weight:700;font-size:3.4rem;color:var(--teal);line-height:1}
 
 .pager{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
 
@@ -184,7 +184,7 @@ select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-c
   .hero-left{align-items:center;text-align:center}
   .hero p{margin-inline:auto}
   .name-row{justify-content:center}
-  .hero-right{border-left:0;border-top:6px solid var(--orange);border-radius:50% 50% 0 0 / 38px 38px 0 0;padding:30px 16px 20px}
+  .hero-right{border-left:0;border-top:6px solid var(--teal);border-radius:50% 50% 0 0 / 38px 38px 0 0;padding:30px 16px 20px}
   .nav-item:nth-child(n){margin-left:0}
   .sim{grid-template-columns:1fr}
   .sim-view{width:min(340px,100%);margin:0 auto}
@@ -199,24 +199,27 @@ select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-c
   <div class="hero-left">
     <svg class="hero-atom" viewBox="-100 -100 200 200" role="img" aria-label="Atom drawing">
       <circle r="98" fill="var(--navy)"/>
-      <g fill="none" stroke="#EDE8DA" stroke-width="2">
+      <g fill="none" stroke="#eaf0fb" stroke-width="2">
         <ellipse rx="78" ry="27"/><ellipse rx="78" ry="27" transform="rotate(60)"/><ellipse rx="78" ry="27" transform="rotate(120)"/>
       </g>
-      <g fill="var(--navy)" stroke="#EDE8DA" stroke-width="2">
+      <g fill="var(--navy)" stroke="#eaf0fb" stroke-width="2">
         <circle cx="78" cy="0" r="6"/><circle cx="-39" cy="-67.5" r="6"/><circle cx="-39" cy="67.5" r="6"/>
         <circle cx="-78" cy="0" r="6"/><circle cx="39" cy="67.5" r="6"/><circle cx="39" cy="-67.5" r="6"/>
         <circle cx="-6" cy="-6" r="7"/><circle cx="6" cy="-6" r="7"/><circle cx="-6" cy="6" r="7"/><circle cx="6" cy="6" r="7"/><circle cx="0" cy="-12" r="7"/><circle cx="0" cy="12" r="7"/>
       </g>
     </svg>
-    <span class="eyebrow">Module 3 · Grade 9 Chemistry</span>
-    <h1>Development of Atomic Theory: Assessment</h1>
-    <p>Five parts, from early ideas about matter to building the modern atom yourself. Your score updates as you go.</p>
-    <div class="name-row"><label for="sname">Your name</label><input id="sname" type="text" autocomplete="name" placeholder="Type your name"></div>
+    <span class="eyebrow">Chemistry · End-of-topic assessment</span>
+    <h1>Development of <span>Atomic Theory</span></h1>
+    <p>Five parts, from early ideas about matter to building the modern atom yourself. Write your name and class, then press Start. Questions come one at a time.</p>
+    <div class="name-row"><label for="sname">Your name</label><input id="sname" type="text" autocomplete="name" placeholder="Type your full name"></div>
+    <div class="name-row"><label for="sclass">Class</label><input id="sclass" type="text" maxlength="20" placeholder="e.g. 9-A"></div>
+    <div class="name-row"><button class="btn" id="startB" type="button">Start assessment →</button></div>
+    <p class="fb" id="startFb" aria-live="polite"></p>
   </div>
   <nav class="hero-right" id="nav" aria-label="Assessment parts"></nav>
 </header>
 
-<div class="status" role="status">
+<div class="status" role="status" id="status" hidden>
   <div class="status-in">
     <span>Score <b id="sc">0</b> / <b id="scmax">0</b></span>
     <div class="track" aria-hidden="true"><i id="bar"></i></div>
@@ -224,11 +227,14 @@ select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-c
   </div>
 </div>
 
-<main id="main"></main>
+<main id="main" hidden></main>
 
 <script>
 (function(){
 "use strict";
+// Google Apps Script web-app URL: results go to the same Quest Results sheet.
+const SCORE_URL='https://script.google.com/macros/s/AKfycbxqxWcG4jS6gWBLKroZBscjhfJEBmSRwIjZ4OtamJe55XvdfLjX0Jj9j2xgfPAr0Mbu6g/exec';
+let T0=Date.now();
 const h=(tag,attrs,...kids)=>{const e=document.createElement(tag);for(const [k,v] of Object.entries(attrs||{})){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k==="html")e.innerHTML=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?"":v);}for(const k of kids.flat()){if(k==null||k===false)continue;e.append(k.nodeType?k:document.createTextNode(k));}return e;};
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function shuffle(a,seed){const r=rng(seed),b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
@@ -313,9 +319,9 @@ const PARTS=[
   blocks:[
    {type:"table",prompt:"Complete the properties of the three subatomic particles.",
     cols:[{name:"Relative charge",opts:["1+","1−","0"]},{name:"Location",opts:["In the nucleus","Outside the nucleus"]},{name:"Relative mass",opts:["1","Very small (about 1/1840)"]}],
-    rows:[{name:"Electron",dot:"#F7941D",ans:["1−","Outside the nucleus","Very small (about 1/1840)"]},
-          {name:"Proton",dot:"#C8202F",ans:["1+","In the nucleus","1"]},
-          {name:"Neutron",dot:"#F4D6A0",ans:["0","In the nucleus","1"]}]},
+    rows:[{name:"Electron",dot:"#e8962a",ans:["1−","Outside the nucleus","Very small (about 1/1840)"]},
+          {name:"Proton",dot:"#d14343",ans:["1+","In the nucleus","1"]},
+          {name:"Neutron",dot:"#c9d4e6",ans:["0","In the nucleus","1"]}]},
    {type:"mcq",q:"What is an atom?",opts:["The smallest particle of an element that keeps the properties of that element","A particle with a negative charge","The dense centre of every piece of matter","A tiny drop of positive dough"],a:0,why:"This is the definition of an atom from the lesson."},
    {type:"mcq",q:"Electrons are negative, yet matter is neutral. Why?",opts:["Electrons lose their charge inside matter","Neutrons cancel out the electrons","An atom has equal numbers of protons and electrons","Matter has no electrons in it"],a:2,why:"Each 1+ proton balances one 1− electron, so the overall charge is zero. Neutrons have no charge."},
    {type:"mcq",q:"Which two particles make up almost all of an atom’s mass?",opts:["Electrons and protons","Protons and neutrons","Electrons and neutrons","Only electrons"],a:1,why:"Protons and neutrons each have a relative mass of 1. Electrons are about 1,840 times lighter."}
@@ -326,7 +332,7 @@ const PARTS=[
    {type:"mcq",q:"In the atoms you built, where is almost all of the mass?",opts:["Spread evenly across the atom","In the electrons","In the nucleus, in the protons and neutrons","In the empty space"],a:2,why:"Protons and neutrons are heavy compared with electrons, and they are all in the nucleus."},
    {type:"mcq",q:"You add one neutron to a neutral atom. What happens?",opts:["The mass increases and the charge stays the same","The charge becomes 1+","The charge becomes 1−","Nothing changes at all"],a:0,why:"A neutron has mass but no charge."},
    {type:"mcq",q:"You remove one electron from a neutral atom. What is its overall charge now?",opts:["0","1−","2+","1+"],a:3,why:"There is now one more proton than electrons, so the charge is 1+."},
-   {type:"mcq",q:"Switch the view to “Electron cloud”. What fills most of the space inside an atom?",opts:["Protons","Neutrons","Empty space, with electrons moving through it","Positive dough"],a:2,why:"Rutherford’s evidence still holds: the nucleus is tiny and most of the atom is empty space."}
+   {type:"mcq",q:"Think about the “Electron cloud” view of the atom. What fills most of the space inside an atom?",opts:["Protons","Neutrons","Empty space, with electrons moving through it","Positive dough"],a:2,why:"Rutherford’s evidence still holds: the nucleus is tiny and most of the atom is empty space."}
   ]}
 ];
 const CHALLENGES=[
@@ -347,7 +353,7 @@ function partScore(i){let g=0,d=0;for(const m of Object.values(marks))if(m.part=
 /* ---------- nav ---------- */
 const nav=document.getElementById("nav"), main=document.getElementById("main");
 const navItems=[...PARTS.map(p=>p.key),"Your results"].map((k,i)=>{
-  const b=h("button",{class:"nav-item",type:"button",onclick:()=>show(i)},
+  const b=h("div",{class:"nav-item"},
     h("span",{class:"diamond"},h("span",{},i<PARTS.length?String(i+1):"★")),
     h("span",{class:"nav-text"},h("b",{},k),h("small",{},i<PARTS.length?`0 / ${partMax[i]}`:"Score and summary")));
   nav.append(b);return b;});
@@ -431,7 +437,7 @@ function renderSim(pi,id){
   const view=h("div",{class:"sim-view"});
   const cnt={},rd={};
   const ctrl=h("div",{class:"sim-ctrl"});
-  [["p","Protons","#C8202F"],["n","Neutrons","#F4D6A0"],["e","Electrons","#F7941D"]].forEach(([k,name,col])=>{
+  [["p","Protons","#d14343"],["n","Neutrons","#c9d4e6"],["e","Electrons","#e8962a"]].forEach(([k,name,col])=>{
     cnt[k]=h("span",{class:"cnt","aria-live":"polite"},"0");
     ctrl.append(h("div",{class:"crow"},h("span",{class:"pdot",style:`background:${col}`}),h("span",{class:"lbl"},name),
       h("button",{class:"pm",type:"button","aria-label":"Remove one "+name.toLowerCase().slice(0,-1),onclick:()=>{if(S[k]>0){S[k]--;draw();}}},"−"),cnt[k],
@@ -441,13 +447,13 @@ function renderSim(pi,id){
   const bShell=h("button",{type:"button","aria-pressed":"true",onclick:()=>{S.cloud=false;draw();}},"Energy levels");
   const bCloud=h("button",{type:"button","aria-pressed":"false",onclick:()=>{S.cloud=true;draw();}},"Electron cloud");
   ctrl.append(h("div",{class:"seg",role:"group","aria-label":"View"},bShell,bCloud),
-    h("div",{class:"legend"},h("span",{},"Red + = proton"),h("span",{},"Sand 0 = neutron"),h("span",{},"Orange = electron")));
+    h("div",{class:"legend"},h("span",{},"Red + = proton"),h("span",{},"Grey 0 = neutron"),h("span",{},"Orange = electron")));
 
   // challenges
   let ci=0,tries=0;const res=CHALLENGES.map(()=>null);
   const chBox=h("div",{class:"challenge"});
   function drawChallenge(){chBox.innerHTML="";
-    if(ci>=CHALLENGES.length){const g=res.filter(Boolean).length;chBox.append(h("span",{class:"ctitle"},"Challenges complete"),h("p",{},`You completed ${g} of ${CHALLENGES.length} challenges correctly. Answer the questions below the simulation.`));return;}
+    if(ci>=CHALLENGES.length){const g=res.filter(Boolean).length;chBox.append(h("span",{class:"ctitle"},"Challenges complete"),h("p",{},`You completed ${g} of ${CHALLENGES.length} challenges correctly. Press Next question to continue.`));return;}
     const c=CHALLENGES[ci];const fb=h("p",{class:"fb","aria-live":"polite"});
     const checkB=h("button",{class:"btn",type:"button"},"Check my atom");const nextB=h("button",{class:"btn ghost",type:"button",hidden:true},ci<CHALLENGES.length-1?"Next challenge":"Finish challenges");
     checkB.addEventListener("click",()=>{tries++;const ok=S.p===c.p&&S.n===c.n&&S.e===c.e;
@@ -468,15 +474,15 @@ function renderSim(pi,id){
     // nucleus: sunflower packing with protons and neutrons mixed evenly
     const N=S.p+S.n,types=[];let pp=0;for(let i=0;i<N;i++){const want=Math.round((i+1)*S.p/N);types.push(want>pp?"p":"n");if(want>pp)pp++;}
     let nuc="";for(let i=N-1;i>=0;i--){const r=10.5*Math.sqrt(i),a=i*2.39996;const x=(r*Math.cos(a)).toFixed(1),y=(r*Math.sin(a)).toFixed(1);
-      nuc+=types[i]==="p"?`<g transform="translate(${x} ${y})"><circle r="9" fill="#C8202F" stroke="#7E1520" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#fff">+</text></g>`
-                        :`<g transform="translate(${x} ${y})"><circle r="9" fill="#F4D6A0" stroke="#B9955A" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="700" fill="#224759">0</text></g>`;}
+      nuc+=types[i]==="p"?`<g transform="translate(${x} ${y})"><circle r="9" fill="#d14343" stroke="#8f2a2a" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#fff">+</text></g>`
+                        :`<g transform="translate(${x} ${y})"><circle r="9" fill="#c9d4e6" stroke="#8a96ad" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="700" fill="#18233a">0</text></g>`;}
     let outer="";const radii=[86,116,146],cap=[2,8,8],speed=[14,22,32];
-    if(!S.cloud){let left=S.e;radii.forEach((R,k)=>{outer+=`<circle r="${R}" fill="none" stroke="#EDE8DA" stroke-width="1.3" stroke-dasharray="4 5" opacity=".55"/>`;
+    if(!S.cloud){let left=S.e;radii.forEach((R,k)=>{outer+=`<circle r="${R}" fill="none" stroke="#eaf0fb" stroke-width="1.3" stroke-dasharray="4 5" opacity=".55"/>`;
         const m=Math.min(left,cap[k]);left-=m;if(!m)return;let g=`<g class="orbit" data-s="${speed[k]}" transform="rotate(${(ang*360/speed[k])%360})">`;
-        for(let j=0;j<m;j++){const a=j/m*2*Math.PI-Math.PI/2+k*.4;g+=`<circle cx="${(R*Math.cos(a)).toFixed(1)}" cy="${(R*Math.sin(a)).toFixed(1)}" r="7" fill="#F7941D" stroke="#fff" stroke-width="1.2"/>`;}
+        for(let j=0;j<m;j++){const a=j/m*2*Math.PI-Math.PI/2+k*.4;g+=`<circle cx="${(R*Math.cos(a)).toFixed(1)}" cy="${(R*Math.sin(a)).toFixed(1)}" r="7" fill="#e8962a" stroke="#fff" stroke-width="1.2"/>`;}
         outer+=g+"</g>";});}
     else{const r=rng(S.e*97+3);const reach=S.e<=2?80:S.e<=10?115:145;for(let i=0;i<S.e*45;i++){const u=Math.sqrt(r()),rr=24+u*(reach-24)*(0.55+0.45*r()),a=r()*Math.PI*2;
-        outer+=`<circle cx="${(rr*Math.cos(a)).toFixed(1)}" cy="${(rr*Math.sin(a)).toFixed(1)}" r="1.8" fill="#F7941D" opacity=".45"/>`;}}
+        outer+=`<circle cx="${(rr*Math.cos(a)).toFixed(1)}" cy="${(rr*Math.sin(a)).toFixed(1)}" r="1.8" fill="#e8962a" opacity=".45"/>`;}}
     let rest=S.e;rd.lv.innerHTML="";cap.forEach((c,k)=>{const m=Math.min(rest,c);rest-=m;rd.lv.append(h("span",{class:"lv"+(m===c?" full":"")},`Level ${k+1}: ${m}/${c}`+(m===c?" full":"")));});
     view.innerHTML=`<svg viewBox="-160 -160 320 320" role="img" aria-label="Atom with ${S.p} protons, ${S.n} neutrons and ${S.e} electrons">${outer}${nuc}</svg>`;
   }
@@ -491,43 +497,61 @@ function renderSim(pi,id){
   return card;
 }
 
-/* ---------- build parts ---------- */
-const sections=PARTS.map((p,pi)=>{
-  const sec=h("section",{class:"part",id:"part"+(pi+1),hidden:true,"aria-labelledby":"h"+pi},
-    h("div",{class:"part-head"},h("span",{class:"eyebrow"},`Part ${pi+1} of ${PARTS.length}`),h("h2",{id:"h"+pi},p.title),h("p",{},p.intro)));
+/* ---------- build slides: one item at a time ---------- */
+const sections=[];const slideInfo=[];
+PARTS.forEach((p,pi)=>{
   p.blocks.forEach((b,bi)=>{const id=`${pi}_${bi}`,seed=(pi+1)*100+bi*7+3;
-    if(b.type==="know")sec.append(h("div",{class:"know"},h("h3",{},b.title),h("div",{html:b.html,style:"display:flex;flex-direction:column;gap:12px"})));
+    const sec=h("section",{class:"part",hidden:true},
+      h("div",{class:"part-head"},h("span",{class:"eyebrow"},`Part ${pi+1} of ${PARTS.length}`),h("h2",{},p.title),bi===0?h("p",{},p.intro):null));
+    let need=[id];
+    if(b.type==="know"){need=[];sec.append(h("div",{class:"know"},h("h3",{},b.title),h("div",{html:b.html,style:"display:flex;flex-direction:column;gap:12px"})));}
     else if(b.type==="mcq")sec.append(renderMCQ(pi,b,id));
     else if(b.type==="sort")sec.append(renderSort(pi,b,id,seed));
     else if(b.type==="match")sec.append(renderMatch(pi,b,id,seed));
     else if(b.type==="order")sec.append(renderOrder(pi,b,id,seed));
     else if(b.type==="table")sec.append(renderTable(pi,b,id));
-    else if(b.type==="sim")sec.append(renderSim(pi,id));});
-  sec.append(h("div",{class:"pager"},
-    pi>0?h("button",{class:"btn ghost",type:"button",onclick:()=>show(pi-1)},"← Back"):h("span"),
-    h("button",{class:"btn",type:"button",onclick:()=>show(pi+1)},pi<PARTS.length-1?`Next: ${PARTS[pi+1].key} →`:"See my results →")));
-  main.append(sec);return sec;});
+    else if(b.type==="sim"){need=CHALLENGES.map((_,k)=>id+"_c"+k);sec.append(renderSim(pi,id));}
+    const k=sections.length;
+    const nextB=h("button",{class:"btn",type:"button",disabled:need.length>0,onclick:()=>show(k+1)},"Next question →");
+    sec.append(h("div",{class:"pager"},h("span",{class:"hint"},need.length?"Answer to continue.":""),nextB));
+    main.append(sec);sections.push(sec);slideInfo.push({pi,need,nextB});});});
+slideInfo[slideInfo.length-1].nextB.textContent="See my results →";
 
 // results
 const resSec=h("section",{class:"part",id:"results",hidden:true});
 const bigEl=h("span",{class:"big"}),msgEl=h("p",{style:"margin:0"}),barsEl=h("div",{class:"bars"}),nameEl=h("span");
-const copyB=h("button",{class:"btn",type:"button"},"Copy my results");const copyFb=h("p",{class:"fb","aria-live":"polite"});
+const sendB=h("button",{class:"btn",type:"button"},"Send to my teacher");
+const copyB=h("button",{class:"btn go",type:"button"},"Copy my results");const copyFb=h("p",{class:"fb","aria-live":"polite"});
 const copyTxt=h("textarea",{id:"copytxt",readonly:true,rows:"8",hidden:true,style:"width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg)"});
-resSec.append(h("div",{class:"part-head"},h("span",{class:"eyebrow"},"Results"),h("h2",{},"Your results"),h("p",{},"Unanswered questions count as zero. Go back to any part to finish it.")),
+resSec.append(h("div",{class:"part-head"},h("span",{class:"eyebrow"},"Results"),h("h2",{},"Your results"),h("p",{},"You have finished the assessment. Send your score to your teacher below.")),
   h("div",{class:"card"},h("div",{style:"display:flex;align-items:baseline;gap:14px;flex-wrap:wrap"},bigEl,nameEl),msgEl,barsEl),
   h("div",{class:"know"},h("h3",{},"Think about it"),h("p",{},"Every model on the timeline replaced the one before because of new evidence. Choose one change (for example, plum pudding to nuclear atom) and explain in your own words what evidence caused it and why that makes atomic theory a theory, not a hypothesis.")),
-  h("div",{class:"card"},h("p",{class:"q-text"},"Send your score to your teacher"),h("p",{class:"hint"},"Copy the summary, then paste it where your teacher asks."),copyB,copyTxt,copyFb),
-  h("div",{class:"pager"},h("button",{class:"btn ghost",type:"button",onclick:()=>show(PARTS.length-1)},"← Back"),h("span")));
+  h("div",{class:"card"},h("p",{class:"q-text"},"Send your score to your teacher"),h("p",{class:"hint"},"Click Send once. You can also copy the summary."),h("div",{style:"display:flex;gap:10px;flex-wrap:wrap"},SCORE_URL?sendB:null,copyB),copyTxt,copyFb));
 main.append(resSec);sections.push(resSec);
 
-function summary(){const nm=document.getElementById("sname").value.trim()||"(no name)";let t=`Atomic Theory Assessment, Grade 9\nName: ${nm}\n`;
+function summary(){const nm=document.getElementById("sname").value.trim()||"(no name)";const cl=document.getElementById("sclass").value.trim();let t=`Atomic Theory Assessment\nName: ${nm}\n`+(cl?`Class: ${cl}\n`:"");
   PARTS.forEach((p,i)=>{t+=`Part ${i+1} ${p.key}: ${partScore(i).g}/${partMax[i]}\n`;});
   const g=PARTS.reduce((a,_,i)=>a+partScore(i).g,0);return t+`Total: ${g}/${TOTAL} (${Math.round(g/TOTAL*100)}%)`;}
+sendB.addEventListener("click",()=>{
+  const nm=document.getElementById("sname").value.trim(), cl=document.getElementById("sclass").value.trim();
+  if(nm.length<2){copyFb.className="fb no";copyFb.textContent="Name is missing.";return;}
+  const g=PARTS.reduce((a,_,i)=>a+partScore(i).g,0), d=Object.values(marks).reduce((a,m)=>a+m.max,0);
+  const now=new Date(), when=now.toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
+  const hsh=[...(nm+"|"+cl+"|"+g+"|"+now.toISOString().slice(0,16))].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+  const code="AT-"+hsh.toString(36).toUpperCase().padStart(6,"0").slice(-6);
+  const payload={game:"Atomic Theory Assessment",chapter:"",name:nm,cls:cl,score:g,correct:g,total:TOTAL,mins:Math.max(1,Math.round((Date.now()-T0)/60000)),when,code,
+    missed:PARTS.map((p,i)=>"P"+(i+1)+" "+partScore(i).g+"/"+partMax[i]).join(", ")+(d<TOTAL?" (unfinished: "+d+"/"+TOTAL+" answered)":"")};
+  sendB.disabled=true;sendB.textContent="Sending…";
+  fetch(SCORE_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)})
+    .then(()=>{sendB.textContent="Sent ✓";copyFb.className="fb ok";copyFb.textContent="Your result was sent to your teacher. Check code "+code;})
+    .catch(()=>{sendB.disabled=false;sendB.textContent="Send to my teacher";copyFb.className="fb no";copyFb.textContent="Could not send. Check your internet and try again.";});
+});
 copyB.addEventListener("click",()=>{const t=summary();copyTxt.value=t;
   const fail=()=>{copyTxt.hidden=false;copyTxt.focus();copyTxt.select();copyFb.className="fb";copyFb.textContent="Select the text above and copy it.";};
   try{navigator.clipboard.writeText(t).then(()=>{copyFb.className="fb ok";copyFb.textContent="Copied. Paste it where your teacher asks.";},fail);}catch(e){fail();}});
 
 function update(){
+  slideInfo.forEach(si=>{if(si.need.every(x=>marks[x])){si.nextB.disabled=false;const hn=si.nextB.previousSibling;if(hn)hn.textContent="";}});
   let g=0,d=0;for(const m of Object.values(marks)){g+=m.got;d+=m.max;}
   document.getElementById("sc").textContent=g;document.getElementById("scmax").textContent=TOTAL;
   document.getElementById("done").textContent=d;document.getElementById("total").textContent=TOTAL;
@@ -541,9 +565,13 @@ function update(){
 document.getElementById("sname").addEventListener("input",update);
 
 let cur=0;
-function show(i){cur=Math.max(0,Math.min(sections.length-1,i));sections.forEach((s,k)=>s.hidden=k!==cur);navItems.forEach((n,k)=>n.setAttribute("aria-current",String(k===cur)));
-  if(show._ready)main.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});show._ready=true;}
-show(0);update();
+function show(i){cur=Math.max(0,Math.min(sections.length-1,i));sections.forEach((s,k)=>s.hidden=k!==cur);
+  window.scrollTo({top:0,behavior:"auto"});}
+document.getElementById("startB").addEventListener("click",()=>{
+  const nm=document.getElementById("sname").value.trim(),cl=document.getElementById("sclass").value.trim(),fb=document.getElementById("startFb");
+  if(nm.length<2||!cl){fb.className="fb no";fb.textContent="Write your full name and your class first.";return;}
+  T0=Date.now();document.querySelector("header.hero").hidden=true;document.getElementById("status").hidden=false;main.hidden=false;show(0);});
+update();
 })();
 </script>
 </body>
