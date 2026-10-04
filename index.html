@@ -38,6 +38,7 @@ iframe{flex:1;width:100%;border:0;background:var(--bg)}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .cards a{display:grid;gap:6px;text-decoration:none;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 0 #c3cfe3}
 .cards a:hover{border-color:var(--blue);transform:translateY(-2px)}
+.home h2.sec{font-family:var(--disp);font-size:20px;letter-spacing:.02em;text-transform:none;color:var(--ink);margin:22px 0 10px}
 .cards b{font-family:var(--disp);font-size:20px}
 .cards small{color:var(--soft)}
 .tag{justify-self:start;font-family:var(--disp);font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;border-radius:8px;padding:2px 8px;background:var(--tealbg);color:var(--teal)}
@@ -95,11 +96,18 @@ iframe{flex:1;width:100%;border:0;background:var(--bg)}
 const ICON={
   home:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><path d="M8 24 L24 9 L40 24" fill="none"/><path d="M12 22 V40 H36 V22 L24 11 Z" fill="#fff"/><path d="M20 40 V29 H28 V40" fill="#58d0c9"/><path d="M31 14 V9 H35 V18" fill="#e2708a"/></g></svg>',
   hydrocarbon:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><polygon points="22,10 34,17 34,31 22,38 10,31 10,17" fill="#fff"/><circle cx="22" cy="24" r="7" fill="none" stroke="#1f9c9e"/><path d="M34 17 L42 11" fill="none"/><circle cx="42" cy="11" r="4.500" fill="#3b3550"/><circle cx="10" cy="31" r="3.500" fill="#58d0c9"/><circle cx="22" cy="38" r="3.500" fill="#58d0c9"/></g></svg>',
+  note:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><rect x="12" y="7" width="26" height="34" rx="4" fill="#fff"/><path d="M12 14 H8 M12 24 H8 M12 34 H8" fill="none"/><path d="M19 16 H31 M19 23 H31" fill="none" stroke="#1f9c9e"/><path d="M19 30 H27" fill="none" stroke="#e2708a"/></g></svg>',
+  sim:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><circle cx="16" cy="28" r="9" fill="#58d0c9"/><circle cx="33" cy="22" r="7" fill="#e2708a"/><path d="M25 9 L27 14 M33 7 L32 12 M40 11 L37 15" fill="none" stroke="#e8962a"/><path d="M5 40 H12 M4 34 H8" fill="none" stroke="#c9d4e6"/></g></svg>',
+  assess:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><rect x="10" y="9" width="28" height="33" rx="4" fill="#fff"/><rect x="18" y="5" width="12" height="8" rx="3" fill="#8a4fbf"/><path d="M16 22 l3 3 l5 -6" fill="none" stroke="#1f9c9e"/><path d="M28 23 H33" fill="none"/><path d="M16 33 l3 3 l5 -6" fill="none" stroke="#1f9c9e"/><path d="M28 34 H33" fill="none"/></g></svg>',
   functional:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><path d="M8 32 L19 26 M19 26 L31 32 M31 32 L41 26" fill="none"/><path d="M17 24 V11 M21 24 V11" fill="none"/><circle cx="19" cy="9" r="5.500" fill="#e2708a"/><circle cx="19" cy="27" r="5" fill="#3b3550"/><circle cx="8" cy="33" r="4" fill="#fff"/><circle cx="31" cy="33" r="5.500" fill="#e2708a"/><circle cx="42" cy="25" r="3.800" fill="#fff"/></g></svg>',
 };
 const ITEMS=[
+  {group:'Revision Notes', title:'Hydrocarbons',             note:'Chapter 21 · read before the quest', file:'hydrocarbons-notes.html',             icon:ICON.note},
+  {group:'Revision Notes', title:'Substituted Hydrocarbons', note:'Chapter 22 · read before the quest', file:'substituted-hydrocarbons-notes.html', icon:ICON.note},
   {group:'Game Quests', title:'Hydrocarbon Quest',      note:'Chapter 21 · 30 questions', file:'hydrocarbon-quest.html',      icon:ICON.hydrocarbon},
   {group:'Game Quests', title:'Functional Group Quest', note:'Chapter 22 · 30 questions', file:'functional-group-quest.html', icon:ICON.functional},
+  {group:'Simulations', title:'Collision Lab', note:'Collision theory · 4 missions', file:'collision-lab.html', icon:ICON.sim},
+  {group:'Assessments', title:'Atomic Theory', note:'End-of-topic assessment', file:'atomic-theory-assessment.html', icon:ICON.assess},
 ];
 // =====================================
 const CHEM=document.querySelector('.bico').innerHTML;
@@ -116,8 +124,8 @@ function route(){
   if(it){ title.textContent=it.title; full.hidden=false; full.href=it.file;
     view.innerHTML=`<iframe src="${it.file}" title="${it.title}" allow="fullscreen"></iframe>`; }
   else{ title.textContent='Home'; full.hidden=true;
-    view.innerHTML=`<div class="home"><div class="hero"><div class="pic">${CHEM}</div><div><h1>Study with <span>Ms. Mirna</span></h1><p>SAAT-style chemistry game quests. Pick a quest to start.</p></div></div>
-      <div class="cards">${ITEMS.map(i=>`<a href="#${slug(i.file)}"><span class="tag ${i.group==='Game Quests'?'q':''}">${i.group}</span><span class="cico">${i.icon}</span><b>${i.title}</b><small>${i.note}</small></a>`).join('')}</div></div>`; }
+    view.innerHTML=`<div class="home"><div class="hero"><div class="pic">${CHEM}</div><div><h1>Study with <span>Ms. Mirna</span></h1><p>Chemistry revision for SAAT. Revise the notes, play a quest, explore a simulation or take an assessment.</p></div></div>
+      ${[...new Set(ITEMS.map(i=>i.group))].map(g=>`<h2 class="sec">${g}</h2><div class="cards">${ITEMS.filter(i=>i.group===g).map(i=>`<a href="#${slug(i.file)}"><span class="cico">${i.icon}</span><b>${i.title}</b><small>${i.note}</small></a>`).join('')}</div>`).join('')}</div>`; }
 }
 addEventListener('hashchange',route);
 document.getElementById('menu').onclick=()=>document.body.classList.toggle('open');
