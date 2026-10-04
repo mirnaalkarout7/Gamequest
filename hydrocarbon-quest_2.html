@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hydrocarbon Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#eaf0f8; --grid:#dbe4f1; --card:#ffffff; --ink:#18233a; --soft:#5b6780; --line:#c9d4e6;
+  --blue:#2b59c3; --bluebg:#e3ebfb; --amber:#e8962a; --amberbg:#fdf0dc;
+  --good:#23915a; --goodbg:#dcf3e6; --bad:#d14343; --badbg:#fbe3e3;
+  --teal:#0f8b8d; --tealbg:#dcf2f2; --plum:#8a4fbf; --plumbg:#efe5f8;
+  --shadow:0 6px 0 #c3cfe3;
+  --disp:"Fredoka","Trebuchet MS",sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f1729; --grid:#16213a; --card:#1a2540; --ink:#eaf0fb; --soft:#9fb0cf; --line:#2c3a5c;
+    --blue:#7fa2ff; --bluebg:#22325c; --amber:#ffb85c; --amberbg:#3d2d17;
+    --good:#4fd18a; --goodbg:#163a2a; --bad:#ff7b7b; --badbg:#44202a;
+    --teal:#4fd3d5; --tealbg:#143a3d; --plum:#c79cff; --plumbg:#2f2446;
+    --shadow:0 6px 0 #0a1020;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f1729; --grid:#16213a; --card:#1a2540; --ink:#eaf0fb; --soft:#9fb0cf; --line:#2c3a5c;
+  --blue:#7fa2ff; --bluebg:#22325c; --amber:#ffb85c; --amberbg:#3d2d17;
+  --good:#4fd18a; --goodbg:#163a2a; --bad:#ff7b7b; --badbg:#44202a;
+  --teal:#4fd3d5; --tealbg:#143a3d; --plum:#c79cff; --plumbg:#2f2446;
+  --shadow:0 6px 0 #0a1020;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.45;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+.app{max-width:780px; margin:0 auto; padding-inline:16px; padding-block:18px 40px}
+h1,h2,h3{font-family:var(--disp); margin:0; line-height:1.1; text-wrap:balance}
+sub{font-size:.72em}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
+
+/* HUD */
+.hud{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.stage{font-family:var(--disp); font-weight:600; font-size:15px; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px}
+.stat{display:flex; align-items:center; gap:6px; font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; font-variant-numeric:tabular-nums}
+.stat.streak.hot{border-color:var(--amber); color:var(--amber)}
+.hud .grow{flex:1}
+.bar{height:12px; background:var(--card); border:2px solid var(--line); border-radius:99px; overflow:hidden; margin-bottom:16px}
+.bar i{display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--blue)); width:0; transition:width .4s}
+
+/* card */
+.card{background:var(--card); border:2px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:22px 22px 20px; display:grid; gap:16px}
+.meta{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.tag{font-family:var(--disp); font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase; border-radius:8px; padding:3px 9px}
+.tag.skill{background:var(--tealbg); color:var(--teal)}
+.tag.type{background:var(--plumbg); color:var(--plum)}
+.qnum{font-family:var(--disp); color:var(--soft); font-weight:600; margin-left:auto; font-size:14px}
+.prompt{font-size:21px; font-weight:700; line-height:1.35}
+.help{color:var(--soft); font-size:15px; margin-top:-8px}
+.mol{display:flex; justify-content:center; background:var(--bg); border-radius:16px; padding:10px}
+.mol svg{max-width:100%; height:auto}
+.mol svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.formula{font-size:22px; font-weight:700; text-align:center; background:var(--bg); border-radius:14px; padding:12px; overflow-x:auto}
+
+/* options */
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.opts.one{grid-template-columns:1fr}
+@media (max-width:560px){ .opts{grid-template-columns:1fr} }
+.opt{display:flex; align-items:center; gap:12px; text-align:left; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; min-height:54px; transition:transform .08s, border-color .15s, background .15s}
+.opt:hover:not(:disabled){border-color:var(--blue); transform:translateY(-2px)}
+.opt .k{flex:none; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-family:var(--disp); font-weight:700; background:var(--bluebg); color:var(--blue)}
+.opt.sel{border-color:var(--blue); background:var(--bluebg)}
+.opt.right{border-color:var(--good); background:var(--goodbg)}
+.opt.right .k{background:var(--good); color:#fff}
+.opt.wrong{border-color:var(--bad); background:var(--badbg)}
+.opt.wrong .k{background:var(--bad); color:#fff}
+.opt:disabled{cursor:default}
+.opt.pic{flex-direction:column; justify-content:center; padding:8px}
+.opt.pic svg{width:120px; height:auto}
+.opt.pic svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.tf{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.tf .opt{justify-content:center; font-family:var(--disp); font-size:22px; font-weight:700; min-height:70px}
+
+/* chips, buckets */
+.pool{display:flex; flex-wrap:wrap; gap:8px; min-height:48px; padding:10px; border:2px dashed var(--line); border-radius:14px}
+.chip{background:var(--card); border:2px solid var(--line); border-radius:12px; padding:7px 12px; font-weight:700; transition:transform .08s}
+.chip:hover:not(:disabled){transform:translateY(-2px); border-color:var(--blue)}
+.chip.sel{border-color:var(--amber); background:var(--amberbg)}
+.chip.right{border-color:var(--good); background:var(--goodbg)}
+.chip.wrong{border-color:var(--bad); background:var(--badbg)}
+.buckets{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:520px){ .buckets{grid-template-columns:1fr} }
+.bucket{border:2px solid var(--line); border-radius:16px; padding:10px; min-height:110px; display:flex; flex-direction:column; gap:8px; background:var(--bg); text-align:left}
+.bucket h3{font-size:17px}
+.bucket .in{display:flex; flex-wrap:wrap; gap:6px}
+.bucket.ready{border-color:var(--amber); border-style:dashed}
+
+/* match */
+.match{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px}
+.match .col{display:grid; gap:8px; align-content:start}
+.mi{text-align:left; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; font-weight:700; min-height:48px}
+.mi.sel{border-color:var(--amber); background:var(--amberbg)}
+.mi[data-pair]{border-width:3px}
+.mi.right{background:var(--goodbg)} .mi.wrong{background:var(--badbg)}
+
+/* build / order */
+.answerline{display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:56px; padding:10px; border-radius:14px; background:var(--bg); border:2px solid var(--line); font-weight:700}
+.answerline .ph{color:var(--soft); font-weight:400}
+.answerline .chip{background:var(--bluebg); border-color:var(--blue)}
+.ordered{display:grid; gap:8px; counter-reset:o}
+.oslot{display:flex; align-items:center; gap:10px; padding:8px 12px; border:2px dashed var(--line); border-radius:12px; min-height:46px; background:var(--bg); font-weight:700}
+.oslot::before{counter-increment:o; content:counter(o); width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--blue); color:#fff; font-family:var(--disp); font-size:14px; flex:none}
+.oslot.right{border-style:solid; border-color:var(--good); background:var(--goodbg)}
+.oslot.wrong{border-style:solid; border-color:var(--bad); background:var(--badbg)}
+
+.inputrow{display:flex; gap:10px; flex-wrap:wrap}
+.inputrow input{flex:1; min-width:160px; font:inherit; font-size:22px; font-weight:700; padding:10px 14px; border-radius:14px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.inputrow input.right{border-color:var(--good); background:var(--goodbg)}
+.inputrow input.wrong{border-color:var(--bad); background:var(--badbg)}
+.subhint{font-size:14px; color:var(--soft)}
+
+/* actions & feedback */
+.actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.btn{font-family:var(--disp); font-weight:600; font-size:18px; border:none; border-radius:14px; padding:11px 22px; background:var(--blue); color:#fff; box-shadow:0 4px 0 #1b3a86}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--soft); box-shadow:none; border:2px solid var(--line); font-size:15px; padding:8px 14px}
+.btn.go{background:var(--good); box-shadow:0 4px 0 #166b40}
+.fb{border-radius:14px; padding:12px 14px; display:grid; gap:4px}
+.fb.good{background:var(--goodbg); border:2px solid var(--good)}
+.fb.bad{background:var(--badbg); border:2px solid var(--bad)}
+.fb b.t{font-family:var(--disp); font-size:19px}
+.fb.good b.t{color:var(--good)} .fb.bad b.t{color:var(--bad)}
+.pts{font-family:var(--disp); color:var(--amber); font-weight:700}
+
+/* screens */
+.hero{display:grid; gap:18px; text-align:left}
+.hero h1{font-size:clamp(40px,8vw,64px); font-weight:700}
+.hero h1 span{color:var(--teal)}
+.hero p{margin:0; max-width:58ch}
+.stages{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px}
+.st{border:2px solid var(--line); border-radius:14px; padding:10px 12px; background:var(--bg)}
+.st b{font-family:var(--disp); display:block; font-size:17px}
+.st small{color:var(--soft)}
+.types{display:flex; flex-wrap:wrap; gap:6px}
+.best{font-family:var(--disp); color:var(--soft)}
+.big{font-family:var(--disp); font-size:56px; font-weight:700; color:var(--teal); line-height:1}
+.skills{display:grid; gap:8px}
+.sk{display:grid; grid-template-columns:120px 1fr 52px; gap:10px; align-items:center; font-weight:700}
+.sk .t{height:14px; border-radius:99px; background:var(--bg); border:2px solid var(--line); overflow:hidden}
+.sk .t i{display:block; height:100%; background:var(--teal)}
+.sk em{font-style:normal; text-align:right; font-variant-numeric:tabular-nums; color:var(--soft)}
+.miss{display:grid; gap:8px}
+.miss div{border-left:4px solid var(--bad); padding:6px 10px; background:var(--bg); border-radius:0 10px 10px 0; font-size:15px}
+.field{display:grid; gap:6px}
+.field label{font-family:var(--disp); font-weight:600; font-size:15px}
+.fields{display:grid; grid-template-columns:2fr 1fr; gap:12px}
+@media (max-width:520px){ .fields{grid-template-columns:1fr} }
+.field input{font:inherit; font-size:18px; padding:10px 14px; border-radius:12px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.field input.err{border-color:var(--bad)}
+.errmsg{color:var(--bad); font-size:14px; min-height:1em}
+.player{font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; max-width:40vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cert{border:3px solid var(--teal); border-radius:18px; padding:14px 16px; background:var(--tealbg); display:grid; gap:4px}
+.cert .row{display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px}
+.cert b.nm{font-family:var(--disp); font-size:24px}
+.cert code{font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:700; letter-spacing:.08em}
+.hist{width:100%; border-collapse:collapse; font-size:15px; font-variant-numeric:tabular-nums}
+.hist th,.hist td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line)}
+.histwrap{overflow-x:auto}
+.toast{position:fixed; left:50%; top:calc(16px + env(safe-area-inset-top,0px)); transform:translateX(-50%); background:var(--ink); color:var(--card); font-family:var(--disp); font-weight:600; padding:10px 18px; border-radius:14px; z-index:5; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.card.enter{animation:pop .25s ease-out}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .3s}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+</style>
+
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+// ---------- helpers ----------
+const F=s=>String(s).replace(/_(\{[^}]*\}|[0-9n+−\-]+)/g,(m,g)=>'<sub>'+g.replace(/[{}]/g,'')+'</sub>');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const $=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstElementChild;};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+// ---------- molecule drawing ----------
+const S='stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+function ring(n,cx,cy,r,rot){const p=[];for(let i=0;i<n;i++){const a=(rot+i*360/n)*Math.PI/180;p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}return p;}
+function polyline(p,close){return `<polyline points="${p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}${close?' '+p[0].map(v=>v.toFixed(1)).join(','):''}" ${S}/>`;}
+function inner(a,b,c,f){f=f||.22;const m=(p)=>[p[0]+(c[0]-p[0])*f,p[1]+(c[1]-p[1])*f];const A=m(a),B=m(b);
+  const t=.15;const A2=[A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t],B2=[B[0]+(A[0]-B[0])*t,B[1]+(A[1]-B[1])*t];
+  return `<line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" ${S}/>`;}
+function sub(p,c,len,label,anchor){const dx=p[0]-c[0],dy=p[1]-c[1],d=Math.hypot(dx,dy);const e=[p[0]+dx/d*len,p[1]+dy/d*len];
+  let s=`<line x1="${p[0]}" y1="${p[1]}" x2="${e[0]}" y2="${e[1]}" ${S}/>`;
+  if(label){const ax=anchor||(dx>8?'start':dx<-8?'end':'middle');const ox=ax==='start'?4:ax==='end'?-4:0;const oy=dy>8?18:dy<-8?-6:6;
+    s+=`<text x="${e[0]+ox}" y="${e[1]+oy}" text-anchor="${ax}" font-size="17">${label}</text>`;}
+  return s;}
+const lbl=t=>t.replace(/(\d)(\D?)/g,(m,d,n)=>`<tspan font-size="12" dy="5">${d}</tspan>`+(n?`<tspan dy="-5">${n}</tspan>`:''));
+function svg(w,h,body,title){return `<svg viewBox="0 0 ${w} ${h}" width="${w}" role="img" aria-label="${title}" style="color:var(--ink)">${body}</svg>`;}
+const MOL={
+  ethylcyclopentane(){const c=[110,95],p=ring(5,110,95,40,-90);return svg(220,160,polyline(p,1)+sub(p[0],c,34,lbl('CH2CH3'),'start'),'five-membered ring with an ethyl group');},
+  dimethylcyclohexane14(){const c=[110,90],p=ring(6,110,90,42,-90);return svg(220,185,polyline(p,1)+sub(p[0],c,30,lbl('CH3'))+sub(p[3],c,30,lbl('CH3')),'six-membered ring with methyl groups on opposite carbons');},
+  dimethylcyclopentene12(){const c=[110,95],p=ring(5,110,95,42,-90);return svg(220,170,polyline(p,1)+inner(p[1],p[2],c)+sub(p[1],c,30,lbl('CH3'))+sub(p[2],c,30,lbl('CH3')),'five-membered ring with a double bond and a methyl group on each carbon of the double bond');},
+  // condensed chain with branches drawn as vertical sticks (no parentheses)
+  _chain(groups,bonds,br,title){const y=70;let x=16,cx=[],out='';
+    groups.forEach((g,k)=>{const letters=g.replace(/\d/g,'').length,digits=g.length-letters;const w=letters*14+digits*9;
+      cx.push(x+w/2);out+=`<text x="${x+w/2}" y="${y}" text-anchor="middle" font-size="20">${lbl(g)}</text>`;x+=w;
+      if(k<bonds.length){const b=bonds[k];if(b==='=')out+=`<line x1="${x+5}" y1="${y-11}" x2="${x+25}" y2="${y-11}" ${S}/><line x1="${x+5}" y1="${y-4}" x2="${x+25}" y2="${y-4}" ${S}/>`;
+        else out+=`<line x1="${x+5}" y1="${y-7}" x2="${x+25}" y2="${y-7}" ${S}/>`;x+=30;}});
+    (br||[]).forEach(b=>{const c=cx[b.i];out+=`<line x1="${c}" y1="${y+8}" x2="${c}" y2="${y+30}" ${S}/><text x="${c}" y="${y+52}" text-anchor="middle" font-size="20" style="fill:var(--blue)">${lbl(b.t)}</text>`;});
+    return svg(x+16,140,out,title);},
+  mp24(){return MOL._chain(['CH3','CH','CH2','CH','CH3'],['-','-','-','-'],[{i:1,t:'CH3'},{i:3,t:'CH3'}],'five-carbon chain with methyl branches on carbons 2 and 4');},
+  mp2(){return MOL._chain(['CH3','CH','CH2','CH2','CH3'],['-','-','-','-'],[{i:1,t:'CH3'}],'five-carbon chain with a methyl branch on the second carbon');},
+  mhept(){return MOL._chain(['CH3','CH2','CH2','CH','CH','CH','CH3'],['-','-','-','=','-','-'],[{i:5,t:'CH3'}],'seven-carbon chain with a double bond and a methyl branch');},
+  trans2butene(){const a=[30,110],b=[70,75],c=[125,75],d=[165,40];return svg(200,140,polyline([a,b,c,d])+`<line x1="${b[0]+6}" y1="${b[1]+9}" x2="${c[0]-6}" y2="${c[1]+9}" ${S}/>`,'four-carbon zigzag chain with a double bond in the middle; end groups on opposite sides');},
+  ethylmethylbenzene13(){const c=[110,100],p=ring(6,110,100,42,-90);return svg(240,200,polyline(p,1)+`<circle cx="110" cy="100" r="25" ${S}/>`+sub(p[0],c,28,lbl('C2H5'))+sub(p[2],c,28,lbl('CH3')),'benzene ring with an ethyl group and a methyl group separated by one carbon');},
+  ethyldimethylbenzene(){const c=[110,105],p=ring(6,110,105,42,-90);return svg(240,215,polyline(p,1)+`<circle cx="110" cy="105" r="25" ${S}/>`+sub(p[0],c,26,lbl('CH3'))+sub(p[1],c,28,lbl('C2H5'))+sub(p[3],c,26,lbl('CH3')),'benzene ring with methyl at top, ethyl next to it, and methyl at the bottom');},
+  cyclohexane(){const p=ring(6,60,55,40,-90);return svg(120,110,polyline(p,1),'cyclohexane');},
+  benzene(){const p=ring(6,60,55,40,-90);return svg(120,110,polyline(p,1)+`<circle cx="60" cy="55" r="24" ${S}/>`,'benzene');},
+  cyclohexene(){const c=[60,55],p=ring(6,60,55,40,-90);return svg(120,110,polyline(p,1)+inner(p[1],p[2],c),'cyclohexene');},
+  cyclohexadiene(){const c=[60,55],p=ring(6,60,55,40,-90);return svg(120,110,polyline(p,1)+inner(p[1],p[2],c)+inner(p[3],p[4],c),'cyclohexadiene');},
+};
+
+// ---------- questions (from the Module 20 SAAT set) ----------
+const STAGES=[{n:'Carbon Basics',from:0},{n:'Alkanes & Rings',from:8},{n:'Double & Triple Bonds',from:16},{n:'Isomers & Aromatics',from:22}];
+const Q=[
+ {t:'mcq',skill:'Recall',q:'The branch of chemistry that studies carbon compounds is ___.',o:['organic chemistry','inorganic chemistry','physical chemistry','thermochemistry'],a:0,x:'Organic chemistry = the study of carbon and its compounds.'},
+ {t:'tf',skill:'Recall',q:'Hydrocarbons are compounds made of carbon and hydrogen only.',a:true,x:'That is the definition of a hydrocarbon. The simplest one is methane, CH_4.'},
+ {t:'sort',skill:'Classifying',q:'Sort each compound: is it organic or not?',help:'Tap a compound, then tap a box.',b:['Organic','Not organic'],items:[['CH_4',0],['C_3H_8',0],['C_6H_6',0],['NaCl',1],['CO_2',1],['CaCO_3',1]],x:'Organic compounds contain carbon, except carbon oxides (CO_2), carbides and carbonates (CaCO_3). NaCl has no carbon at all.'},
+ {t:'num',skill:'Reasoning',q:'What is the maximum number of hydrogen atoms that can bond to one carbon atom?',a:4,x:'Carbon has 4 valence electrons, so it forms 4 covalent bonds, e.g. CH_4.'},
+ {t:'mcq',skill:'Structures',q:'When a carbon atom forms four single covalent bonds, the shape of the molecule is ___.',o:['a triangle','a pyramid','a square','a tetrahedron'],a:3,x:'Four bonds spread out as far as possible: a tetrahedron.'},
+ {t:'tf',skill:'Recall',q:'Thermal cracking separates crude oil into fractions according to their boiling points.',a:false,x:'That is fractional distillation. Thermal cracking breaks large molecules into smaller ones such as gasoline.'},
+ {t:'match',skill:'Formulas',q:'Match each family to its general formula.',help:'Tap an item on the left, then its partner on the right.',pairs:[['Alkanes','C_nH_2n+2'],['Alkenes','C_nH_2n'],['Alkynes','C_nH_2n−2']],x:'Each double bond removes 2 H from the alkane formula, and a triple bond removes 4.'},
+ {t:'text',skill:'Formulas',q:'Write the molecular formula of the alkane that has 7 carbon atoms.',help:'Type it like C2H6 (numbers are turned into subscripts for you).',a:['C7H16'],norm:'formula',x:'C_nH_2n+2 with n = 7: H = 2(7) + 2 = 16 → C_7H_16 (heptane).'},
+
+ {t:'mcq',skill:'Formulas',q:'What is the condensed structural formula of propane?',o:['CH_3CH_2CH_2CH_2CH_3','CH_3CH_2CH_2CH_3','CH_2=CHCH_3','CH_3CH_2CH_3'],a:3,x:'Propane has 3 carbons: CH_3–CH_2–CH_3.'},
+ {t:'tf',skill:'Reasoning',q:'Alkanes dissolve in water because they are polar.',a:false,x:'Alkanes are nonpolar, so they do not dissolve in water (like dissolves like).'},
+ {t:'odd',skill:'Classifying',q:'Odd one out: which of these is NOT an alkane?',o:['CH_4','C_2H_6','C_2H_4','C_3H_8'],a:2,x:'C_2H_4 fits C_nH_2n, so it is an alkene (ethene). The others fit C_nH_2n+2.'},
+ {t:'build',skill:'Naming',q:'Build the IUPAC name of this compound.',mol:'mp24',tiles:['2,4-','2,3-','dimethyl','trimethyl','pentane','butane'],a:['2,4-','dimethyl','pentane'],x:'Longest chain = 5 C (pentane). Methyl groups on C2 and C4 → 2,4-dimethylpentane.'},
+ {t:'mcq',skill:'Naming',q:'What is the IUPAC name of this compound?',mol:'mp2',o:['3-methylpentane','2-methylpentane','2-methylbutane','1-methylbutane'],a:1,x:'5-carbon chain, methyl on carbon 2 (number from the end nearest the branch).'},
+ {t:'mcq',skill:'Structures',q:'What is the name of this compound?',mol:'ethylcyclopentane',o:['2-ethylpentane','Ethylcycloheptane','Ethylcyclopentane','2-ethylcyclopentane'],a:2,x:'5-carbon ring (cyclopentane) with one ethyl branch. With only one branch, no number is needed.'},
+ {t:'mcq',skill:'Structures',q:'What is the name of this compound?',mol:'dimethylcyclohexane14',o:['1,4-dimethylcyclohexane','1,4-diethylcyclohexane','1,3-diethylcyclohexane','1,3-dimethylcyclohexane'],a:0,x:'6-carbon ring with two methyl groups on opposite carbons: 1 and 4.'},
+ {t:'sort',skill:'Classifying',q:'Saturated or unsaturated?',help:'Tap a formula, then tap a box.',b:['Saturated','Unsaturated'],items:[['C_4H_10',0],['CH_4',0],['C_3H_8',0],['C_2H_2',1],['C_3H_6',1],['C_5H_8',1]],x:'Saturated = only single bonds (C_nH_2n+2). C_3H_6 has a C=C; C_2H_2 and C_5H_8 have a C≡C.'},
+
+ {t:'mcq',skill:'Naming',q:'What is the IUPAC name of this compound?',mol:'mhept',o:['2-methyl-3-heptene','6-methyl-4-heptene','3-methyl-4-heptene','6-methyl-3-heptene'],a:0,x:'Number from the end nearest the double bond: C=C starts at C3, methyl on C2 → 2-methyl-3-heptene.'},
+ {t:'mcq',skill:'Structures',q:'What is the IUPAC name of this compound?',mol:'dimethylcyclopentene12',o:['1,2-dimethylcyclopentene','2,3-dimethylpentane','1,2-dimethylcyclohexene','2,3-dimethylcycloheptane'],a:0,x:'5-carbon ring with a double bond; the double-bond carbons are C1 and C2, each with a methyl.'},
+ {t:'num',skill:'Formulas',q:'How many hydrogen atoms are in an alkyne that has 5 carbon atoms?',a:8,x:'C_nH_2n−2 with n = 5: 2(5) − 2 = 8 → C_5H_8.'},
+ {t:'mcq',skill:'Structures',q:'How many sigma (σ) and pi (π) bonds are in acetylene, H–C≡C–H?',o:['1 σ and 3 π','3 σ and 2 π','2 σ and 3 π','1 σ and 4 π'],a:1,x:'Two C–H bonds (σ) + the triple bond (1 σ + 2 π) → 3 σ and 2 π.'},
+ {t:'order',skill:'Reasoning',q:'Put these in order from LEAST reactive to MOST reactive.',help:'Tap them in order.',items:['Ethane (C–C)','Ethene (C=C)','Ethyne (C≡C)'],x:'More electron density in multiple bonds → more reactive: alkanes < alkenes < alkynes.'},
+ {t:'text',skill:'Recall',q:'Acetylene is the common name for which alkyne?',help:'Type the IUPAC name.',a:['ethyne'],norm:'word',x:'Acetylene = ethyne, C_2H_2. It is used for welding.'},
+
+ {t:'match',skill:'Isomers',q:'Match each type of isomer to its description.',help:'Tap an item on the left, then its partner on the right.',pairs:[['Structural','atoms bonded in a different order'],['Geometric','different arrangement around a C=C (cis / trans)'],['Optical','mirror images, like L- and D-alanine']],x:'Butane and methylpropane are structural isomers; cis/trans-2-butene are geometric; L/D-alanine are optical.'},
+ {t:'mcq',skill:'Isomers',q:'What is the name of this compound?',mol:'trans2butene',o:['cis-2-butane','trans-2-butane','cis-2-butene','trans-2-butene'],a:3,x:'It has a C=C (butene) and the end groups are on opposite sides of the double bond → trans.'},
+ {t:'tf',skill:'Isomers',q:'The existence of more than one structural formula for the same molecular formula is called isomerism.',a:true,x:'Isomers: same molecular formula, different structures.'},
+ {t:'pick',skill:'Structures',q:'Which of these compounds is aromatic?',o:['cyclohexane','benzene','cyclohexene','cyclohexadiene'],a:1,x:'Aromatic compounds contain a benzene ring (the circle shows delocalized electrons).'},
+ {t:'sort',skill:'Classifying',q:'Aromatic or aliphatic?',help:'Tap a compound, then tap a box.',b:['Aromatic','Aliphatic'],items:[['benzene',0],['methylbenzene',0],['ethylbenzene',0],['hexane',1],['cyclohexane',1],['ethyne',1]],x:'Aromatic = contains a benzene ring. Everything without one (alkanes, alkenes, alkynes, cycloalkanes) is aliphatic.'},
+ {t:'mcq',skill:'Structures',q:'What is the IUPAC name of this compound?',mol:'ethylmethylbenzene13',o:['2-methyl-1-ethylbenzene','1-ethyl-3-methylbenzene','1-methyl-6-ethylbenzene','1-ethyl-5-methylbenzene'],a:1,x:'Branches go in alphabetical order, so ethyl gets C1; the methyl is then on C3 (lowest numbers).'},
+ {t:'build',skill:'Naming',q:'Build the IUPAC name of this compound.',mol:'ethyldimethylbenzene',tiles:['2-ethyl-','1-ethyl-','1,4-','2,5-','dimethyl','benzene','cyclohexane'],a:['2-ethyl-','1,4-','dimethyl','benzene'],x:'Methyl groups on C1 and C4, ethyl on C2 → 2-ethyl-1,4-dimethylbenzene.'},
+ {t:'mcq',skill:'Recall',q:'Which process converts large petroleum molecules into gasoline?',o:['Thermal cracking','Fractional distillation','Simple distillation','Polymerization'],a:0,x:'Cracking breaks big molecules into smaller, more useful ones like gasoline.'},
+];
+const TYPE={mcq:'Multiple choice',tf:'True or false',sort:'Sort it',num:'Number answer',match:'Match up',text:'Type it',odd:'Odd one out',build:'Build the name',order:'Put in order',pick:'Pick the structure'};
+
+// ---------- game state ----------
+let i=0,score=0,streak=0,best=0,results=[],player={name:'',cls:''},startedAt=0;
+const HIST_KEY='hq-history';
+// Paste your Google Apps Script web-app URL between the quotes to collect results in your Google Sheet.
+const SCORE_URL='';
+const loadHist=()=>{try{return JSON.parse(store.get(HIST_KEY)||'[]')}catch(e){return[]}};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+const BEST_KEY='hq-best';
+
+function hud(){
+  const st=STAGES.filter(s=>s.from<=i).pop();
+  return `<div class="hud"><span class="stage">${st.n}</span><span class="player" title="Player">👤 ${esc(player.name)}</span><span class="grow"></span>
+   <span class="stat" title="Score">★ <b>${score}</b></span>
+   <span class="stat streak ${streak>=3?'hot':''}" title="Streak">🔥 <b>${streak}</b></span></div>
+   <div class="bar" aria-label="Progress"><i style="width:${(i/Q.length*100).toFixed(1)}%"></i></div>`;
+}
+
+function start(){
+  const b=store.get(BEST_KEY);
+  const typeTags=Object.values(TYPE).map(t=>`<span class="tag type">${t}</span>`).join('');
+  app.innerHTML=`<div class="card hero">
+    <div class="meta"><span class="tag skill">Chemistry · Chapter 21</span><span class="qnum">30 questions</span></div>
+    <h1>Hydrocarbon <span>Quest</span></h1>
+    <p>Race through four stages of SAAT-style questions on hydrocarbons. Every question type tests a different skill, so read the instructions on each card. Correct answers earn 100 points, and a streak of 3 or more adds a bonus.</p>
+    <div class="stages">${STAGES.map((s,k)=>`<div class="st"><small>Stage ${k+1}</small><b>${s.n}</b><small>${(STAGES[k+1]?STAGES[k+1].from:Q.length)-s.from} questions</small></div>`).join('')}</div>
+    <div class="types">${typeTags}</div>
+    <div class="fields">
+      <div class="field"><label for="pname">Your full name</label><input id="pname" autocomplete="name" maxlength="60" placeholder="e.g. Sara Ahmed" value="${esc(store.get('hq-name')||'')}"></div>
+      <div class="field"><label for="pclass">Class</label><input id="pclass" maxlength="20" placeholder="e.g. 11-B" value="${esc(store.get('hq-class')||'')}"></div>
+    </div>
+    <div class="errmsg" id="perr" role="alert"></div>
+    <div class="actions"><button class="btn" id="go">Start the quest</button>${b?`<span class="best">Best score on this device: ${b}</span>`:''}</div>
+  </div>`;
+  const go=()=>{const n=document.getElementById('pname'); const nm=n.value.trim().replace(/\s+/g,' ');
+    if(nm.length<2){n.classList.add('err'); document.getElementById('perr').textContent='Please write your name before you start.'; n.focus(); return;}
+    player={name:nm,cls:document.getElementById('pclass').value.trim()}; store.set('hq-name',player.name); store.set('hq-class',player.cls);
+    i=0;score=0;streak=0;best=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('go').onclick=go;
+  ['pname','pclass'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')go();});
+}
+
+function toast(t){const e=$(`<div class="toast">${t}</div>`);document.body.appendChild(e);setTimeout(()=>e.remove(),1400);}
+
+function show(){
+  if(i>=Q.length) return end();
+  const st=STAGES.find(s=>s.from===i); if(st && i>0) toast('Stage '+(STAGES.indexOf(st)+1)+': '+st.n);
+  const q=Q[i];
+  app.innerHTML=hud()+`<div class="card enter" id="card">
+    <div class="meta"><span class="tag skill">${q.skill}</span><span class="tag type">${TYPE[q.t]}</span><span class="qnum">${i+1} / ${Q.length}</span></div>
+    <div class="prompt">${F(q.q)}</div>${q.help?`<div class="help">${q.help}</div>`:''}
+    ${q.mol?`<div class="mol">${MOL[q.mol]()}</div>`:''}${q.formula?`<div class="formula">${F(q.formula)}</div>`:''}
+    <div id="body"></div><div id="fb"></div><div class="actions" id="act"></div></div>`;
+  RENDER[q.t](q,document.getElementById('body'));
+}
+
+function actions(html){document.getElementById('act').innerHTML=html;}
+function checkBtn(fn,enabled){actions(`<button class="btn" id="chk" ${enabled?'':'disabled'}>Check</button>`);document.getElementById('chk').onclick=fn;}
+function setCheck(on){const b=document.getElementById('chk'); if(b) b.disabled=!on;}
+
+function done(ok,q,correctText){
+  let gain=0;
+  if(ok){streak++;gain=100+(streak>=3?25*Math.min(streak-2,4):0);score+=gain;}
+  else{streak=0;document.getElementById('card').classList.add('shake');}
+  results.push({q,ok,correctText});
+  document.getElementById('fb').innerHTML=`<div class="fb ${ok?'good':'bad'}"><b class="t">${ok?'Correct!':'Not quite'} ${ok?`<span class="pts">+${gain}</span>`:''}</b>
+    ${!ok&&correctText?`<div>Answer: <b>${F(correctText)}</b></div>`:''}<div>${F(q.x)}</div></div>`;
+  actions(`<button class="btn go" id="nx">${i+1<Q.length?'Next question →':'See my results'}</button>`);
+  const nx=document.getElementById('nx'); nx.focus({preventScroll:true}); nx.onclick=()=>{i++;show();window.scrollTo({top:0,behavior:'smooth'});};
+  const h=app.querySelector('.hud'); if(h) h.replaceWith($(hud()));
+}
+
+const RENDER={
+  mcq(q,el,cls){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts ${cls||''}">${order.map((k,n)=>`<button class="opt" data-k="${k}"><span class="k">${'ABCD'[n]}</span><span>${F(q.o[k])}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.o[q.a]);
+    });
+  },
+  odd(q,el){RENDER.mcq(q,el);},
+  pick(q,el){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts">${order.map((k,n)=>`<button class="opt pic" data-k="${k}" aria-label="Option ${'ABCD'[n]}">${MOL[q.o[k]]()}<span class="k">${'ABCD'[n]}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.o[q.a]);
+    });
+  },
+  tf(q,el){
+    el.innerHTML=`<div class="tf"><button class="opt" data-v="1">True</button><button class="opt" data-v="0">False</button></div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v==='1', ok=v===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if((x.dataset.v==='1')===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.a?'True':'False');
+    });
+  },
+  num(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="number" inputmode="numeric" placeholder="Your number" aria-label="Your answer"></div>`;
+    const inp=el.querySelector('input');
+    const go=()=>{const ok=+inp.value===q.a; inp.disabled=true; inp.classList.add(ok?'right':'wrong'); done(ok,q,String(q.a));};
+    checkBtn(go,false); inp.oninput=()=>setCheck(inp.value!==''); inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value!=='')go();}; inp.focus({preventScroll:true});
+  },
+  text(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer" aria-label="Your answer"></div><div class="subhint" id="prev"></div>`;
+    const inp=el.querySelector('input'), prev=el.querySelector('#prev');
+    const norm=s=>q.norm==='formula'?s.replace(/\s+/g,'').toUpperCase():s.trim().toLowerCase().replace(/\s+/g,' ');
+    const go=()=>{const v=norm(inp.value); const ok=q.a.some(a=>norm(a)===v); inp.disabled=true; inp.classList.add(ok?'right':'wrong');
+      done(ok,q,q.norm==='formula'?q.a[0].replace(/(\d+)/g,'_$1'):q.a[0]);};
+    checkBtn(go,false);
+    inp.oninput=()=>{setCheck(inp.value.trim()!==''); if(q.norm==='formula') prev.innerHTML=inp.value?('You wrote: <b>'+F(inp.value.replace(/\s+/g,'').replace(/(\d+)/g,'_$1'))+'</b>'):'';};
+    inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value.trim())go();}; inp.focus({preventScroll:true});
+  },
+  sort(q,el){
+    const items=shuffle(q.items.map((it,k)=>({t:it[0],b:it[1],k})));
+    const place={}; let sel=null;
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="buckets">${q.b.map((b,n)=>`<button class="bucket" data-b="${n}"><h3>${b}</h3><div class="in"></div></button>`).join('')}</div>`;
+    const pool=el.querySelector('#pool');
+    function draw(){
+      pool.innerHTML=''; el.querySelectorAll('.bucket .in').forEach(x=>x.innerHTML='');
+      items.forEach(it=>{const c=$(`<button class="chip ${sel===it.k?'sel':''}" data-k="${it.k}">${F(it.t)}</button>`);
+        c.onclick=(e)=>{e.stopPropagation(); if(place[it.k]!==undefined){delete place[it.k]; sel=it.k;} else sel=(sel===it.k?null:it.k); draw();};
+        (place[it.k]===undefined?pool:el.querySelector(`.bucket[data-b="${place[it.k]}"] .in`)).appendChild(c);});
+      if(!pool.children.length) pool.innerHTML='<span class="subhint">All placed. Tap a chip to move it back.</span>';
+      el.querySelectorAll('.bucket').forEach(b=>b.classList.toggle('ready',sel!==null));
+      setCheck(Object.keys(place).length===items.length);
+    }
+    el.querySelectorAll('.bucket').forEach(b=>b.onclick=()=>{if(sel===null)return; place[sel]=+b.dataset.b; sel=null; draw();});
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.chip').forEach(c=>{const it=items.find(x=>x.k==c.dataset.k); const r=place[it.k]===it.b; if(!r)ok=false; c.classList.add(r?'right':'wrong'); c.disabled=true;});
+      el.querySelectorAll('.bucket').forEach(b=>{b.disabled=true;b.classList.remove('ready');});
+      const key=q.b.map((b,n)=>b+': '+q.items.filter(x=>x[1]===n).map(x=>x[0]).join(', ')).join(' | ');
+      done(ok,q,key);
+    },false);
+    draw();
+  },
+  match(q,el){
+    const L=q.pairs.map((p,k)=>({t:p[0],k})), R=shuffle(q.pairs.map((p,k)=>({t:p[1],k})));
+    const pair={}; let sel=null; const colors=['var(--blue)','var(--amber)','var(--plum)','var(--teal)'];
+    el.innerHTML=`<div class="match"><div class="col" id="L"></div><div class="col" id="R"></div></div>`;
+    function draw(){
+      const used=Object.values(pair);
+      el.querySelector('#L').innerHTML=L.map(l=>{const pi=pair[l.k]!==undefined?Object.keys(pair).indexOf(String(l.k)):-1;
+        return `<button class="mi ${sel===l.k?'sel':''}" data-l="${l.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(l.t)}</button>`}).join('');
+      el.querySelector('#R').innerHTML=R.map(r=>{const lk=Object.keys(pair).find(k=>pair[k]===r.k);const pi=lk!==undefined?Object.keys(pair).indexOf(lk):-1;
+        return `<button class="mi" data-r="${r.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(r.t)}</button>`}).join('');
+      el.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const k=+b.dataset.l; if(pair[k]!==undefined){delete pair[k];} sel=(sel===k?null:k); draw();});
+      el.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const rk=+b.dataset.r; const lk=Object.keys(pair).find(k=>pair[k]===rk); if(lk!==undefined)delete pair[lk]; if(sel!==null){pair[sel]=rk; sel=null;} draw();});
+      setCheck(Object.keys(pair).length===L.length);
+    }
+    checkBtn(()=>{
+      let ok=true; L.forEach(l=>{const r=pair[l.k]===l.k; if(!r)ok=false;
+        el.querySelector(`[data-l="${l.k}"]`).classList.add(r?'right':'wrong');});
+      el.querySelectorAll('.mi').forEach(b=>b.disabled=true);
+      done(ok,q,q.pairs.map(p=>p[0]+' → '+p[1]).join(' | '));
+    },false);
+    draw();
+  },
+  order(q,el){
+    const pool=shuffle(q.items.map((t,k)=>({t,k}))); const seq=[];
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="ordered" id="seq"></div><button class="btn ghost" id="undo">Undo</button>`;
+    function draw(){
+      el.querySelector('#pool').innerHTML=''; pool.filter(p=>!seq.includes(p.k)).forEach(p=>{const c=$(`<button class="chip">${F(p.t)}</button>`);c.onclick=()=>{seq.push(p.k);draw();};el.querySelector('#pool').appendChild(c);});
+      if(seq.length===q.items.length) el.querySelector('#pool').innerHTML='<span class="subhint">All placed.</span>';
+      el.querySelector('#seq').innerHTML=q.items.map((_,n)=>`<div class="oslot" data-n="${n}">${seq[n]!==undefined?F(q.items[seq[n]]):''}</div>`).join('');
+      setCheck(seq.length===q.items.length);
+    }
+    el.querySelector('#undo').onclick=()=>{seq.pop();draw();};
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.oslot').forEach((s,n)=>{const r=seq[n]===n; if(!r)ok=false; s.classList.add(r?'right':'wrong');});
+      el.querySelector('#undo').remove(); done(ok,q,q.items.join(' → '));
+    },false);
+    draw();
+  },
+  build(q,el){
+    const tiles=shuffle(q.tiles.map((t,k)=>({t,k}))); const line=[];
+    el.innerHTML=`<div class="answerline" id="line"></div><div class="pool" id="pool"></div>`;
+    function draw(){
+      const ln=el.querySelector('#line'); ln.innerHTML=line.length?'':'<span class="ph">Tap the pieces in order…</span>';
+      line.forEach((k,n)=>{const c=$(`<button class="chip">${tiles.find(x=>x.k===k).t}</button>`);c.onclick=()=>{line.splice(n,1);draw();};ln.appendChild(c);});
+      const pl=el.querySelector('#pool'); pl.innerHTML='';
+      tiles.filter(x=>!line.includes(x.k)).forEach(x=>{const c=$(`<button class="chip">${x.t}</button>`);c.onclick=()=>{line.push(x.k);draw();};pl.appendChild(c);});
+      setCheck(line.length>0);
+    }
+    checkBtn(()=>{
+      const got=line.map(k=>tiles.find(x=>x.k===k).t).join(''); const want=q.a.join('');
+      const ok=got===want; el.querySelector('#line').classList.add(ok?'right':'wrong');
+      el.querySelector('#line').style.borderColor=ok?'var(--good)':'var(--bad)';
+      el.querySelectorAll('.chip').forEach(c=>c.disabled=true);
+      done(ok,q,want);
+    },false);
+    draw();
+  },
+};
+
+function end(){
+  const correct=results.filter(r=>r.ok).length;
+  const b=+(store.get(BEST_KEY)||0); const newBest=score>b; if(newBest) store.set(BEST_KEY,score);
+  const skills={}; results.forEach(r=>{const s=r.q.skill; skills[s]=skills[s]||[0,0]; skills[s][1]++; if(r.ok)skills[s][0]++;});
+  const now=new Date(); const mins=Math.max(1,Math.round((Date.now()-startedAt)/60000));
+  const when=now.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const h=[...(player.name+'|'+player.cls+'|'+score+'|'+correct+'|'+now.toISOString().slice(0,16))].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+  const code='HQ-'+h.toString(36).toUpperCase().padStart(6,'0').slice(-6);
+  const hist=loadHist(); hist.unshift({name:player.name,cls:player.cls,score,correct,when,mins,code}); store.set(HIST_KEY,JSON.stringify(hist.slice(0,50)));
+  const mine=hist.filter(x=>x.name===player.name);
+  const summary=`Hydrocarbon Quest (Chemistry Chapter 21)\nName: ${player.name}${player.cls?'\nClass: '+player.cls:''}\nScore: ${score} points\nCorrect: ${correct}/${Q.length}\nTime: ${mins} min\nDate: ${when}\nCheck code: ${code}`;
+  const msg=correct>=27?'Hydrocarbon master!':correct>=21?'Great work!':correct>=15?'Good effort, keep practising.':'Review the notes and try again.';
+  app.innerHTML=`<div class="card enter">
+    <div class="meta"><span class="tag skill">Quest complete</span>${newBest?'<span class="tag type">New best score</span>':''}</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:end">
+      <div><div class="big">${score}</div><div class="best">points</div></div>
+      <div><div class="big" style="color:var(--blue)">${correct}/${Q.length}</div><div class="best">correct</div></div>
+    </div>
+    <h2>${msg}</h2>
+    <div class="cert" id="cert">
+      <div class="row"><b class="nm">${esc(player.name)}</b><span>${player.cls?'Class '+esc(player.cls):''}</span></div>
+      <div class="row"><span>Hydrocarbon Quest · Chapter 21</span><span>${when}</span></div>
+      <div class="row"><span><b>${score}</b> points · <b>${correct}/${Q.length}</b> correct · ${mins} min</span><span>Check code <code>${code}</code></span></div>
+    </div>
+    <div class="actions">${SCORE_URL?'<button class="btn" id="send">Send to my teacher</button>':''}<button class="btn go" id="copy">Copy my result</button><span class="subhint" id="copied">Send it to your teacher, or take a screenshot of the green box.</span></div>
+    <textarea id="sumtxt" readonly aria-label="Result text" style="position:absolute;left:-9999px">${esc(summary)}</textarea>
+    <h3>Your skills</h3>
+    <div class="skills">${Object.entries(skills).map(([s,[c,t]])=>`<div class="sk"><span>${s}</span><span class="t"><i style="width:${c/t*100}%"></i></span><em>${c}/${t}</em></div>`).join('')}</div>
+    ${correct<Q.length?`<h3>Review what you missed</h3><div class="miss">${results.filter(r=>!r.ok).map(r=>`<div><b>Q${Q.indexOf(r.q)+1}.</b> ${F(r.q.q)}<br>Answer: <b>${F(r.correctText)}</b></div>`).join('')}</div>`:''}
+    ${mine.length>1?`<h3>Your attempts on this device</h3><div class="histwrap"><table class="hist"><tr><th>Date</th><th>Score</th><th>Correct</th><th>Code</th></tr>${mine.slice(0,10).map(x=>`<tr><td>${x.when}</td><td>${x.score}</td><td>${x.correct}/30</td><td>${x.code}</td></tr>`).join('')}</table></div>`:''}
+    <div class="actions"><button class="btn" id="again">Play again</button><button class="btn ghost" id="home">Back to start</button></div>
+  </div>`;
+  document.getElementById('copy').onclick=()=>{const ok=()=>{document.getElementById('copied').textContent='Copied! Paste it in your message to your teacher.';};
+    const fallback=()=>{const t=document.getElementById('sumtxt');t.style.position='static';t.style.width='100%';t.rows=8;t.focus();t.select();document.getElementById('copied').textContent='Select the text below and copy it.';};
+    try{navigator.clipboard.writeText(summary).then(ok,fallback);}catch(e){fallback();}};
+  const sb=document.getElementById('send');
+  if(sb) sb.onclick=()=>{ sb.disabled=true; sb.textContent='Sending…';
+    const payload={game:'Hydrocarbon Quest',chapter:21,name:player.name,cls:player.cls,score,correct,total:Q.length,mins,when,code,
+      missed:results.filter(r=>!r.ok).map(r=>'Q'+(Q.indexOf(r.q)+1)).join(' ')};
+    fetch(SCORE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+      .then(()=>{sb.textContent='Sent ✓'; document.getElementById('copied').textContent='Your result was sent to your teacher.';})
+      .catch(()=>{sb.disabled=false; sb.textContent='Send to my teacher'; document.getElementById('copied').textContent='Could not send. Check your internet and try again.';}); };
+  document.getElementById('again').onclick=()=>{i=0;score=0;streak=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('home').onclick=start;
+}
+
+start();
+})();
+</script>
+</body>
+</html>
