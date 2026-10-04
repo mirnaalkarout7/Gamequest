@@ -160,8 +160,8 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--amber); outline
 .field label{font-family:var(--disp); font-weight:600; font-size:15px}
 .fields{display:grid; grid-template-columns:2fr 1fr; gap:12px}
 @media (max-width:520px){ .fields{grid-template-columns:1fr} }
-.field input{font:inherit; font-size:18px; padding:10px 14px; border-radius:12px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
-.field input.err{border-color:var(--bad)}
+.field input,.field select{font:inherit; font-size:18px; padding:10px 14px; border-radius:12px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.field input.err,.field select.err{border-color:var(--bad)}
 .errmsg{color:var(--bad); font-size:14px; min-height:1em}
 .player{font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; max-width:40vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .cert{border:3px solid var(--teal); border-radius:18px; padding:14px 16px; background:var(--tealbg); display:grid; gap:4px}
@@ -297,13 +297,14 @@ function start(){
     <div class="types">${typeTags}</div>
     <div class="fields">
       <div class="field"><label for="pname">Your full name</label><input id="pname" autocomplete="name" maxlength="60" placeholder="e.g. Sara Ahmed" value="${esc(store.get('hq-name')||'')}"></div>
-      <div class="field"><label for="pclass">Class</label><input id="pclass" maxlength="20" placeholder="e.g. 11-B" value="${esc(store.get('hq-class')||'')}"></div>
+      <div class="field"><label for="pclass">Class</label><select id="pclass"><option value="">Choose…</option>${['12-A','12-B'].map(c=>`<option ${store.get('hq-class')===c?'selected':''}>${c}</option>`).join('')}</select></div>
     </div>
     <div class="errmsg" id="perr" role="alert"></div>
     <div class="actions"><button class="btn" id="go">Start the quest</button>${b?`<span class="best">Best score on this device: ${b}</span>`:''}</div>
   </div>`;
   const go=()=>{const n=document.getElementById('pname'); const nm=n.value.trim().replace(/\s+/g,' ');
     if(nm.length<2){n.classList.add('err'); document.getElementById('perr').textContent='Please write your name before you start.'; n.focus(); return;}
+    const cs=document.getElementById('pclass'); if(!cs.value){cs.classList.add('err'); document.getElementById('perr').textContent='Please choose your class before you start.'; cs.focus(); return;}
     player={name:nm,cls:document.getElementById('pclass').value.trim()}; store.set('hq-name',player.name); store.set('hq-class',player.cls);
     i=0;score=0;streak=0;best=0;results=[];startedAt=Date.now();show();};
   document.getElementById('go').onclick=go;
