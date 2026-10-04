@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Atomic Theory Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caladea:wght@400;700&family=Carlito:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: title slide as hero (navy atom disc + teal arc with diamond badges), then one part at a time on the cream ground. */
+:root{
+  --bg:#EDE8DA; --surface:#FBF9F3; --sand:#F6E9CC; --ink:#1F2D3A; --muted:#56636D;
+  --head:#224759; --navy:#224759; --on-navy:#EDE8DA; --teal:#7DBFAC;
+  --red:#C8202F; --red-fill:#C8202F; --orange:#F7941D; --sand-fill:#F4D6A0;
+  --line:#D6CDB7; --good:#1C7355; --good-bg:#DCEFE6; --bad:#B81D2B; --bad-bg:#F8DEDF;
+  --btn:#224759; --btn-ink:#FFFFFF; --focus:#F7941D;
+  color-scheme:light;
+  --serif:"Caladea",Cambria,Georgia,"Times New Roman",serif;
+  --sans:"Carlito",Calibri,"Segoe UI",system-ui,sans-serif;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5}
+h1,h2,h3{font-family:var(--serif);text-wrap:balance;margin:0;line-height:1.15}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.eyebrow{font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:700}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;overflow:hidden}
+.hero-left{padding:32px 16px 32px max(16px,5vw);display:flex;flex-direction:column;gap:18px;justify-content:center}
+.hero-atom{width:min(230px,52vw)}
+.hero h1{color:var(--red);font-size:clamp(2rem,4.2vw,2.8rem)}
+.hero p{margin:0;color:var(--muted);max-width:42ch}
+.name-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.name-row label{font-weight:700;font-size:.9rem}
+.name-row input{padding:9px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);min-width:0;flex:1;max-width:260px}
+.hero-right{background:var(--teal);border-left:6px solid var(--orange);border-radius:55% 0 0 55% / 70% 0 0 70%;padding:28px 16px 28px 16%;display:flex;flex-direction:column;justify-content:center;gap:10px}
+.nav-item{display:flex;align-items:center;gap:14px;background:none;border:0;padding:6px 8px;border-radius:10px;cursor:pointer;text-align:left;color:var(--ink)}
+.nav-item:hover{background:color-mix(in srgb,var(--surface) 35%,transparent)}
+.nav-item[aria-current="true"]{background:var(--surface)}
+.nav-item:nth-child(1),.nav-item:nth-child(6){margin-left:34px}
+.nav-item:nth-child(2),.nav-item:nth-child(5){margin-left:12px}
+.diamond{width:30px;height:30px;flex:none;background:var(--red-fill);transform:rotate(45deg);border-radius:4px;display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.diamond span{transform:rotate(-45deg);color:#fff;font-weight:700;font-size:.9rem}
+.nav-item.done .diamond{background:var(--navy)}
+.nav-text{display:flex;flex-direction:column;min-width:0}
+.nav-text b{font-family:var(--serif);font-size:1.05rem}
+.nav-text small{color:var(--ink);opacity:.8;font-variant-numeric:tabular-nums}
+
+/* STATUS BAR */
+.status{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--navy);color:var(--on-navy);padding:10px 16px}
+.status-in{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:.95rem}
+.track{flex:1;min-width:120px;height:8px;border-radius:99px;background:color-mix(in srgb,var(--on-navy) 20%,transparent);overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--orange);transition:width .4s}
+.status b{font-variant-numeric:tabular-nums}
+
+/* MAIN */
+main{scroll-margin-top:60px;max-width:880px;margin:0 auto;padding:32px 16px 64px}
+.part{display:flex;flex-direction:column;gap:20px}
+.part-head{display:flex;flex-direction:column;gap:8px}
+.part-head h2{color:var(--head);font-size:clamp(1.7rem,3.4vw,2.3rem)}
+.part-head p{margin:0;color:var(--muted);max-width:65ch}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.qnum{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.q-text{margin:0;font-weight:700;font-size:1.08rem}
+.hint{margin:0;color:var(--muted);font-size:.92rem}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);cursor:pointer;display:flex;gap:10px;align-items:flex-start}
+.opt:hover:not(:disabled){border-color:var(--orange)}
+.opt .let{font-weight:700;color:var(--red);min-width:1.2em}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--good);background:var(--good-bg)}
+.opt.no{border-color:var(--bad);background:var(--bad-bg)}
+.fb{margin:0;font-size:.97rem}
+.fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+.fb .why{color:var(--ink);display:block;margin-top:2px}
+.fig{display:flex;justify-content:center}
+.fig svg{width:130px;height:130px}
+.btn{align-self:flex-start;background:var(--btn);color:var(--btn-ink);border:0;border-radius:10px;padding:10px 18px;font-weight:700;cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+
+/* knowledge box (like "Did you know?") */
+.know{background:var(--sand);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.know h3{color:var(--red);font-size:1.25rem}
+.know p{margin:0}
+.cmp{overflow-x:auto}
+.cmp table{border-collapse:collapse;width:100%;min-width:520px;font-size:.96rem}
+.cmp th,.cmp td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp thead th{font-family:var(--serif);font-size:1.1rem;color:var(--head)}
+.cmp tbody th{font-weight:700;color:var(--muted);width:22%}
+
+/* sort */
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;padding:10px;border:1.5px dashed var(--line);border-radius:10px}
+.pool.empty::after{content:"All cards placed. Press Check answers.";color:var(--muted);font-size:.92rem}
+.chip{padding:8px 12px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);cursor:pointer;text-align:left;font-size:.95rem;max-width:100%}
+.chip.sel{border-color:var(--orange);box-shadow:0 0 0 3px color-mix(in srgb,var(--orange) 35%,transparent)}
+.chip.ok{border-color:var(--good);background:var(--good-bg)}
+.chip.no{border-color:var(--bad);background:var(--bad-bg)}
+.chip .fix{display:block;font-size:.85rem;color:var(--bad);font-weight:700}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.bin{border:1.5px solid var(--line);border-radius:12px;background:var(--bg);display:flex;flex-direction:column;min-width:0}
+.bin.over{border-color:var(--orange)}
+.bin-head{display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--navy);color:var(--on-navy);border:0;border-radius:10px 10px 0 0;padding:10px 12px;cursor:pointer;font-family:var(--serif);font-size:1.1rem;font-weight:700;text-align:left}
+.bin-add{font-family:var(--sans);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);opacity:.35}
+.placing .bin-add{opacity:1}
+.bin-drop{display:flex;flex-direction:column;gap:6px;padding:10px;min-height:70px}
+
+/* match */
+.match{display:grid;gap:10px}
+.mrow{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr);gap:12px;align-items:center}
+.mrow b{font-family:var(--serif);font-size:1.08rem;color:var(--head)}
+select{padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);width:100%;min-width:0}
+select.ok{border-color:var(--good);background:var(--good-bg)} select.no{border-color:var(--bad);background:var(--bad-bg)}
+.corr{grid-column:2;font-size:.88rem;color:var(--bad);margin-top:-6px}
+
+/* order */
+.order{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.ocard{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);cursor:pointer}
+.ocard svg{width:92px;height:92px}
+.ocard b{font-family:var(--serif);color:var(--red);font-size:1rem;text-align:center}
+.ocard small{color:var(--muted);text-align:center;font-size:.85rem;line-height:1.25}
+.ocard .badge{position:absolute;top:8px;left:8px;width:26px;height:26px}
+.ocard.ok{border-color:var(--good);background:var(--good-bg)} .ocard.no{border-color:var(--bad);background:var(--bad-bg)}
+.ocard .should{font-size:.8rem;color:var(--bad);font-weight:700}
+
+/* particle table */
+.ptable{overflow-x:auto}
+.ptable table{border-collapse:collapse;width:100%;min-width:560px}
+.ptable th,.ptable td{padding:8px;border-bottom:1px solid var(--line);text-align:left}
+.ptable thead th{font-family:var(--serif);color:var(--head)}
+.pdot{display:inline-block;width:14px;height:14px;border-radius:50%;vertical-align:-2px;margin-right:6px}
+
+/* model svg */
+.m-bg{fill:var(--navy);stroke:var(--orange);stroke-width:3}
+.f-orange{fill:#F7941D} .f-sand{fill:#F4D6A0} .f-red{fill:#C8202F} .f-navy{fill:#224759} .f-cream{fill:#EDE8DA}
+.ring{fill:none;stroke:#EDE8DA;stroke-width:1.2;stroke-dasharray:3 3;opacity:.7}
+
+/* SIMULATION */
+.sim{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:start}
+.sim-view{background:var(--navy);border:4px solid var(--orange);border-radius:50%;aspect-ratio:1;max-width:100%;overflow:hidden}
+.sim-view svg{width:100%;height:100%;display:block}
+.sim-ctrl{display:flex;flex-direction:column;gap:12px}
+.crow{display:grid;grid-template-columns:auto 1fr auto auto auto;gap:10px;align-items:center}
+.crow .lbl{font-weight:700}
+.crow .cnt{font-family:var(--serif);font-size:1.5rem;font-weight:700;min-width:2ch;text-align:center;font-variant-numeric:tabular-nums}
+.pm{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);font-size:1.3rem;font-weight:700;cursor:pointer;line-height:1}
+.pm:hover{border-color:var(--orange)}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.readout div{background:var(--bg);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;min-width:0}
+.readout small{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+.readout b{font-family:var(--serif);font-size:1.2rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;align-self:flex-start}
+.seg button{border:0;background:var(--bg);padding:8px 14px;cursor:pointer;font-weight:700}
+.seg button[aria-pressed="true"]{background:var(--btn);color:var(--btn-ink)}
+.challenge{border:2px solid var(--orange);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.challenge .ctitle{font-weight:700;color:var(--red);letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+.challenge p{margin:0}
+.crow-btns{display:flex;gap:10px;flex-wrap:wrap}
+@media (prefers-reduced-motion: reduce){.track i{transition:none}}
+.levels{display:flex;gap:8px;flex-wrap:wrap}
+.lv{font-size:.88rem;font-weight:700;padding:4px 10px;border-radius:99px;border:1.5px solid var(--line);background:var(--bg);font-variant-numeric:tabular-nums}
+.lv.full{border-color:var(--good);background:var(--good-bg);color:var(--good)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+
+/* results */
+.bars{display:grid;gap:12px}
+.bar{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr) 60px;gap:12px;align-items:center}
+.bar .t{height:14px;border-radius:99px;background:var(--bg);overflow:hidden;border:1px solid var(--line)}
+.bar .t i{display:block;height:100%;background:var(--teal)}
+.bar b{font-variant-numeric:tabular-nums;text-align:right}
+.big{font-family:var(--serif);font-size:3rem;color:var(--red);line-height:1}
+
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:8px}
+
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr}
+  .hero-left{align-items:center;text-align:center}
+  .hero p{margin-inline:auto}
+  .name-row{justify-content:center}
+  .hero-right{border-left:0;border-top:6px solid var(--orange);border-radius:50% 50% 0 0 / 38px 38px 0 0;padding:30px 16px 20px}
+  .nav-item:nth-child(n){margin-left:0}
+  .sim{grid-template-columns:1fr}
+  .sim-view{width:min(340px,100%);margin:0 auto}
+  .mrow{grid-template-columns:1fr}
+  .corr{grid-column:1}
+  .bar{grid-template-columns:1fr 60px}
+  .bar .t{grid-column:1/-1;grid-row:2}
+}
+</style>
+
+<header class="hero">
+  <div class="hero-left">
+    <svg class="hero-atom" viewBox="-100 -100 200 200" role="img" aria-label="Atom drawing">
+      <circle r="98" fill="var(--navy)"/>
+      <g fill="none" stroke="#EDE8DA" stroke-width="2">
+        <ellipse rx="78" ry="27"/><ellipse rx="78" ry="27" transform="rotate(60)"/><ellipse rx="78" ry="27" transform="rotate(120)"/>
+      </g>
+      <g fill="var(--navy)" stroke="#EDE8DA" stroke-width="2">
+        <circle cx="78" cy="0" r="6"/><circle cx="-39" cy="-67.5" r="6"/><circle cx="-39" cy="67.5" r="6"/>
+        <circle cx="-78" cy="0" r="6"/><circle cx="39" cy="67.5" r="6"/><circle cx="39" cy="-67.5" r="6"/>
+        <circle cx="-6" cy="-6" r="7"/><circle cx="6" cy="-6" r="7"/><circle cx="-6" cy="6" r="7"/><circle cx="6" cy="6" r="7"/><circle cx="0" cy="-12" r="7"/><circle cx="0" cy="12" r="7"/>
+      </g>
+    </svg>
+    <span class="eyebrow">Module 3 · Grade 9 Chemistry</span>
+    <h1>Development of Atomic Theory: Assessment</h1>
+    <p>Five parts, from early ideas about matter to building the modern atom yourself. Your score updates as you go.</p>
+    <div class="name-row"><label for="sname">Your name</label><input id="sname" type="text" autocomplete="name" placeholder="Type your name"></div>
+  </div>
+  <nav class="hero-right" id="nav" aria-label="Assessment parts"></nav>
+</header>
+
+<div class="status" role="status">
+  <div class="status-in">
+    <span>Score <b id="sc">0</b> / <b id="scmax">0</b></span>
+    <div class="track" aria-hidden="true"><i id="bar"></i></div>
+    <span><b id="done">0</b> of <b id="total">0</b> marks answered</span>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<script>
+(function(){
+"use strict";
+const h=(tag,attrs,...kids)=>{const e=document.createElement(tag);for(const [k,v] of Object.entries(attrs||{})){if(v==null||v===false)continue;if(k==="class")e.className=v;else if(k==="html")e.innerHTML=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?"":v);}for(const k of kids.flat()){if(k==null||k===false)continue;e.append(k.nodeType?k:document.createTextNode(k));}return e;};
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function shuffle(a,seed){const r=rng(seed),b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+const L="ABCDEFG";
+
+/* ---------- model pictures ---------- */
+const MODELS={
+  dalton:{name:"Solid ball",desc:"Atoms are tiny solid spheres",svg:'<circle r="26" class="f-orange"/><circle cx="-9" cy="-9" r="7" class="f-sand" opacity=".85"/>'},
+  thomson:{name:"Plum pudding",desc:"Electrons in a positive dough",svg:'<circle r="31" class="f-sand"/>'+[[-12,-15],[10,-17],[-19,3],[3,-2],[17,7],[-6,17],[11,20]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.4" class="f-navy"/>`).join("")},
+  rutherford:{name:"Nuclear atom",desc:"Tiny nucleus, mostly empty space",svg:'<circle r="4.5" class="f-red"/>'+[[-27,-19],[24,-27],[31,15],[-19,27]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" class="f-orange"/>`).join("")},
+  bohr:{name:"Energy levels",desc:"Electrons in fixed shells",svg:'<circle r="17" class="ring"/><circle r="32" class="ring"/><circle r="5" class="f-red"/>'+[[0,-17],[0,17],[32,0],[-22.6,22.6]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4" class="f-orange"/>`).join("")},
+  chadwick:{name:"Protons + neutrons",desc:"Nucleus with two kinds of particle",svg:'<circle r="25" class="ring"/><circle r="38" class="ring"/>'+[[-4,-5,"f-red"],[5,-4,"f-cream"],[-6,4,"f-cream"],[5,5,"f-red"],[0,0,"f-red"]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.6" class="${p[2]}"/>`).join("")+[[25,0],[-25,0],[0,-38],[27,27]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.6" class="f-orange"/>`).join("")}
+};
+const modelSVG=(k,label)=>`<svg viewBox="-50 -50 100 100" role="img" aria-label="${label||MODELS[k].name+" model"}"><circle r="47" class="m-bg"/>${MODELS[k].svg}</svg>`;
+
+/* ---------- content ---------- */
+const PARTS=[
+{ key:"Hypothesis or theory", title:"Hypothesis or Theory?",
+  intro:"Scientists use both words, but they do not mean the same thing. Read the box, then show you can tell them apart.",
+  blocks:[
+   {type:"know",title:"Know the difference",html:`
+    <div class="cmp"><table>
+     <thead><tr><th></th><th>Hypothesis</th><th>Theory</th></tr></thead>
+     <tbody>
+      <tr><th>What it is</th><td>A proposed, testable explanation or prediction</td><td>A well-tested explanation supported by a lot of evidence</td></tr>
+      <tr><th>Based on</th><td>A few observations or a question</td><td>Many experiments, repeated by many scientists</td></tr>
+      <tr><th>Scope</th><td>Usually one situation or experiment</td><td>Explains a wide range of observations</td></tr>
+      <tr><th>How it looks</th><td>Often an “If … then …” statement</td><td>A set of connected ideas, like Dalton’s atomic theory</td></tr>
+      <tr><th>Can it change?</th><td>Yes. It is tested, then supported or rejected</td><td>Yes. It is revised when new evidence disagrees with it</td></tr>
+     </tbody></table></div>
+    <p><b>Watch out:</b> in everyday talk, “theory” means a guess. In science, a theory is the opposite of a guess. It is our best explanation, backed by evidence. That is why the atomic model changed each time new evidence appeared.</p>`},
+   {type:"sort",prompt:"Sort each statement: does it describe a hypothesis or a theory?",bins:["Hypothesis","Theory"],items:[
+     {t:"If the positive charge in an atom is spread out, alpha particles will pass straight through gold foil.",b:0},
+     {t:"A proposed explanation that has not been tested yet.",b:0},
+     {t:"Can be checked with an experiment, then supported or rejected.",b:0},
+     {t:"Supported by the results of many experiments by many scientists.",b:1},
+     {t:"Explains a wide range of observations about matter.",b:1},
+     {t:"Dalton’s atomic theory, built from the results of many chemical reactions.",b:1}]},
+   {type:"mcq",q:"In science, which statement best describes a theory?",opts:["A guess that has no evidence yet","A well-tested explanation supported by many experiments","A prediction written as an “If … then …” statement","A fact that can never change"],a:1,why:"A theory is built on lots of evidence. It can still be revised if new evidence appears."},
+   {type:"mcq",q:"Thomson showed that atoms contain even smaller particles. What did this mean for Dalton’s atomic theory?",opts:["The whole theory was thrown away and atoms were said not to exist","Nothing changed, because a theory is a proven fact","The theory was revised, because the idea that atoms cannot be divided was wrong","The theory turned back into a hypothesis"],a:2,why:"Most of Dalton’s ideas stayed. Only the part that disagreed with new evidence was changed. This is how theories grow."},
+   {type:"mcq",q:"Why is Democritus’s idea of “atomos” not called a scientific theory?",opts:["It was not supported by experiments or evidence","It was wrong about everything","Aristotle disagreed with it","It did not have a name"],a:0,why:"Democritus reasoned about atoms but could not test his idea. A scientific theory needs evidence from experiments."}
+  ]},
+{ key:"Early ideas about matter", title:"Early Ideas About Matter",
+  intro:"Democritus, Aristotle and Dalton each had a picture of what matter is made of. Show who said what, and how Dalton’s theory explains conservation of mass.",
+  blocks:[
+   {type:"sort",prompt:"Who said it? Place each idea with the right thinker.",bins:["Democritus","Aristotle","Dalton"],items:[
+     {t:"Matter is made of tiny particles called atomos that move through empty space.",b:0},
+     {t:"Different kinds of atoms have different sizes and shapes.",b:0},
+     {t:"The size, shape and movement of atoms decide the properties of matter.",b:0},
+     {t:"Empty space cannot exist.",b:1},
+     {t:"Matter is made of earth, fire, air and water.",b:1},
+     {t:"Did not believe that atoms exist.",b:1},
+     {t:"Atoms of the same element are identical in size, mass and chemical properties.",b:2},
+     {t:"Different atoms combine in simple whole-number ratios to form compounds.",b:2},
+     {t:"In a chemical reaction, atoms are separated, combined or rearranged.",b:2}]},
+   {type:"mcq",q:"Which idea did BOTH Democritus and Dalton share?",opts:["Matter is made of earth, fire, air and water","Atoms contain electrons","Matter is made of tiny particles called atoms","Empty space cannot exist"],a:2,why:"Both said matter is made of atoms. The difference is that Dalton’s idea came from experiments."},
+   {type:"mcq",q:"Why did Aristotle reject Democritus’s idea of atoms?",opts:["He had done experiments that disproved atoms","He did not believe empty space could exist","He thought atoms were too heavy","He thought atoms were made of electrons"],a:1,why:"Democritus said atoms move through empty space. Aristotle did not accept that empty space could exist."},
+   {type:"mcq",q:"Hydrogen and oxygen react to make water. The total mass before and after the reaction is the same. How does Dalton’s theory explain this?",opts:["New atoms are created during the reaction","Some atoms turn into energy","The atoms become lighter","Atoms are only rearranged, never created or destroyed"],a:3,why:"The same atoms are there before and after, just joined differently, so the mass is conserved."},
+   {type:"mcq",q:"Which part of Dalton’s theory was later shown to be NOT correct?",opts:["Matter is made of atoms","Atoms cannot be divided into smaller particles","Atoms combine in whole-number ratios","Atoms are rearranged in chemical reactions"],a:1,why:"Discoveries of the electron, nucleus and neutron showed that atoms are made of smaller particles."}
+  ]},
+{ key:"The five discoveries", title:"The Five Discoveries",
+  intro:"Dalton, Thomson, Rutherford, Bohr and Chadwick each changed the picture of the atom. Link each scientist to the evidence and the model.",
+  blocks:[
+   {type:"match",prompt:"Match each scientist to what they contributed.",pairs:[
+     ["John Dalton","All matter is made of tiny atoms that cannot be split"],
+     ["J.J. Thomson","Discovered the electron"],
+     ["Ernest Rutherford","Discovered the nucleus"],
+     ["Niels Bohr","Electrons move in fixed energy levels"],
+     ["James Chadwick","Discovered the neutron"]]},
+   {type:"order",prompt:"Put the models in order, from the first model to the latest. Tap the cards in order. Tap a card again to remove it.",keys:["dalton","thomson","rutherford","bohr","chadwick"]},
+   {type:"mcq",fig:"thomson",q:"Whose model of the atom is shown here?",opts:["Dalton","Thomson","Rutherford","Bohr"],a:1,why:"This is the plum-pudding model: negative electrons spread through a positive “dough”."},
+   {type:"mcq",fig:"bohr",q:"Whose model of the atom is shown here?",opts:["Rutherford","Chadwick","Bohr","Dalton"],a:2,why:"Bohr placed electrons in fixed energy levels around the nucleus, like steps on a ladder."},
+   {type:"mcq",q:"In Thomson’s cathode-ray tube, the glowing beam bent toward the positive plate. What does this tell us?",opts:["The beam is made of positive particles","The beam is made of negative particles","The beam has no charge","The beam is made of light only"],a:1,why:"Opposite charges attract, so particles pulled toward the positive plate must be negative. These are electrons."},
+   {type:"mcq",q:"In Rutherford’s gold foil experiment, most alpha particles passed straight through the foil. What did he conclude?",opts:["An atom is mostly empty space","Gold atoms are solid balls","The foil had holes in it","Alpha particles have no charge"],a:0,why:"If most particles meet nothing, most of the atom must be empty space."},
+   {type:"mcq",q:"A few alpha particles bounced back from the gold foil. What did this show?",opts:["Electrons are very heavy","The foil was too thick","There is a tiny, dense, positive nucleus at the centre","Atoms are spread-out positive dough"],a:2,why:"Only something small, dense and positive could push the positive alpha particles straight back."},
+   {type:"mcq",q:"Why was Thomson’s plum-pudding model replaced?",opts:["It had no electrons in it","It could not explain why some alpha particles bounced back","It said atoms were solid balls","Thomson changed his mind"],a:1,why:"Spread-out positive charge could not bounce particles back. The gold foil results needed a nucleus."},
+   {type:"mcq",q:"According to Bohr, what happens when an electron moves from a higher energy level down to a lower one?",opts:["It becomes a proton","It leaves the atom forever","It gives off energy as light","It moves into the nucleus"],a:2,why:"Electrons give off light when they drop to a lower level. That is why each element glows in its own colours."},
+   {type:"mcq",q:"Atoms were heavier than their protons alone could explain. What did Chadwick discover?",opts:["Neutral particles in the nucleus, about as heavy as protons","More electrons outside the nucleus","That protons are heavier than expected","That the nucleus is empty"],a:0,why:"Neutrons have no charge and add mass to the nucleus."}
+  ]},
+{ key:"Inside the atom", title:"Inside the Atom",
+  intro:"An atom is made of a nucleus containing protons and neutrons, with electrons moving around it. Complete the table and answer the questions.",
+  blocks:[
+   {type:"table",prompt:"Complete the properties of the three subatomic particles.",
+    cols:[{name:"Relative charge",opts:["1+","1−","0"]},{name:"Location",opts:["In the nucleus","Outside the nucleus"]},{name:"Relative mass",opts:["1","Very small (about 1/1840)"]}],
+    rows:[{name:"Electron",dot:"#F7941D",ans:["1−","Outside the nucleus","Very small (about 1/1840)"]},
+          {name:"Proton",dot:"#C8202F",ans:["1+","In the nucleus","1"]},
+          {name:"Neutron",dot:"#F4D6A0",ans:["0","In the nucleus","1"]}]},
+   {type:"mcq",q:"What is an atom?",opts:["The smallest particle of an element that keeps the properties of that element","A particle with a negative charge","The dense centre of every piece of matter","A tiny drop of positive dough"],a:0,why:"This is the definition of an atom from the lesson."},
+   {type:"mcq",q:"Electrons are negative, yet matter is neutral. Why?",opts:["Electrons lose their charge inside matter","Neutrons cancel out the electrons","An atom has equal numbers of protons and electrons","Matter has no electrons in it"],a:2,why:"Each 1+ proton balances one 1− electron, so the overall charge is zero. Neutrons have no charge."},
+   {type:"mcq",q:"Which two particles make up almost all of an atom’s mass?",opts:["Electrons and protons","Protons and neutrons","Electrons and neutrons","Only electrons"],a:1,why:"Protons and neutrons each have a relative mass of 1. Electrons are about 1,840 times lighter."}
+  ]},
+{ key:"Build the atom", title:"Build the Atom",
+  intro:"This is today’s model of the atom: a tiny nucleus of protons and neutrons, with electrons moving around it. Use the simulation to complete the four challenges.",
+  blocks:[{type:"sim"},
+   {type:"mcq",q:"In the atoms you built, where is almost all of the mass?",opts:["Spread evenly across the atom","In the electrons","In the nucleus, in the protons and neutrons","In the empty space"],a:2,why:"Protons and neutrons are heavy compared with electrons, and they are all in the nucleus."},
+   {type:"mcq",q:"You add one neutron to a neutral atom. What happens?",opts:["The mass increases and the charge stays the same","The charge becomes 1+","The charge becomes 1−","Nothing changes at all"],a:0,why:"A neutron has mass but no charge."},
+   {type:"mcq",q:"You remove one electron from a neutral atom. What is its overall charge now?",opts:["0","1−","2+","1+"],a:3,why:"There is now one more proton than electrons, so the charge is 1+."},
+   {type:"mcq",q:"Switch the view to “Electron cloud”. What fills most of the space inside an atom?",opts:["Protons","Neutrons","Empty space, with electrons moving through it","Positive dough"],a:2,why:"Rutherford’s evidence still holds: the nucleus is tiny and most of the atom is empty space."}
+  ]}
+];
+const CHALLENGES=[
+  {t:"Build a neutral atom that has 2 protons and 2 neutrons.",p:2,n:2,e:2},
+  {t:"Build an atom with 6 protons and 6 neutrons. Make it neutral.",p:6,n:6,e:6},
+  {t:"Build an atom with 3 protons and 4 neutrons that has an overall charge of 1+.",p:3,n:4,e:2},
+  {t:"Build a neutral atom with 8 protons and 8 neutrons. Watch how the electrons fill the energy levels.",p:8,n:8,e:8}
+];
+
+/* ---------- scoring ---------- */
+const marks={}; const partMax=PARTS.map(()=>0);
+function maxOf(b){return b.type==="mcq"?1:b.type==="sort"?b.items.length:b.type==="match"?b.pairs.length:b.type==="order"?b.keys.length:b.type==="table"?b.rows.length*b.cols.length:b.type==="sim"?CHALLENGES.length:0;}
+PARTS.forEach((p,i)=>p.blocks.forEach(b=>partMax[i]+=maxOf(b)));
+const TOTAL=partMax.reduce((a,b)=>a+b,0);
+function award(part,id,got,max){marks[id]={part,got,max};update();}
+function partScore(i){let g=0,d=0;for(const m of Object.values(marks))if(m.part===i){g+=m.got;d+=m.max;}return{g,d};}
+
+/* ---------- nav ---------- */
+const nav=document.getElementById("nav"), main=document.getElementById("main");
+const navItems=[...PARTS.map(p=>p.key),"Your results"].map((k,i)=>{
+  const b=h("button",{class:"nav-item",type:"button",onclick:()=>show(i)},
+    h("span",{class:"diamond"},h("span",{},i<PARTS.length?String(i+1):"★")),
+    h("span",{class:"nav-text"},h("b",{},k),h("small",{},i<PARTS.length?`0 / ${partMax[i]}`:"Score and summary")));
+  nav.append(b);return b;});
+
+/* ---------- renderers ---------- */
+let qn=0;
+function renderMCQ(pi,b,id){
+  qn++;
+  const card=h("div",{class:"card"},h("span",{class:"qnum"},"Question "+qn),h("p",{class:"q-text"},b.q));
+  if(b.fig)card.append(h("div",{class:"fig",html:modelSVG(b.fig,"Model of the atom to identify")}));
+  const fb=h("p",{class:"fb","aria-live":"polite"});
+  const btns=b.opts.map((o,i)=>h("button",{class:"opt",type:"button",onclick:()=>{
+    btns.forEach(x=>x.disabled=true);
+    const ok=i===b.a;btns[b.a].classList.add("ok");if(!ok)btns[i].classList.add("no");
+    fb.className="fb "+(ok?"ok":"no");fb.innerHTML="";
+    fb.append(h("b",{},ok?"Correct.":"Not quite. The answer is "+L[b.a]+"."),h("span",{class:"why"},b.why));
+    award(pi,id,ok?1:0,1);}},h("span",{class:"let"},L[i]),h("span",{},o)));
+  card.append(h("div",{class:"opts"},btns),fb);return card;
+}
+function renderSort(pi,b,id,seed){
+  const card=h("div",{class:"card"},h("p",{class:"q-text"},b.prompt),h("p",{class:"hint"},"Tap a card, then tap the box it belongs in. On a computer you can also drag. Tap a placed card to move it."));
+  const pool=h("div",{class:"pool"});let sel=null,locked=false;
+  const bins=b.bins.map((n,i)=>{const drop=h("div",{class:"bin-drop"});const bin=h("div",{class:"bin"},h("button",{class:"bin-head",type:"button",onclick:()=>place(i)},n,h("span",{class:"bin-add"},"Place here")),drop);
+    bin.addEventListener("dragover",e=>{if(sel&&!locked){e.preventDefault();bin.classList.add("over");}});
+    bin.addEventListener("dragleave",()=>bin.classList.remove("over"));
+    bin.addEventListener("drop",e=>{e.preventDefault();bin.classList.remove("over");place(i);});
+    return{bin,drop};});
+  const chips=shuffle(b.items,seed).map(it=>{const c=h("button",{class:"chip",type:"button",draggable:"true","aria-pressed":"false"},it.t);c._ans=it.b;c._at=null;
+    c.addEventListener("click",()=>{if(!locked)select(c===sel?null:c);});
+    c.addEventListener("dragstart",e=>{if(locked){e.preventDefault();return;}select(c);e.dataTransfer.setData("text/plain","card");});
+    pool.append(c);return c;});
+  function select(c){sel=c;chips.forEach(x=>{x.classList.toggle("sel",x===c);x.setAttribute("aria-pressed",String(x===c));});card.classList.toggle("placing",!!c);}
+  function place(i){if(!sel||locked)return;bins[i].drop.append(sel);sel._at=i;select(null);refresh();}
+  const check=h("button",{class:"btn",type:"button",disabled:true},"Check answers");const fb=h("p",{class:"fb","aria-live":"polite"});
+  function refresh(){const left=chips.filter(c=>c._at===null).length;check.disabled=left>0;pool.classList.toggle("empty",left===0);}
+  check.addEventListener("click",()=>{locked=true;select(null);let g=0;
+    chips.forEach(c=>{const ok=c._at===c._ans;g+=ok;c.classList.add(ok?"ok":"no");c.draggable=false;c.setAttribute("aria-disabled","true");if(!ok)c.append(h("span",{class:"fix"},"Belongs in: "+b.bins[c._ans]));});
+    check.disabled=true;fb.className="fb "+(g===chips.length?"ok":"no");fb.textContent=`You placed ${g} of ${chips.length} correctly.`;award(pi,id,g,chips.length);});
+  card.append(pool,h("div",{class:"bins"},bins.map(x=>x.bin)),check,fb);return card;
+}
+function renderMatch(pi,b,id,seed){
+  const card=h("div",{class:"card"},h("p",{class:"q-text"},b.prompt));
+  const opts=shuffle(b.pairs.map(p=>p[1]),seed);const wrap=h("div",{class:"match"});
+  const sels=b.pairs.map((p,i)=>{const s=h("select",{id:`m${id}_${i}`,"aria-label":"Contribution of "+p[0],onchange:refresh},h("option",{value:""},"Choose…"),opts.map(o=>h("option",{value:o},o)));
+    wrap.append(h("div",{class:"mrow"},h("b",{},p[0]),s));return s;});
+  const check=h("button",{class:"btn",type:"button",disabled:true},"Check answers");const fb=h("p",{class:"fb","aria-live":"polite"});
+  function refresh(){check.disabled=sels.some(s=>!s.value);}
+  check.addEventListener("click",()=>{let g=0;sels.forEach((s,i)=>{const ok=s.value===b.pairs[i][1];g+=ok;s.classList.add(ok?"ok":"no");s.disabled=true;
+      if(!ok)s.parentNode.append(h("span",{class:"corr"},"Correct: "+b.pairs[i][1]));});
+    check.disabled=true;fb.className="fb "+(g===sels.length?"ok":"no");fb.textContent=`You matched ${g} of ${sels.length} correctly.`;award(pi,id,g,sels.length);});
+  card.append(wrap,check,fb);return card;
+}
+function renderOrder(pi,b,id,seed){
+  const card=h("div",{class:"card"},h("p",{class:"q-text"},b.prompt));
+  let seq=[],locked=false;const grid=h("div",{class:"order"});
+  const cards=shuffle(b.keys,seed).map(k=>{const c=h("button",{class:"ocard",type:"button","aria-label":MODELS[k].name+" model"},h("span",{html:modelSVG(k)}),h("b",{},MODELS[k].name),h("small",{},MODELS[k].desc));c._k=k;
+    c.addEventListener("click",()=>{if(locked)return;const at=seq.indexOf(k);if(at>=0)seq.splice(at,1);else seq.push(k);draw();});grid.append(c);return c;});
+  function draw(){cards.forEach(c=>{c.querySelector(".badge")?.remove();const at=seq.indexOf(c._k);if(at>=0)c.prepend(h("span",{class:"badge diamond"},h("span",{},String(at+1))));});check.disabled=seq.length!==b.keys.length;}
+  const check=h("button",{class:"btn",type:"button",disabled:true},"Check order");const fb=h("p",{class:"fb","aria-live":"polite"});
+  check.addEventListener("click",()=>{locked=true;let g=0;cards.forEach(c=>{const at=seq.indexOf(c._k),right=b.keys.indexOf(c._k),ok=at===right;g+=ok;c.classList.add(ok?"ok":"no");if(!ok)c.append(h("span",{class:"should"},"Should be "+(right+1)));});
+    check.disabled=true;fb.className="fb "+(g===cards.length?"ok":"no");fb.textContent=`${g} of ${cards.length} models are in the right place.`;award(pi,id,g,cards.length);});
+  card.append(grid,check,fb);return card;
+}
+function renderTable(pi,b,id){
+  const card=h("div",{class:"card"},h("p",{class:"q-text"},b.prompt));const sels=[];
+  const tb=h("tbody");b.rows.forEach((r,ri)=>{const tr=h("tr",{},h("th",{},h("span",{class:"pdot",style:`background:${r.dot}`}),r.name));
+    b.cols.forEach((c,ci)=>{const s=h("select",{id:`t${id}_${ri}_${ci}`,"aria-label":`${r.name}: ${c.name}`,onchange:refresh},h("option",{value:""},"Choose…"),c.opts.map(o=>h("option",{value:o},o)));s._ans=r.ans[ci];sels.push(s);tr.append(h("td",{},s));});tb.append(tr);});
+  const table=h("div",{class:"ptable"},h("table",{},h("thead",{},h("tr",{},h("th",{},"Particle"),b.cols.map(c=>h("th",{},c.name)))),tb));
+  const check=h("button",{class:"btn",type:"button",disabled:true},"Check answers");const fb=h("p",{class:"fb","aria-live":"polite"});
+  function refresh(){check.disabled=sels.some(s=>!s.value);}
+  check.addEventListener("click",()=>{let g=0;sels.forEach(s=>{const ok=s.value===s._ans;g+=ok;s.classList.add(ok?"ok":"no");s.disabled=true;if(!ok)s.title="Correct: "+s._ans;if(!ok)s.parentNode.append(h("div",{class:"corr",style:"margin-top:4px"},"Correct: "+s._ans));});
+    check.disabled=true;fb.className="fb "+(g===sels.length?"ok":"no");fb.textContent=`${g} of ${sels.length} cells are correct.`;award(pi,id,g,sels.length);});
+  card.append(table,check,fb);return card;
+}
+
+/* ---------- simulation ---------- */
+const ELEMENTS=["","Hydrogen","Helium","Lithium","Beryllium","Boron","Carbon","Nitrogen","Oxygen","Fluorine","Neon","Sodium","Magnesium","Aluminium","Silicon","Phosphorus","Sulfur","Chlorine","Argon"];
+function renderSim(pi,id){
+  const S={p:1,n:0,e:1,cloud:false};const LIM={p:18,n:20,e:18};
+  const card=h("div",{class:"card"});
+  const view=h("div",{class:"sim-view"});
+  const cnt={},rd={};
+  const ctrl=h("div",{class:"sim-ctrl"});
+  [["p","Protons","#C8202F"],["n","Neutrons","#F4D6A0"],["e","Electrons","#F7941D"]].forEach(([k,name,col])=>{
+    cnt[k]=h("span",{class:"cnt","aria-live":"polite"},"0");
+    ctrl.append(h("div",{class:"crow"},h("span",{class:"pdot",style:`background:${col}`}),h("span",{class:"lbl"},name),
+      h("button",{class:"pm",type:"button","aria-label":"Remove one "+name.toLowerCase().slice(0,-1),onclick:()=>{if(S[k]>0){S[k]--;draw();}}},"−"),cnt[k],
+      h("button",{class:"pm",type:"button","aria-label":"Add one "+name.toLowerCase().slice(0,-1),onclick:()=>{if(S[k]<LIM[k]){S[k]++;draw();}}},"+")));});
+  rd.charge=h("b");rd.mass=h("b");rd.el=h("b");rd.lv=h("div",{class:"levels","aria-live":"polite"});
+  ctrl.append(h("div",{class:"readout"},h("div",{},h("small",{},"Charge"),rd.charge),h("div",{},h("small",{},"Mass ≈ p + n"),rd.mass),h("div",{},h("small",{},"Element"),rd.el)),rd.lv);
+  const bShell=h("button",{type:"button","aria-pressed":"true",onclick:()=>{S.cloud=false;draw();}},"Energy levels");
+  const bCloud=h("button",{type:"button","aria-pressed":"false",onclick:()=>{S.cloud=true;draw();}},"Electron cloud");
+  ctrl.append(h("div",{class:"seg",role:"group","aria-label":"View"},bShell,bCloud),
+    h("div",{class:"legend"},h("span",{},"Red + = proton"),h("span",{},"Sand 0 = neutron"),h("span",{},"Orange = electron")));
+
+  // challenges
+  let ci=0,tries=0;const res=CHALLENGES.map(()=>null);
+  const chBox=h("div",{class:"challenge"});
+  function drawChallenge(){chBox.innerHTML="";
+    if(ci>=CHALLENGES.length){const g=res.filter(Boolean).length;chBox.append(h("span",{class:"ctitle"},"Challenges complete"),h("p",{},`You completed ${g} of ${CHALLENGES.length} challenges correctly. Answer the questions below the simulation.`));return;}
+    const c=CHALLENGES[ci];const fb=h("p",{class:"fb","aria-live":"polite"});
+    const checkB=h("button",{class:"btn",type:"button"},"Check my atom");const nextB=h("button",{class:"btn ghost",type:"button",hidden:true},ci<CHALLENGES.length-1?"Next challenge":"Finish challenges");
+    checkB.addEventListener("click",()=>{tries++;const ok=S.p===c.p&&S.n===c.n&&S.e===c.e;
+      if(ok){res[ci]=true;fb.className="fb ok";fb.textContent="Correct! Your atom matches.";checkB.hidden=true;nextB.hidden=false;award(pi,id+"_c"+ci,1,1);}
+      else if(tries<2){fb.className="fb no";fb.textContent="Not yet. "+hint(c)+" You have one more try.";}
+      else{res[ci]=false;fb.className="fb no";fb.textContent=`The answer: ${c.p} protons, ${c.n} neutrons, ${c.e} electrons.`;checkB.hidden=true;nextB.hidden=false;award(pi,id+"_c"+ci,0,1);}});
+    nextB.addEventListener("click",()=>{ci++;tries=0;drawChallenge();});
+    chBox.append(h("span",{class:"ctitle"},`Challenge ${ci+1} of ${CHALLENGES.length}`),h("p",{},c.t),h("div",{class:"crow-btns"},checkB,nextB),fb);}
+  function hint(c){const m=[];if(S.p!==c.p)m.push("Check the number of protons.");if(S.n!==c.n)m.push("Check the number of neutrons.");
+    if(S.e!==c.e)m.push(c.e===c.p?"A neutral atom has the same number of electrons as protons.":"For a 1+ charge you need one fewer electron than protons.");return m.join(" ");}
+  drawChallenge();ctrl.prepend(chBox);
+
+  function draw(){
+    cnt.p.textContent=S.p;cnt.n.textContent=S.n;cnt.e.textContent=S.e;
+    const q=S.p-S.e;rd.charge.textContent=q===0?"0 (neutral)":(Math.abs(q)+(q>0?"+":"−"));
+    rd.mass.textContent=S.p+S.n;rd.el.textContent=S.p?ELEMENTS[S.p]:"None";
+    bShell.setAttribute("aria-pressed",String(!S.cloud));bCloud.setAttribute("aria-pressed",String(S.cloud));
+    // nucleus: sunflower packing with protons and neutrons mixed evenly
+    const N=S.p+S.n,types=[];let pp=0;for(let i=0;i<N;i++){const want=Math.round((i+1)*S.p/N);types.push(want>pp?"p":"n");if(want>pp)pp++;}
+    let nuc="";for(let i=N-1;i>=0;i--){const r=10.5*Math.sqrt(i),a=i*2.39996;const x=(r*Math.cos(a)).toFixed(1),y=(r*Math.sin(a)).toFixed(1);
+      nuc+=types[i]==="p"?`<g transform="translate(${x} ${y})"><circle r="9" fill="#C8202F" stroke="#7E1520" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="700" fill="#fff">+</text></g>`
+                        :`<g transform="translate(${x} ${y})"><circle r="9" fill="#F4D6A0" stroke="#B9955A" stroke-width="1"/><text text-anchor="middle" dominant-baseline="central" font-size="10" font-weight="700" fill="#224759">0</text></g>`;}
+    let outer="";const radii=[86,116,146],cap=[2,8,8],speed=[14,22,32];
+    if(!S.cloud){let left=S.e;radii.forEach((R,k)=>{outer+=`<circle r="${R}" fill="none" stroke="#EDE8DA" stroke-width="1.3" stroke-dasharray="4 5" opacity=".55"/>`;
+        const m=Math.min(left,cap[k]);left-=m;if(!m)return;let g=`<g class="orbit" data-s="${speed[k]}" transform="rotate(${(ang*360/speed[k])%360})">`;
+        for(let j=0;j<m;j++){const a=j/m*2*Math.PI-Math.PI/2+k*.4;g+=`<circle cx="${(R*Math.cos(a)).toFixed(1)}" cy="${(R*Math.sin(a)).toFixed(1)}" r="7" fill="#F7941D" stroke="#fff" stroke-width="1.2"/>`;}
+        outer+=g+"</g>";});}
+    else{const r=rng(S.e*97+3);const reach=S.e<=2?80:S.e<=10?115:145;for(let i=0;i<S.e*45;i++){const u=Math.sqrt(r()),rr=24+u*(reach-24)*(0.55+0.45*r()),a=r()*Math.PI*2;
+        outer+=`<circle cx="${(rr*Math.cos(a)).toFixed(1)}" cy="${(rr*Math.sin(a)).toFixed(1)}" r="1.8" fill="#F7941D" opacity=".45"/>`;}}
+    let rest=S.e;rd.lv.innerHTML="";cap.forEach((c,k)=>{const m=Math.min(rest,c);rest-=m;rd.lv.append(h("span",{class:"lv"+(m===c?" full":"")},`Level ${k+1}: ${m}/${c}`+(m===c?" full":"")));});
+    view.innerHTML=`<svg viewBox="-160 -160 320 320" role="img" aria-label="Atom with ${S.p} protons, ${S.n} neutrons and ${S.e} electrons">${outer}${nuc}</svg>`;
+  }
+  // orbit animation: rotate each energy level around the nucleus at (0,0)
+  let ang=0,last=null;const still=matchMedia("(prefers-reduced-motion: reduce)");
+  function tick(t){if(last!==null&&!still.matches)ang+=(t-last)/1000;last=t;
+    view.querySelectorAll(".orbit").forEach(g=>g.setAttribute("transform",`rotate(${(ang*360/+g.dataset.s)%360})`));
+    requestAnimationFrame(tick);}
+  requestAnimationFrame(tick);
+  draw();
+  card.append(h("div",{class:"sim"},view,ctrl),h("p",{class:"hint"},"Note: the energy-level view comes from Bohr’s model. Scientists today picture electrons as a cloud around the nucleus, with the nucleus very much smaller than shown here."));
+  return card;
+}
+
+/* ---------- build parts ---------- */
+const sections=PARTS.map((p,pi)=>{
+  const sec=h("section",{class:"part",id:"part"+(pi+1),hidden:true,"aria-labelledby":"h"+pi},
+    h("div",{class:"part-head"},h("span",{class:"eyebrow"},`Part ${pi+1} of ${PARTS.length}`),h("h2",{id:"h"+pi},p.title),h("p",{},p.intro)));
+  p.blocks.forEach((b,bi)=>{const id=`${pi}_${bi}`,seed=(pi+1)*100+bi*7+3;
+    if(b.type==="know")sec.append(h("div",{class:"know"},h("h3",{},b.title),h("div",{html:b.html,style:"display:flex;flex-direction:column;gap:12px"})));
+    else if(b.type==="mcq")sec.append(renderMCQ(pi,b,id));
+    else if(b.type==="sort")sec.append(renderSort(pi,b,id,seed));
+    else if(b.type==="match")sec.append(renderMatch(pi,b,id,seed));
+    else if(b.type==="order")sec.append(renderOrder(pi,b,id,seed));
+    else if(b.type==="table")sec.append(renderTable(pi,b,id));
+    else if(b.type==="sim")sec.append(renderSim(pi,id));});
+  sec.append(h("div",{class:"pager"},
+    pi>0?h("button",{class:"btn ghost",type:"button",onclick:()=>show(pi-1)},"← Back"):h("span"),
+    h("button",{class:"btn",type:"button",onclick:()=>show(pi+1)},pi<PARTS.length-1?`Next: ${PARTS[pi+1].key} →`:"See my results →")));
+  main.append(sec);return sec;});
+
+// results
+const resSec=h("section",{class:"part",id:"results",hidden:true});
+const bigEl=h("span",{class:"big"}),msgEl=h("p",{style:"margin:0"}),barsEl=h("div",{class:"bars"}),nameEl=h("span");
+const copyB=h("button",{class:"btn",type:"button"},"Copy my results");const copyFb=h("p",{class:"fb","aria-live":"polite"});
+const copyTxt=h("textarea",{id:"copytxt",readonly:true,rows:"8",hidden:true,style:"width:100%;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg)"});
+resSec.append(h("div",{class:"part-head"},h("span",{class:"eyebrow"},"Results"),h("h2",{},"Your results"),h("p",{},"Unanswered questions count as zero. Go back to any part to finish it.")),
+  h("div",{class:"card"},h("div",{style:"display:flex;align-items:baseline;gap:14px;flex-wrap:wrap"},bigEl,nameEl),msgEl,barsEl),
+  h("div",{class:"know"},h("h3",{},"Think about it"),h("p",{},"Every model on the timeline replaced the one before because of new evidence. Choose one change (for example, plum pudding to nuclear atom) and explain in your own words what evidence caused it and why that makes atomic theory a theory, not a hypothesis.")),
+  h("div",{class:"card"},h("p",{class:"q-text"},"Send your score to your teacher"),h("p",{class:"hint"},"Copy the summary, then paste it where your teacher asks."),copyB,copyTxt,copyFb),
+  h("div",{class:"pager"},h("button",{class:"btn ghost",type:"button",onclick:()=>show(PARTS.length-1)},"← Back"),h("span")));
+main.append(resSec);sections.push(resSec);
+
+function summary(){const nm=document.getElementById("sname").value.trim()||"(no name)";let t=`Atomic Theory Assessment, Grade 9\nName: ${nm}\n`;
+  PARTS.forEach((p,i)=>{t+=`Part ${i+1} ${p.key}: ${partScore(i).g}/${partMax[i]}\n`;});
+  const g=PARTS.reduce((a,_,i)=>a+partScore(i).g,0);return t+`Total: ${g}/${TOTAL} (${Math.round(g/TOTAL*100)}%)`;}
+copyB.addEventListener("click",()=>{const t=summary();copyTxt.value=t;
+  const fail=()=>{copyTxt.hidden=false;copyTxt.focus();copyTxt.select();copyFb.className="fb";copyFb.textContent="Select the text above and copy it.";};
+  try{navigator.clipboard.writeText(t).then(()=>{copyFb.className="fb ok";copyFb.textContent="Copied. Paste it where your teacher asks.";},fail);}catch(e){fail();}});
+
+function update(){
+  let g=0,d=0;for(const m of Object.values(marks)){g+=m.got;d+=m.max;}
+  document.getElementById("sc").textContent=g;document.getElementById("scmax").textContent=TOTAL;
+  document.getElementById("done").textContent=d;document.getElementById("total").textContent=TOTAL;
+  document.getElementById("bar").style.width=(d/TOTAL*100)+"%";
+  PARTS.forEach((p,i)=>{const s=partScore(i);navItems[i].querySelector("small").textContent=`${s.g} / ${partMax[i]}`+(s.d===partMax[i]?" · done":"");navItems[i].classList.toggle("done",s.d===partMax[i]);});
+  const pct=Math.round(g/TOTAL*100);bigEl.textContent=`${g} / ${TOTAL}`;
+  nameEl.textContent=`${pct}%`+(document.getElementById("sname").value.trim()?` · ${document.getElementById("sname").value.trim()}`:"");
+  msgEl.textContent=d<TOTAL?`You have answered ${d} of ${TOTAL} marks so far.`:pct>=90?"Excellent. You can explain how and why the model of the atom changed.":pct>=70?"Good work. Review the parts with the lowest scores.":pct>=50?"A fair start. Go over the five discoveries and the particle table again.":"Review the lessons with your teacher, then try again.";
+  barsEl.innerHTML="";PARTS.forEach((p,i)=>{const s=partScore(i);barsEl.append(h("div",{class:"bar"},h("span",{},`Part ${i+1}: ${p.key}`),h("span",{class:"t"},h("i",{style:`width:${s.g/partMax[i]*100}%`})),h("b",{},`${s.g}/${partMax[i]}`)));});
+}
+document.getElementById("sname").addEventListener("input",update);
+
+let cur=0;
+function show(i){cur=Math.max(0,Math.min(sections.length-1,i));sections.forEach((s,k)=>s.hidden=k!==cur);navItems.forEach((n,k)=>n.setAttribute("aria-current",String(k===cur)));
+  if(show._ready)main.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});show._ready=true;}
+show(0);update();
+})();
+</script>
+</body>
+</html>
