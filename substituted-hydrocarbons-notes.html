@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>html,body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Substituted Hydrocarbons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Patrick+Hand&family=Kalam:wght@400;700&display=swap">
+<style>
+:root{
+  --paper:#fffdf5; --rule:#dbe7f4; --margin:#f5b3b3;
+  --ink:#22304f; --soft:#5d6982; --card:#ffffff; --shadow:rgba(34,48,79,.13);
+  --hl:rgba(255,232,70,.75);
+  --pink:#e8456b; --pinkbg:#ffe4eb;
+  --blue:#2f7fd6; --bluebg:#e2efff;
+  --mint:#159a78; --mintbg:#dbf5ea;
+  --orange:#e07814; --orangebg:#ffecd6;
+  --purple:#7d52cc; --purplebg:#efe6ff;
+  --note:#fff3a3; --note2:#d9f7ff;
+  --hand:"Caveat","Segoe Print","Comic Sans MS",cursive;
+  --body:"Patrick Hand","Kalam","Comic Sans MS",cursive;
+  --kal:"Kalam","Patrick Hand","Comic Sans MS",cursive;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#1b2231; --rule:#263146; --margin:#5b2f3b;
+    --ink:#eef2fb; --soft:#a8b3c9; --card:#232c3e; --shadow:rgba(0,0,0,.35);
+    --hl:rgba(255,212,60,.33);
+    --pink:#ff8aa5; --pinkbg:#3b2330;
+    --blue:#7cb8ff; --bluebg:#1e3150;
+    --mint:#5fdcb8; --mintbg:#173a34;
+    --orange:#ffac5e; --orangebg:#3d2b1b;
+    --purple:#b99cff; --purplebg:#2d2446;
+    --note:#453f1d; --note2:#1b3a45;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#1b2231; --rule:#263146; --margin:#5b2f3b;
+  --ink:#eef2fb; --soft:#a8b3c9; --card:#232c3e; --shadow:rgba(0,0,0,.35);
+  --hl:rgba(255,212,60,.33);
+  --pink:#ff8aa5; --pinkbg:#3b2330;
+  --blue:#7cb8ff; --bluebg:#1e3150;
+  --mint:#5fdcb8; --mintbg:#173a34;
+  --orange:#ffac5e; --orangebg:#3d2b1b;
+  --purple:#b99cff; --purplebg:#2d2446;
+  --note:#453f1d; --note2:#1b3a45;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='34'><line x1='0' y1='33.5' x2='10' y2='33.5' stroke='%23e6edf7' stroke-width='1'/></svg>");
+  background-size:10px 34px; background-repeat:repeat;
+  color:var(--ink); font-family:var(--body); font-size:19px; line-height:1.5;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) body{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='34'><line x1='0' y1='33.5' x2='10' y2='33.5' stroke='%23232c3d' stroke-width='1'/></svg>")}}
+:root[data-theme="dark"] body{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='34'><line x1='0' y1='33.5' x2='10' y2='33.5' stroke='%23232c3d' stroke-width='1'/></svg>")}
+.wrap{max-width:1080px; margin:0 auto; padding-inline:20px; padding-block:28px 60px; position:relative}
+h1,h2,h3{font-family:var(--hand); line-height:1.05; text-wrap:balance; margin:0}
+p{margin:0}
+sub,sup{font-size:.68em; line-height:0}
+.hl{background:linear-gradient(transparent 52%, var(--hl) 52%, var(--hl) 92%, transparent 92%); padding:0 2px}
+.pk{color:var(--pink)} .bl{color:var(--blue)} .mt{color:var(--mint)} .or{color:var(--orange)} .pu{color:var(--purple)}
+b{font-weight:700}
+.small{font-size:.86em; color:var(--soft)}
+
+/* header */
+.top{display:grid; gap:14px; padding-block:6px 20px}
+.eyebrow{font-family:var(--kal); letter-spacing:.08em; text-transform:uppercase; font-size:14px; color:var(--soft)}
+.top h1{font-size:clamp(46px,9vw,84px); font-weight:700}
+.top h1 .sq{display:inline-block; position:relative}
+.top h1 .sq::after{content:""; position:absolute; left:0; right:0; bottom:2px; height:12px;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 12' preserveAspectRatio='none'><path d='M2 8 Q 15 2 28 7 T 54 7 T 80 6 T 98 5' fill='none' stroke='%23e8456b' stroke-width='3' stroke-linecap='round'/></svg>") no-repeat center/100% 100%}
+.intro{max-width:62ch; color:var(--soft)}
+.nav{display:flex; flex-wrap:wrap; gap:10px; margin-top:6px}
+.nav a{font-family:var(--hand); font-size:24px; font-weight:700; text-decoration:none; color:var(--ink);
+  padding:4px 16px 6px; border:2px solid currentColor; border-radius:14px 6px 14px 6px; background:var(--card)}
+.nav a:nth-child(1){color:var(--pink)} .nav a:nth-child(2){color:var(--blue)}
+.nav a:nth-child(3){color:var(--mint)} .nav a:nth-child(4){color:var(--orange)} .nav a:nth-child(5){color:var(--purple)}
+.nav a:hover,.nav a:focus-visible{background:var(--hl); outline:none}
+
+/* lesson */
+.lesson{margin-top:48px; scroll-margin-top:16px}
+.lhead{display:flex; flex-wrap:wrap; align-items:flex-end; gap:8px 18px; padding-bottom:10px; margin-bottom:22px;
+  border-bottom:3px dashed var(--c)}
+.lnum{font-family:var(--hand); font-size:30px; font-weight:700; color:var(--paper); background:var(--c);
+  padding:0 14px 2px; border-radius:10px 4px 12px 4px; transform:rotate(-3deg)}
+.lhead h2{font-size:clamp(38px,6vw,56px); color:var(--c)}
+.fq{flex-basis:100%; font-family:var(--kal); font-size:17px}
+.fq b{color:var(--c)}
+.L1{--c:var(--pink); --cbg:var(--pinkbg)} .L2{--c:var(--blue); --cbg:var(--bluebg)}
+.L3{--c:var(--mint); --cbg:var(--mintbg)} .L4{--c:var(--orange); --cbg:var(--orangebg)}
+.L5{--c:var(--purple); --cbg:var(--purplebg)}
+
+.grid{display:grid; gap:20px; grid-template-columns:repeat(12,1fr)}
+.s12{grid-column:span 12} .s8{grid-column:span 8} .s7{grid-column:span 7} .s6{grid-column:span 6}
+.s5{grid-column:span 5} .s4{grid-column:span 4}
+@media (max-width:820px){ .s8,.s7,.s6,.s5,.s4{grid-column:span 12} }
+
+.box{background:var(--card); border:2px solid var(--ink); border-radius:18px 8px 16px 10px / 10px 16px 8px 18px;
+  padding:16px 18px; box-shadow:4px 5px 0 var(--shadow); display:flex; flex-direction:column; gap:10px; min-width:0}
+.box h3{font-size:30px; color:var(--c)}
+.tint{background:var(--cbg); border-color:var(--c)}
+.note{align-self:start; background:var(--note); border:none; border-radius:2px; box-shadow:3px 6px 12px var(--shadow); transform:rotate(-1.2deg); position:relative}
+.note::before{content:""; position:absolute; top:-10px; left:50%; width:80px; height:22px; transform:translateX(-50%) rotate(2deg);
+  background:rgba(180,200,230,.55); border-radius:2px}
+.note.b{background:var(--note2); transform:rotate(1.3deg)}
+.note h3{color:var(--ink)}
+
+ul.hand{margin:0; padding-left:0; list-style:none; display:grid; gap:6px}
+ul.hand li{padding-left:26px; position:relative}
+ul.hand li::before{content:"✎"; position:absolute; left:0; color:var(--c)}
+ul.star li::before{content:"★"}
+ul.chk li::before{content:"✓"}
+
+.def{display:grid; grid-template-columns:auto 1fr; gap:8px 14px; align-items:baseline}
+.def dt{font-family:var(--hand); font-size:25px; font-weight:700; color:var(--c)}
+.def dd{margin:0}
+@media (max-width:520px){ .def{grid-template-columns:1fr} .def dd{margin-bottom:6px} }
+
+.eq{font-family:var(--kal); font-size:20px; background:var(--paper); border:1.5px dashed var(--soft); border-radius:10px;
+  padding:8px 12px; overflow-x:auto; white-space:nowrap}
+.cfg{font-family:var(--kal); font-size:16px}
+
+svg{max-width:100%; height:auto; display:block}
+svg text{font-family:var(--kal); fill:var(--ink)}
+.s-ink{stroke:var(--ink)} .f-ink{fill:var(--ink)}
+.f-pink{fill:var(--pink)} .f-blue{fill:var(--blue)} .f-mint{fill:var(--mint)} .f-orange{fill:var(--orange)}
+.f-pinkbg{fill:var(--pinkbg)} .f-bluebg{fill:var(--bluebg)} .f-orangebg{fill:var(--orangebg)} .f-card{fill:var(--card)}
+.s-soft{stroke:var(--soft)} .s-pink{stroke:var(--pink)} .s-blue{stroke:var(--blue)} .s-mint{stroke:var(--mint)} .s-orange{stroke:var(--orange)}
+svg .w{fill:#fff; font-weight:700}
+
+/* periodic strip */
+.strip{display:grid; grid-template-columns:repeat(9,minmax(64px,1fr)); gap:6px; overflow-x:auto; padding-bottom:4px}
+.cell{border:2px solid var(--ink); border-radius:10px; text-align:center; padding:6px 4px; background:var(--card); min-width:64px}
+.cell .g{font-size:14px; color:var(--soft)}
+.cell .ch{font-family:var(--hand); font-size:34px; font-weight:700; line-height:1}
+.cell .ex{font-size:14px}
+.cell.m{background:var(--pinkbg); border-color:var(--pink)} .cell.m .ch{color:var(--pink)}
+.cell.t{background:var(--purplebg); border-color:var(--purple)} .cell.t .ch{color:var(--purple); font-size:24px; padding-block:5px}
+.cell.n{background:var(--bluebg); border-color:var(--blue)} .cell.n .ch{color:var(--blue)}
+.cell.x{border-style:dashed} .cell.x .ch{color:var(--soft)}
+.stripwrap{overflow-x:auto}
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:16px}
+.legend span::before{content:""; display:inline-block; width:14px; height:14px; border-radius:4px; margin-right:6px; vertical-align:-2px; background:var(--k)}
+
+.duo{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+@media (max-width:640px){ .duo{grid-template-columns:1fr} }
+.dots{display:flex; flex-wrap:wrap; gap:6px; justify-content:space-between}
+.dots figure{margin:0; text-align:center; flex:1 1 70px; max-width:100px}
+.dots figcaption{font-size:14px; color:var(--soft)}
+
+table{border-collapse:collapse; width:100%; font-size:17px; font-variant-numeric:tabular-nums}
+th{font-family:var(--hand); font-size:22px; color:var(--c); text-align:left; border-bottom:2px solid var(--c); padding:4px 8px}
+td{padding:5px 8px; border-bottom:1.5px dashed var(--rule)}
+.tscroll{overflow-x:auto}
+
+.bars{display:grid; gap:7px}
+.bar{display:grid; grid-template-columns:62px 1fr 56px; align-items:center; gap:8px; font-size:16px}
+.bar i{display:block; height:18px; border-radius:3px 9px 9px 3px; background:var(--c); width:var(--w)}
+.bar em{font-style:normal; font-variant-numeric:tabular-nums; text-align:right}
+
+.steps{counter-reset:s; list-style:none; padding:0; margin:0; display:grid; gap:10px}
+.steps li{counter-increment:s; position:relative; padding-left:44px}
+.steps li::before{content:counter(s); position:absolute; left:0; top:-2px; width:32px; height:32px; border-radius:50%;
+  background:var(--c); color:var(--paper); font-family:var(--hand); font-weight:700; font-size:24px; display:grid; place-items:center}
+
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{border:2px solid var(--k); background:var(--kb); border-radius:12px 5px 12px 5px; padding:3px 10px; font-size:17px; white-space:nowrap}
+.chip b{font-family:var(--kal)}
+.q1{--k:var(--blue); --kb:var(--bluebg)} .q2{--k:var(--purple); --kb:var(--purplebg)} .q3{--k:var(--orange); --kb:var(--orangebg)} .qp{--k:var(--pink); --kb:var(--pinkbg)}
+
+.ladder{display:grid; gap:6px}
+.rung{display:grid; grid-template-columns:90px 1fr auto; gap:10px; align-items:center; border:2px solid var(--mint); border-radius:10px; padding:4px 10px; background:var(--card)}
+.rung .f{font-family:var(--kal); font-weight:700}
+.rung .n{font-family:var(--hand); font-size:24px}
+.rung .o{font-size:14px; color:var(--soft)}
+.rung:nth-child(1){margin-left:0} .rung:nth-child(2){margin-left:12px} .rung:nth-child(3){margin-left:24px} .rung:nth-child(4){margin-left:36px}
+@media (max-width:520px){ .rung:nth-child(n){margin-left:0} }
+
+.flow{display:grid; gap:10px; justify-items:center; text-align:center}
+.fb{border:2px solid var(--mint); background:var(--mintbg); border-radius:14px; padding:6px 14px; max-width:420px}
+.fb.q{border-style:dashed; background:var(--card)}
+.arrow{font-family:var(--hand); font-size:26px; color:var(--mint); line-height:1}
+.fsplit{display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%}
+.fsplit > div{display:grid; gap:6px; justify-items:center}
+.fsplit .lab{font-family:var(--hand); font-size:24px; font-weight:700}
+
+details{border:2px dashed var(--c); border-radius:12px; padding:6px 12px; background:var(--card)}
+details summary{cursor:pointer; font-family:var(--hand); font-size:24px; font-weight:700; color:var(--c)}
+details summary:focus-visible{outline:2px solid var(--c); outline-offset:3px}
+.ans{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:6px 16px; margin-top:8px}
+.ans div{font-size:17px}
+.ans b{font-family:var(--kal)}
+
+.cmp th:first-child{color:var(--soft)}
+.cmp td:nth-child(2){color:var(--blue)} .cmp td:nth-child(3){color:var(--orange)}
+.cmp td:first-child{font-family:var(--hand); font-size:22px; font-weight:700}
+
+.foot{margin-top:56px; text-align:center; font-family:var(--hand); font-size:26px; color:var(--soft)}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
+@media (max-width:520px){ body{font-size:18px} .wrap{padding-inline:16px} .note,.note.b{transform:none} }
+</style>
+<style>
+.sortgrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.sort3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+@media (max-width:640px){ .sortgrid,.sort3{grid-template-columns:1fr} }
+.bin{border:2px dashed var(--k); background:var(--kb); border-radius:14px; padding:10px 12px; display:grid; gap:6px; align-content:start}
+.bin .t{font-family:var(--hand); font-size:23px; font-weight:700; color:var(--k)}
+.rulecard{border:2px solid var(--c); border-radius:14px 6px 14px 6px; padding:8px 12px; background:var(--card); display:grid; gap:4px}
+.rulecard .t{font-family:var(--hand); font-size:22px; font-weight:700; color:var(--c)}
+.chain{font-family:var(--kal); font-size:19px; display:block; line-height:2.1; background:var(--paper); border:1.5px dashed var(--soft); border-radius:10px; padding:8px 12px; overflow-x:auto}
+.chain .res{background:linear-gradient(transparent 55%, var(--hl) 55%, var(--hl) 95%, transparent 95%); font-weight:700}
+.fam{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+@media (max-width:760px){ .fam{grid-template-columns:1fr} }
+.famcard{border:2.5px solid var(--k); background:var(--card); border-radius:16px 6px 16px 6px; padding:10px 12px; display:grid; gap:6px; align-content:start; box-shadow:4px 5px 0 var(--shadow)}
+.famcard .n{font-family:var(--hand); font-size:26px; font-weight:700; color:var(--k); line-height:1}
+.famcard .f{font-family:var(--kal); font-size:22px; font-weight:700}
+.famcard .tag{justify-self:start; font-family:var(--hand); font-weight:700; font-size:16px; color:var(--paper); background:var(--k); border-radius:8px 3px 8px 3px; padding:0 10px 2px}
+.pre{font-family:var(--kal); font-weight:700}
+</style>
+<style>
+.molrow{display:flex; flex-wrap:wrap; gap:10px 22px; align-items:flex-end; justify-content:center}
+.molrow > div{display:grid; justify-items:center; gap:2px}
+.molrow .arw{font-family:var(--hand); font-size:30px; color:var(--c); align-self:center; text-align:center; line-height:1}
+.molrow .arw small{display:block; font-family:var(--body); font-size:14px; color:var(--soft)}
+.fg td svg{max-width:150px}
+.fg td:first-child{font-family:var(--hand); font-size:22px; font-weight:700}
+.rc .code{display:inline-block; width:64px; height:60px; vertical-align:middle}
+.rc .code svg{width:64px; height:60px; display:block}
+.rc .y{color:var(--mint); font-weight:700} .rc .n{color:var(--pink); font-weight:700} .rc .m{color:var(--orange); font-weight:700}
+.fg .end{font-family:var(--kal); font-weight:700; color:var(--c)}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Chemistry · Chapter 22 · Revision notes</div>
+  <h1>Substituted <span class="sq">Hydrocarbons</span></h1>
+  <p class="intro">Swap a hydrogen in a hydrocarbon for another atom or group, a <span class="hl"><b>functional group</b></span>, and you get a new family of compounds with new properties. This chapter covers the families, how to <b>name</b> them, their <b>reactions</b>, and <b>polymers</b>.</p>
+  <nav class="nav" aria-label="Lessons">
+    <a href="#l1">1 · Halides</a>
+    <a href="#l2">2 · Alcohols, Ethers, Amines</a>
+    <a href="#l3">3 · Carbonyls</a>
+    <a href="#l4">4 · Reactions</a>
+    <a href="#l5">5 · Polymers</a>
+    <a href="#l6">Big Picture</a>
+  </nav>
+</header>
+
+<!-- ============ LESSON 1 ============ -->
+<section class="lesson L1" id="l1">
+  <div class="lhead">
+    <span class="lnum">Lesson 1</span>
+    <h2>Alkyl Halides &amp; Aryl Halides</h2>
+    <p class="fq"><b>Focus question:</b> What happens when a halogen replaces a hydrogen? → The compound gets a <span class="hl">higher boiling point and density</span> and becomes <b>more reactive</b>.</p>
+  </div>
+
+  <div class="grid">
+    <div class="box s12">
+      <h3>Functional groups: learn this table!</h3>
+      <p>A <span class="hl"><b>functional group</b></span> is an atom or group of atoms that <b>always reacts in a certain way</b>. <b>R</b> = any carbon chain or ring.</p>
+      <div class="tscroll"><table class="fg">
+        <tr><th>Family</th><th>General formula</th><th>Functional group</th><th>In the name</th></tr>
+        <tr><td>Halocarbon</td><td><div id="g-hal"></div></td><td>halogen (F, Cl, Br, I)</td><td class="end">prefix (at the start):<br>fluoro-, chloro-, bromo-, iodo-</td></tr>
+        <tr><td>Alcohol</td><td><div id="g-alc"></div></td><td>hydroxyl</td><td class="end">ending: -ol</td></tr>
+        <tr><td>Ether</td><td><div id="g-eth"></div></td><td>ether</td><td class="end">separate word: … ether</td></tr>
+        <tr><td>Amine</td><td><div id="g-ami"></div></td><td>amino</td><td class="end">ending: -amine</td></tr>
+        <tr><td>Aldehyde</td><td><div id="g-ald"></div></td><td>carbonyl (at the <b>end</b>)</td><td class="end">ending: -al</td></tr>
+        <tr><td>Ketone</td><td><div id="g-ket"></div></td><td>carbonyl (in the <b>middle</b>)</td><td class="end">ending: -one</td></tr>
+        <tr><td>Carboxylic acid</td><td><div id="g-acd"></div></td><td>carboxyl</td><td class="end">ending: -oic acid</td></tr>
+        <tr><td>Ester</td><td><div id="g-est"></div></td><td>ester</td><td class="end">two words: …yl …oate<br><span class="small">(propyl ethanoate)</span></td></tr>
+        <tr><td>Amide</td><td><div id="g-amd"></div></td><td>amide</td><td class="end">ending: -amide</td></tr>
+      </table></div>
+    </div>
+
+    <div class="box s6">
+      <h3>Key words</h3>
+      <dl class="def">
+        <dt>Halocarbon</dt><dd>any organic compound containing a <b>halogen</b> substituent.</dd>
+        <dt>Alkyl halide</dt><dd>halogen bonded to an <b>aliphatic</b> carbon (chain). e.g. chloromethane CH₃Cl</dd>
+        <dt>Aryl halide</dt><dd>halogen bonded to a <b>benzene ring</b>. e.g. chlorobenzene</dd>
+      </dl>
+      <p class="small">The <b>simplest</b> functional group that can be bonded to a hydrocarbon is a <b>halogen</b>. General formula of alkyl halides: <b>R–X</b>.</p>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Naming halocarbons</h3>
+      <ul class="hand">
+        <li>Change <b>-ine → -o</b>: <b>fluoro-, chloro-, bromo-, iodo-</b></li>
+        <li>Number the chain (or ring) to give the halogens the <b>lowest numbers</b>.</li>
+        <li>Two of the same? <b>di-, tri-</b>: 1,2-difluoropropane</li>
+        <li>Different halogens → <b>alphabetical order</b> (bromo, chloro, fluoro, iodo).</li>
+        <li>Halogen + alkyl branch? Treat them the same: <b>alphabetical order</b>, lowest numbers: <b>2-bromo-3-methylbutane</b>.</li>
+        <li>Has a <b>C=C or C≡C</b>? The multiple bond gets the <b>lowest number first</b>, then the halogens: <b>5-chloro-2-pentyne</b>.</li>
+        <li><b>Rings:</b> a ring with a double bond starts at the C=C (C1 and C2). Benzene: number from a halogen to get the lowest set.</li>
+      </ul>
+    </div>
+
+    <div class="box s12">
+      <h3>Worked examples</h3>
+      <div class="molrow">
+        <div id="h1"></div>
+        <div id="h2"></div>
+        <div id="h3"></div>
+      </div>
+      <div class="chain">4 C → butane · Br, F, Cl at 1, 2, 3 · alphabetical: <b>b</b>romo, <b>c</b>hloro, <b>f</b>luoro → <span class="res">1-bromo-3-chloro-2-fluorobutane</span></div>
+      <div class="molrow">
+        <div id="h4"></div>
+        <div id="h5"></div>
+        <div id="h6"></div>
+        <div id="h7"></div>
+      </div>
+      <div class="chain">Ring with C=C: C1=C2 first, then the substituents get the lowest numbers → <span class="res">3-chloro-2-methylcyclopentene</span>, <span class="res">4-bromo-5-chlorocyclohexene</span></div>
+    </div>
+
+    <div class="box s12">
+      <h3>Boiling point rises with the halogen</h3>
+      <div class="bars" style="--c:var(--pink)">
+        <div class="bar" style="grid-template-columns:130px 1fr 56px"><span>pentane</span><i style="--w:23%;background:var(--soft)"></i><em>36 °C</em></div>
+        <div class="bar" style="grid-template-columns:130px 1fr 56px"><span>1-fluoropentane</span><i style="--w:40%"></i><em>63 °C</em></div>
+        <div class="bar" style="grid-template-columns:130px 1fr 56px"><span>1-chloropentane</span><i style="--w:70%"></i><em>108 °C</em></div>
+        <div class="bar" style="grid-template-columns:130px 1fr 56px"><span>1-bromopentane</span><i style="--w:84%"></i><em>130 °C</em></div>
+        <div class="bar" style="grid-template-columns:130px 1fr 56px"><span>1-iodopentane</span><i style="--w:100%"></i><em>155 °C</em></div>
+      </div>
+      <p>Alkyl halides have <b>higher bp and density</b> than their parent alkane. Going <b>F → Cl → Br → I</b>: more electrons → stronger temporary dipoles (dispersion forces) → <span class="hl"><b>bp and density increase</b></span>.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ LESSON 2 ============ -->
+<section class="lesson L2" id="l2">
+  <div class="lhead">
+    <span class="lnum">Lesson 2</span>
+    <h2>Alcohols, Ethers &amp; Amines</h2>
+    <p class="fq"><b>Focus question:</b> How does adding –OH or –NH₂ change a hydrocarbon? → It becomes <b>polar</b> and can <span class="hl">hydrogen bond</span>: higher bp, more soluble in water.</p>
+  </div>
+
+  <div class="grid">
+    <div class="box s6">
+      <h3>Alcohols: R–OH</h3>
+      <p>An <span class="hl"><b>alcohol</b></span> has a <b>hydroxyl group (–OH)</b> in place of an H.</p>
+      <ul class="hand">
+        <li><b>Polar</b> + <b>hydrogen bonds</b> → much <b>higher bp</b> than hydrocarbons of similar size.</li>
+        <li>Mix well with water: ethanol is <b>completely miscible</b>.</li>
+        <li><b>Methanol</b> CH₃OH is the <b>simplest</b> alcohol.</li>
+        <li><b>Glycerol</b> (1,2,3-propanetriol) has <b>3 –OH groups</b>. It stops <b>jet fuel from freezing</b>.</li>
+      </ul>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Naming alcohols</h3>
+      <ol class="steps">
+        <li>Take the alkane name, change <b>-e → -ol</b>: methane → <b>methanol</b> CH₃OH, ethane → <b>ethanol</b> CH₃CH₂OH.</li>
+        <li>3 or more C: add the <b>number</b> of the C holding the –OH (lowest possible).</li>
+        <li>More than one –OH: keep the -e and add <b>-diol, -triol</b>.</li>
+        <li>Branched? Find the <b>longest chain that holds the C–OH</b>, number from the –OH end, name the branch: <b>3-methyl-1-pentanol</b>.</li>
+      </ol>
+      <p class="small">Ring with –OH: <b>cyclo</b> + alkane + <b>-ol</b>: cyclobutanol, cyclopentanol, <b>cyclohexanol</b> (no number needed). The parent alkane of butanol is <b>butane</b>.</p>
+    </div>
+
+    <div class="box s12">
+      <h3>Examples</h3>
+      <div class="molrow">
+        <div id="a1"></div><div id="a2"></div><div id="a3"></div><div id="a4"></div><div id="a5"></div>
+      </div>
+      <p class="small">"4-butanol" is <b>wrong</b>: count from the other end → 1-butanol. Always use the <b>lowest</b> number.</p>
+    </div>
+
+    <div class="box tint s12">
+      <h3>Primary, secondary &amp; tertiary alcohols</h3>
+      <p>Count how many <b>carbons</b> are bonded to the carbon that holds the –OH:</p>
+      <div class="molrow"><div id="al1"></div><div id="al2"></div><div id="al3"></div></div>
+      <p class="small">This decides what happens when the alcohol is <b>oxidized</b> (see Lesson 4): 1° → aldehyde → acid · 2° → ketone · 3° → <b>no reaction</b>.</p>
+    </div>
+
+    <div class="box s6">
+      <h3>Ethers: R–O–R'</h3>
+      <p>An <span class="hl"><b>ether</b></span> has an <b>oxygen bonded to two carbons</b>.</p>
+      <ul class="hand">
+        <li><b>No H on the O</b> → can't hydrogen bond with each other → <b>lower bp</b>, more volatile than alcohols.</li>
+        <li><b>Less soluble</b> in water than alcohols (can only <i>accept</i> H-bonds from water).</li>
+        <li><b>Oils and fats dissolve in ethers</b>, not in water.</li>
+        <li><b>Diethyl ether</b> was used as an <b>anesthetic</b> in surgery.</li>
+      </ul>
+      <div class="rulecard"><span class="t">Naming ethers</span>
+        <p><b>Different</b> groups → name both in <b>alphabetical order</b> + ether.</p>
+        <p><b>Same</b> group on both sides → add <b>di-</b> + ether (dimethyl ether, diethyl ether).</p>
+      </div>
+      <div class="chips"><span class="chip q1"><b>CH₃–O–CH₂CH₃</b> ethyl methyl ether</span><span class="chip q1"><b>CH₃CH₂–O–CH₂CH₂CH₂CH₃</b> butyl ethyl ether</span></div>
+      <div class="molrow"><div id="e1"></div></div>
+    </div>
+
+    <div class="box note b s6">
+      <h3>Alcohol vs ether (same size)</h3>
+      <div class="sortgrid">
+        <div class="bin" style="--k:var(--blue);--kb:var(--bluebg)"><span class="t">Methanol CH₃OH</span><p>bp <b>65 °C</b></p><p class="small">H-bonds ✓</p></div>
+        <div class="bin" style="--k:var(--orange);--kb:var(--orangebg)"><span class="t">Dimethyl ether CH₃OCH₃</span><p>bp <b>−25 °C</b></p><p class="small">no H-bonds ✗</p></div>
+      </div>
+    </div>
+
+    <div class="box s12">
+      <h3>Hydrogen bonds &amp; boiling point</h3>
+      <p>A <b>hydrogen bond</b> forms between an <b>H on O (or N)</b> of one molecule and an <b>O (or N)</b> of another molecule. More/stronger attractions → <b>more energy needed</b> to separate molecules → <span class="hl"><b>higher boiling point</b></span>.</p>
+      <div class="duo">
+        <div class="bin" style="--k:var(--blue);--kb:var(--bluebg)"><span class="t">Alcohol + alcohol ✓</span><div id="hb1" style="justify-self:center"></div><p class="small">O–H has a δ+ H → it is attracted to the δ− O of the next molecule.</p></div>
+        <div class="bin" style="--k:var(--orange);--kb:var(--orangebg)"><span class="t">Ether + ether ✗</span><div id="hb2" style="justify-self:center"></div><p class="small">All H are on <b>C</b>, none on O → <b>no hydrogen bond</b> → weaker attraction → <b>lower bp</b>.</p></div>
+      </div>
+      <h3 style="font-size:26px;margin-top:6px">Boiling point ladder (molecules of similar size, ~60 g/mol)</h3>
+      <div class="bars" style="--c:var(--blue)">
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>butane <span class="small">(alkane, nonpolar)</span></span><i style="--w:2%;background:var(--soft)"></i><em>−1 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>ethyl methyl ether <span class="small">(polar, no H-bond)</span></span><i style="--w:8%;background:var(--orange)"></i><em>7 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>propylamine <span class="small">(N–H: weak H-bond)</span></span><i style="--w:41%;background:var(--purple)"></i><em>48 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>propanal <span class="small">(polar C=O)</span></span><i style="--w:42%;background:var(--mint)"></i><em>49 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>propanone <span class="small">(polar C=O)</span></span><i style="--w:47%;background:var(--mint)"></i><em>56 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>1-propanol <span class="small">(O–H: H-bond)</span></span><i style="--w:82%"></i><em>97 °C</em></div>
+        <div class="bar" style="grid-template-columns:230px 1fr 60px"><span>ethanoic acid <span class="small">(2 H-bonds per pair)</span></span><i style="--w:100%;background:var(--pink)"></i><em>118 °C</em></div>
+      </div>
+      <div class="chain">alkane &lt; ether &lt; amine ≈ aldehyde &lt; ketone &lt; <span class="res">alcohol &lt; carboxylic acid</span></div>
+      <p class="small"><b>Solubility in water</b> also depends on hydrogen bonds, this time <b>with water</b>. See the solubility box at the end of Lesson 3: <b>carboxylic acids are the most soluble</b>.</p>
+    </div>
+
+    <div class="box s6">
+      <h3>Amines: R–NH₂</h3>
+      <p>An <span class="hl"><b>amine</b></span> has an <b>amino group (–NH₂)</b>: nitrogen bonded to carbon. Amines come from <b>ammonia NH₃</b>.</p>
+      <ul class="hand">
+        <li>Name: alkyl group + <b>-amine</b>: CH₃NH₂ <b>methylamine</b>, CH₃CH₂NH₂ <b>ethylamine</b>.</li>
+        <li>Amines cause the <b>smell of dead bodies</b>. <b>Dogs</b> find disaster victims by smelling amines.</li>
+        <li>Amines have <b>no carbonyl group</b> (don't confuse with amides!).</li>
+      </ul>
+      <p><b>Classified</b> by how many H of NH₃ are replaced by carbon groups:</p>
+      <div class="molrow"><div id="am1"></div><div id="am2"></div><div id="am3"></div></div>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Substitution reactions</h3>
+      <p>A <span class="hl"><b>substitution reaction</b></span>: one atom or group is <b>replaced</b> by another.</p>
+      <p><b>Halogenation</b>: an H is replaced by a halogen (F, Cl, Br; <b>not I</b>).</p>
+      <div class="eq">CH₄ + Cl₂ → <b>CH₃Cl + HCl</b></div>
+      <div class="eq">C₂H₆ + Cl₂ → C₂H₅Cl + HCl</div>
+      <p class="small">propane + Br₂ → <b>bromopropane</b> + HBr</p>
+      <p>Then the halogen can be swapped:</p>
+      <div class="eq">C₂H₅Cl + NaOH → <b>C₂H₅OH</b> + NaCl &nbsp;<span class="small">(alcohol)</span></div>
+      <div class="eq">R–X + NH₃ → <b>R–NH₂</b> + HX &nbsp;<span class="small">(amine)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSON 3 ============ -->
+<section class="lesson L3" id="l3">
+  <div class="lhead">
+    <span class="lnum">Lesson 3</span>
+    <h2>Carbonyl Compounds</h2>
+    <p class="fq"><b>Focus question:</b> How do hydroxyl and carbonyl groups compare? → Both are polar, but the <span class="hl">carbonyl group C=O</span> has no H on O, so it can't H-bond to itself.</p>
+  </div>
+
+  <div class="grid">
+    <div class="box s12">
+      <h3>The carbonyl family</h3>
+      <p>A <b>carbonyl group</b> = a C atom <b>double-bonded</b> to an O (C=O). Five families contain it: aldehydes, ketones, carboxylic acids, esters, amides. <b>No carbonyl:</b> alcohols, ethers, amines.</p>
+      <div class="fam">
+        <div class="famcard" style="--k:var(--mint)"><span class="n">Aldehyde</span><span class="tag">C=O at the end</span><span>ending <b>-al</b></span><div id="c1"></div><div id="c2"></div></div>
+        <div class="famcard" style="--k:var(--blue)"><span class="n">Ketone</span><span class="tag">C=O in the middle</span><span>ending <b>-one</b></span><div id="c3"></div><div id="c4"></div></div>
+        <div class="famcard" style="--k:var(--pink)"><span class="n">Carboxylic acid</span><span class="tag">–COOH</span><span>ending <b>-oic acid</b></span><div id="c5"></div><div id="c6"></div></div>
+      </div>
+    </div>
+
+    <div class="box s6">
+      <h3>Aldehydes</h3>
+      <ul class="hand">
+        <li>Group <b>–CHO</b> at the <b>end</b> of the chain → <b>no number</b> needed: CH₃CH₂CHO = <b>propanal</b>.</li>
+        <li>Polar, but <b>no H-bonds</b> between molecules → bp and solubility <b>lower than alcohols</b>.</li>
+        <li><b>Formaldehyde</b> (methanal, formalin) <b>preserves biological samples</b> for years.</li>
+        <li><b>Benzaldehyde</b> (almond smell) → <b>perfumes and flavorings</b>.</li>
+      </ul>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Ketones</h3>
+      <ul class="hand">
+        <li>C=O <b>inside</b> the chain, bonded to <b>two carbons</b>.</li>
+        <li>General formula <b>R–CO–R'</b>. Change <b>-e → -one</b> + number: CH₃CH₂COCH₃ = <b>2-butanone</b>.</li>
+        <li>Simplest and most common: <b>propanone (acetone)</b>.</li>
+        <li>Never "1-…one": a C=O at C1 would be an <b>aldehyde</b>.</li>
+        <li>Polar → good <b>solvents for polar compounds</b>. Acetone = <b>nail polish remover</b>.</li>
+      </ul>
+    </div>
+
+    <div class="box s6">
+      <h3>Carboxylic acids</h3>
+      <p><b>Carboxyl group –COOH</b> = carbonyl + hydroxyl on the same C.</p>
+      <ul class="hand">
+        <li>General formula <b>R–COOH</b>. The <b>most polar</b> family in this chapter; <b>weak acids</b>.</li>
+        <li>Two –COOH = <b>dicarboxylic acid</b> (oxalic, adipic). Salicylic acid is also a carboxylic acid.</li>
+        <li>Same –COOH group → <b>same chemical properties</b> (C₃H₇COOH and CH₃COOH react alike).</li>
+      </ul>
+      <div class="eq">CH₃COOH + NaOH → <b>CH₃COONa</b> + H₂O</div><p class="small">CH₃COONa = sodium acetate (a salt).</p>
+      <div class="eq">vinegar + sodium bicarbonate → <b>CO₂</b> gas (bubbles)</div>
+      <p class="small">Ethanoic acid (acetic acid) = <b>vinegar</b>. Methanoic acid (formic acid) = what <b>ants</b> produce to defend themselves.</p>
+    </div>
+
+    <div class="box s6">
+      <h3>Esters &amp; amides (from acids)</h3>
+      <div class="sortgrid">
+        <div class="bin" style="--k:var(--orange);--kb:var(--orangebg)"><span class="t">Ester RCOOR'</span><p>H of –COOH replaced by an <b>alkyl group</b>.</p><p>Name: alkyl + acid <b>-ic → -ate</b></p><p class="small"><b>Fruity smell</b> → found in <b>perfumes, fruits and roses</b>. Ethyl butanoate = <b>pineapple</b>; methyl hexanoate = <b>strawberries</b>.</p></div>
+        <div class="bin" style="--k:var(--purple);--kb:var(--purplebg)"><span class="t">Amide R–CO–NHR'</span><p>–OH of –COOH replaced by <b>N</b>.</p><p>Name: <b>-e → -amide</b>: CH₃CH₂CONH₂ = <b>propanamide</b></p><p class="small"><b>Urea</b> NH₂CONH₂ (<b>carbamide</b>) is an amide.</p></div>
+      </div>
+    </div>
+
+    <div class="box s12">
+      <h3>Examples</h3>
+      <div class="molrow"><div id="c7"></div><div id="c8"></div></div>
+    </div>
+
+    <div class="box note s12" style="transform:rotate(-.3deg)">
+      <h3>Condensation reaction</h3>
+      <p>Two small organic molecules <b>join</b> into a bigger one and <span class="hl"><b>lose a small molecule</b></span> (usually <b>water</b>).</p>
+      <div class="eq" style="background:transparent">carboxylic acid + alcohol → <b>ester</b> + water &nbsp;&nbsp; RCOOH + R'OH → RCOOR' + H₂O</div>
+      <p class="small">This is called <b>esterification</b>. Example: ethanol + acetic acid → <b>ethyl ethanoate</b> (an ester) + water.</p>
+    </div>
+
+    <div class="box s12" style="--c:var(--blue)">
+      <h3>Solubility in water: count the hydrogen bonds!</h3>
+      <p>A molecule dissolves in water when it can <b>hydrogen bond with water molecules</b>. It can do this in two ways:</p>
+      <div class="sortgrid">
+        <div class="bin" style="--k:var(--blue);--kb:var(--bluebg)"><span class="t">Give an H-bond</span><p>it has an <b>H on O or N</b> (O–H, N–H) that is attracted to the O of water</p></div>
+        <div class="bin" style="--k:var(--pink);--kb:var(--pinkbg)"><span class="t">Receive an H-bond</span><p>it has an <b>O or N</b> that attracts the H of water</p></div>
+      </div>
+      <p><span class="hl"><b>More H-bonds with water → more soluble.</b></span></p>
+      <div class="duo" style="align-items:center">
+        <div class="bin" style="--k:var(--pink);--kb:var(--card)"><span class="t">Ethanoic acid in water: the winner</span><div id="solAcid" style="justify-self:center"></div>
+          <p class="small">The –COOH group <b>gives</b> one H-bond (from its O–H) and <b>receives</b> H-bonds on <b>two oxygens</b> (C=O and O–H), so it makes the <b>most</b> H-bonds with water.</p></div>
+        <div class="tscroll"><table class="rc">
+          <tr><th>Family</th><th>Gives?</th><th>Receives?</th><th>Solubility</th></tr>
+          <tr><td>Alkane</td><td class="n">✗</td><td class="n">✗</td><td>insoluble</td></tr>
+          <tr><td>Ether</td><td class="n">✗</td><td class="y">✓ 1 O</td><td>low</td></tr>
+          <tr><td>Aldehyde / ketone</td><td class="n">✗</td><td class="y">✓ 1 O (C=O)</td><td>moderate</td></tr>
+          <tr><td>Amine</td><td class="y">✓ N–H</td><td class="y">✓ N</td><td>good</td></tr>
+          <tr><td>Alcohol</td><td class="y">✓ O–H</td><td class="y">✓ O</td><td>very good</td></tr>
+          <tr style="background:var(--pinkbg)"><td><b>Carboxylic acid</b></td><td class="y">✓ O–H</td><td class="y"><b>✓✓ 2 O</b></td><td><b>most soluble</b></td></tr>
+        </table></div>
+      </div>
+      <div class="chain">Solubility (similar size): alkane &lt; ether &lt; aldehyde/ketone &lt; amine &lt; alcohol &lt; <span class="res">carboxylic acid (most soluble)</span></div>
+      <p class="small">Very small molecules (1–3 C) of alcohols, acids and acetone mix completely with water. As the carbon chain gets <b>longer</b>, the nonpolar part grows and solubility <b>drops</b>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSON 4 ============ -->
+<section class="lesson L4" id="l4">
+  <div class="lhead">
+    <span class="lnum">Lesson 4</span>
+    <h2>Other Reactions of Organic Compounds</h2>
+    <p class="fq"><b>Focus question:</b> What reactions are typical of organic compounds? → <span class="hl">5 types</span>: substitution, elimination, addition, oxidation–reduction, condensation.</p>
+  </div>
+
+  <div class="grid">
+    <div class="box s6">
+      <h3>Elimination: make a double bond</h3>
+      <p>Atoms are <b>removed from two neighbouring C</b> → a new <b>double bond</b> forms. A small molecule (H₂, HX, H₂O) leaves.</p>
+      <dl class="def" style="grid-template-columns:1fr; gap:2px">
+        <dt>Dehydrogenation</dt><dd>lose <b>H₂</b><div class="eq">CH₃–CH₃ → CH₂=CH₂ + H₂</div></dd>
+        <dt>From alkyl halide</dt><dd>lose <b>HX</b><div class="eq">R–CH₂–CH₂–X → R–CH=CH₂ + HX</div></dd>
+        <dt>Dehydration</dt><dd>lose <b>H₂O</b> (alcohol → alkene)<div class="eq">CH₃–CH₂OH → CH₂=CH₂ + H₂O</div></dd>
+      </dl>
+      <p class="small">alkane → alkene, alkyl halide → alkene, alcohol → alkene are all <b>elimination</b>.</p>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Addition: break a double bond</h3>
+      <p>The <b>reverse of elimination</b>. Atoms <b>add across</b> a double or triple bond. Start: <b>R–CH=CH–R'</b></p>
+      <div class="tscroll"><table>
+        <tr><th>Add</th><th>Name</th><th>Product</th></tr>
+        <tr><td><b>H₂O</b></td><td>hydration</td><td><b>alcohol</b></td></tr>
+        <tr><td><b>H₂</b></td><td>hydrogenation</td><td><b>alkane</b></td></tr>
+        <tr><td><b>HX</b></td><td>–</td><td><b>alkyl halide</b></td></tr>
+        <tr><td><b>X₂</b></td><td>–</td><td><b>alkyl dihalide</b></td></tr>
+      </table></div>
+      <div class="eq">CH₂=CH₂ + H₂O → <b>CH₃CH₂OH</b> &nbsp;<span class="small">ethene → ethanol</span></div>
+      <p class="small">propene + H₂O (H₂SO₄ catalyst) → <b>alcohol</b> · butene + H₂ → <b>butane</b>. <b>Hydrogenation</b> turns liquid <b>vegetable oils into solid fats</b>.</p>
+    </div>
+
+    <div class="box s12">
+      <h3>Addition products</h3>
+      <div class="molrow">
+        <div id="d1"></div><div id="d2"></div><div id="d3"></div><div id="d4"></div>
+      </div>
+    </div>
+
+    <div class="box s6">
+      <h3>Oxidation–reduction</h3>
+      <div class="sortgrid">
+        <div class="bin" style="--k:var(--orange);--kb:var(--orangebg)"><span class="t">Oxidation</span><p><b>gains O</b> or <b>loses H</b></p></div>
+        <div class="bin" style="--k:var(--blue);--kb:var(--bluebg)"><span class="t">Reduction</span><p><b>loses O</b> or <b>gains H</b></p></div>
+      </div>
+      <p class="small"><b>Oxidizing agents:</b> K₂Cr₂O₇, KMnO₄, PCC. <b>Reducing agents:</b> NaBH₄, LiAlH₄.</p>
+    </div>
+
+    <div class="box note b s6">
+      <h3>Oxidation &amp; reduction of alcohols</h3>
+      <ul class="hand star">
+        <li><b>1° alcohol</b> → <b>aldehyde</b> → (strong) <b>carboxylic acid</b>: 1-propanol → propanal → propanoic acid; ethanol → ethanal → ethanoic acid</li>
+        <li><b>2° alcohol</b> → <b>ketone</b>, then <b>stops</b>: 2-propanol → 2-propanone</li>
+        <li><b>3° alcohol</b> → <b>no oxidation</b></li>
+        <li><b>Reduction</b> goes backwards: aldehyde → <b>1° alcohol</b>; ketone → <b>2° alcohol</b> (propanone → 2-propanol)</li>
+      </ul>
+    </div>
+
+    <div class="box s12">
+      <h3>Oxidation sequence: methane to CO₂</h3>
+      <div class="molrow">
+        <div id="o0"></div>
+        <div class="arw">→<small>gain O</small></div>
+        <div id="o1"></div>
+        <div class="arw">→<small>lose H</small></div>
+        <div id="o2"></div>
+        <div class="arw">→<small>gain O</small></div>
+        <div id="o3"></div>
+        <div class="arw">→<small>lose H</small></div>
+        <div id="o4"></div>
+      </div>
+      <p class="small" style="text-align:center">alkane → alcohol → aldehyde → carboxylic acid → CO₂</p>
+    </div>
+
+    <div class="box tint s12">
+      <h3>Predicting products</h3>
+      <ol class="steps">
+        <li>Find the <b>reaction type</b> and write its <b>general equation</b>.</li>
+        <li>Draw the <b>structure</b> of the reactant.</li>
+        <li>Apply the general equation to it.</li>
+      </ol>
+      <div class="chain">1-butanol, dehydration: CH₃CH₂CH₂CH₂OH → <span class="res">CH₃CH₂CH=CH₂ (1-butene)</span> + H₂O</div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ LESSON 5 ============ -->
+<section class="lesson L5" id="l5">
+  <div class="lhead">
+    <span class="lnum">Lesson 5</span>
+    <h2>Polymers</h2>
+    <p class="fq"><b>Focus question:</b> Why are polymers so important? → They are <span class="hl">cheap, easy to shape, durable</span> and have a huge range of properties.</p>
+  </div>
+
+  <div class="grid">
+    <div class="box s6">
+      <h3>Key words</h3>
+      <dl class="def">
+        <dt>Polymer</dt><dd>a very large molecule made of many <b>repeating units</b>.</dd>
+        <dt>Monomer</dt><dd>the <b>small molecule</b> a polymer is made from.</dd>
+        <dt>Structural unit</dt><dd>the <b>repeating group</b> in the polymer, shown in brackets with <b>n</b>.</dd>
+        <dt>Polymerization</dt><dd>the reaction that <b>bonds monomers</b> together (usually needs a catalyst).</dd>
+      </dl>
+      <div class="eq">n CH₂=CH₂ → –[ CH₂–CH₂ ]ₙ– &nbsp; <span class="small">polyethylene</span></div>
+    </div>
+
+    <div class="box tint s6">
+      <h3>Properties of polymers</h3>
+      <ul class="hand">
+        <li><b>Most do NOT dissolve in water</b>.</li>
+        <li>Chemically <b>unreactive</b> (don't rust or decay).</li>
+        <li><b>Poor conductors</b> of electricity → insulation.</li>
+        <li>Easy to shape → <b>many industrial uses</b>.</li>
+      </ul>
+      <p class="small"><b>Polyethylene</b>: waxy, insoluble in water, unreactive, electrical insulator.</p>
+    </div>
+
+    <div class="box s12">
+      <h3>Know the repeating units</h3>
+      <div class="molrow"><div id="py1"></div><div id="py2"></div><div id="py3"></div><div id="py4"></div><div id="py5"></div></div>
+    </div>
+
+    <div class="box s12">
+      <h3>Uses to remember</h3>
+      <div class="tscroll"><table>
+        <tr><th>Polymer</th><th>Used for</th></tr>
+        <tr><td><b>Polyvinyl chloride (PVC)</b></td><td><b>water pipes</b></td></tr>
+        <tr><td><b>Polyacrylonitrile</b></td><td><b>carpets and fabrics</b></td></tr>
+        <tr><td><b>Polyethylene (PE)</b></td><td>bags, bottles, electrical insulation</td></tr>
+        <tr><td><b>Polypropylene (PP)</b></td><td>food boxes, bottle caps</td></tr>
+        <tr><td><b>Polystyrene (PS)</b></td><td>foam cups, trays</td></tr>
+      </table></div>
+    </div>
+
+    <div class="box s12">
+      <h3>Recycling codes 1–7</h3>
+      <p>The number inside the ♻ triangle tells you <b>which polymer</b> the plastic is made of.</p>
+      <div class="tscroll"><table class="rc">
+        <tr><th>Code</th><th>Plastic</th><th>Common uses</th><th>Food safe?</th><th>Microwave?</th><th>Recycling</th></tr>
+        <tr><td><span class="code">1</span></td><td><b>PETE</b> (PET)</td><td>water &amp; soft-drink bottles</td><td class="y">✓ single use</td><td class="n">✗</td><td class="y">easy</td></tr>
+        <tr><td><span class="code">2</span></td><td><b>HDPE</b> high-density polyethylene</td><td>milk jugs, shampoo bottles</td><td class="y">✓</td><td class="n">✗</td><td class="y">easy</td></tr>
+        <tr><td><span class="code">3</span></td><td><b>V</b> (PVC) polyvinyl chloride</td><td>pipes, cables</td><td class="n">✗ avoid</td><td class="n">✗</td><td class="n">hard</td></tr>
+        <tr><td><span class="code">4</span></td><td><b>LDPE</b> low-density polyethylene</td><td>plastic bags, food wrap</td><td class="y">✓</td><td class="n">✗ melts</td><td class="m">harder (films)</td></tr>
+        <tr><td><span class="code">5</span></td><td><b>PP</b> polypropylene</td><td>food boxes, yogurt cups, bottle caps</td><td class="y">✓</td><td class="y"><b>✓ heat resistant</b></td><td class="m">medium</td></tr>
+        <tr><td><span class="code">6</span></td><td><b>PS</b> polystyrene</td><td>foam cups, takeaway trays</td><td class="n">✗ not with hot food</td><td class="n">✗</td><td class="n">hard</td></tr>
+        <tr><td><span class="code">7</span></td><td><b>Other</b> (mixed, polycarbonate…)</td><td>mixed plastics</td><td class="n">✗ avoid</td><td class="n">✗</td><td class="n">hardest</td></tr>
+      </table></div>
+      <div class="chain">Safe for food: <span class="res">1, 2, 4, 5</span> ("5, 4, 1, 2, all the rest are bad for you") · Microwave: <span class="res">only 5 (PP)</span> · Easiest to recycle: <span class="res">1 and 2</span> · Hardest: <b>3, 6, 7</b></div>
+      <p class="small">Mixed plastics must be <b>sorted by code</b> before they can be melted and re-moulded, which is why recycling is slow and expensive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BIG PICTURE ============ -->
+<section class="lesson L1" id="l6">
+  <div class="lhead">
+    <span class="lnum">Review</span>
+    <h2>Big Picture</h2>
+    <p class="fq">Test yourself on the whole chapter, then tap to check.</p>
+  </div>
+  <div class="grid">
+    <div class="box s12">
+      <h3>Reaction types cheat sheet</h3>
+      <div class="tscroll"><table class="cmp">
+        <tr><th></th><th>What happens</th><th>Example</th></tr>
+        <tr><td>Substitution</td><td>one atom/group <b>replaces</b> another</td><td>alkane + Cl₂ → alkyl halide + HCl</td></tr>
+        <tr><td>Elimination</td><td>atoms <b>removed</b> → C=C forms</td><td>alcohol → alkene + H₂O</td></tr>
+        <tr><td>Addition</td><td>atoms <b>added</b> to C=C or C≡C</td><td>alkene + H₂ → alkane</td></tr>
+        <tr><td>Oxidation</td><td><b>gain O / lose H</b></td><td>1° alcohol → aldehyde → acid; 2° alcohol → ketone</td></tr>
+        <tr><td>Reduction</td><td><b>lose O / gain H</b></td><td>ketone → 2° alcohol (NaBH₄, LiAlH₄)</td></tr>
+        <tr><td>Condensation</td><td>two molecules <b>join</b>, lose H₂O</td><td>acid + alcohol → ester + H₂O</td></tr>
+      </table></div>
+    </div>
+
+    <div class="box s12">
+      <h3>Try it yourself</h3>
+      <div class="duo">
+        <details>
+          <summary>Name the family</summary>
+          <div class="ans" style="grid-template-columns:1fr">
+            <div>CH₃CH₂OH → <b>alcohol</b></div>
+            <div>CH₃–O–CH₃ → <b>ether</b></div>
+            <div>CH₃CH₂NH₂ → <b>amine</b></div>
+            <div>CH₃CHO → <b>aldehyde</b></div>
+            <div>CH₃COCH₃ → <b>ketone</b></div>
+            <div>CH₃COOH → <b>carboxylic acid</b></div>
+            <div>CH₃COOCH₂CH₃ → <b>ester</b></div>
+            <div>CH₃CONH₂ → <b>amide</b></div>
+          </div>
+        </details>
+        <details>
+          <summary>Name it</summary>
+          <div class="ans" style="grid-template-columns:1fr">
+            <div>CH₃CH₂CH₂Cl → <b>1-chloropropane</b></div>
+            <div>Benzene with one F → <b>fluorobenzene</b></div>
+            <div>CH₃CH₂CH₂OH → <b>1-propanol</b></div>
+            <div>HCHO → <b>methanal</b> (formaldehyde)</div>
+            <div>CH₃COCH₂CH₃ → <b>2-butanone</b></div>
+            <div>HCOOH → <b>methanoic acid</b> (formic acid)</div>
+            <div>CH₃–O–CH₃ → <b>dimethyl ether</b></div>
+            <div>CH₃CH₂CH₂COOCH₂CH₃ → <b>ethyl butanoate</b></div>
+          </div>
+        </details>
+      </div>
+      <details style="margin-top:12px">
+        <summary>Reactions &amp; properties</summary>
+        <div class="ans" style="grid-template-columns:1fr">
+          <div>Which has the higher bp: 1-chloropentane or 1-iodopentane? → <b>1-iodopentane</b> (more electrons)</div>
+          <div>Why do alcohols boil higher than ethers of similar size? → alcohols form <b>hydrogen bonds</b></div>
+          <div>CH₂=CH₂ + H₂ → CH₃CH₃ is… → <b>addition</b> (hydrogenation)</div>
+          <div>Alcohol → alkene + H₂O is… → <b>elimination</b> (dehydration)</div>
+          <div>Which cannot be oxidized to an acid: aldehyde or ketone? → <b>ketone</b></div>
+          <div>Which alcohol does NOT oxidize? → <b>tertiary (3°)</b></div>
+          <div>Reduction of propanone gives… → <b>2-propanol</b></div>
+          <div>Which polymer is used for water pipes? → <b>PVC</b></div>
+        </div>
+      </details>
+    </div>
+  </div>
+  <p class="foot">Spot the functional group, and the name and reactions follow. You've got this! ✎</p>
+</section>
+
+</div>
+
+<script>
+(function(){
+  const put=(id,html)=>{const el=document.getElementById(id); if(el) el.innerHTML=html;};
+  const T=(x,y,t,o)=>{o=o||{};return `<text x="${x}" y="${y}" text-anchor="${o.a||'middle'}" font-size="${o.s||18}" ${o.b?'font-weight="700"':''} style="fill:${o.c||'var(--ink)'}">${t}</text>`;};
+  const L=(x1,y1,x2,y2,c,w)=>`<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" style="stroke:${c||'var(--ink)'}" stroke-width="${w||2}" stroke-linecap="round"/>`;
+  const PK='var(--pink)', OR='var(--orange)', MT='var(--mint)', BL='var(--blue)', PU='var(--purple)';
+
+  // atoms: [x, y, label, color, size]; bonds: [i, j, order, color]
+  function mol(atoms,bonds,o){
+    o=o||{}; const U=o.u||50, pad=22;
+    const xs=atoms.map(a=>a[0]), ys=atoms.map(a=>a[1]);
+    const mx=Math.min(...xs), my=Math.min(...ys);
+    const W0=(Math.max(...xs)-mx)*U+pad*2+30, H=(Math.max(...ys)-my)*U+pad*2;
+    const lw=Math.max(o.label?o.label.length*8.2+10:0, o.sub?o.sub.length*6.8+10:0), W=Math.max(W0,lw), ox=(W-W0)/2;
+    const P=a=>[(a[0]-mx)*U+pad+15+ox,(a[1]-my)*U+pad];
+    const hw=l=>{ if(!l) return 0; const big=l.replace(/[₀-₉'⁻⁺]/g,'').length, sm=l.length-big; return big*6.2+sm*3+5; };
+    let s='';
+    bonds.forEach(b=>{
+      const A=atoms[b[0]], B=atoms[b[1]], ord=b[2]||1, col=b[3]||'var(--ink)';
+      const [x1,y1]=P(A), [x2,y2]=P(B); const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy), ux=dx/len, uy=dy/len;
+      const sh=a=>{ if(!a[2]) return 0; const w=hw(a[2]), h=12; return Math.min(Math.abs(ux)>1e-3?w/Math.abs(ux):1e9, Math.abs(uy)>1e-3?h/Math.abs(uy):1e9); };
+      const s1=sh(A), s2=sh(B);
+      for(let k=0;k<ord;k++){ const off=(k-(ord-1)/2)*6, px=-uy*off, py=ux*off;
+        const ln=L(x1+ux*s1+px,y1+uy*s1+py,x2-ux*s2+px,y2-uy*s2+py,col,b[4]?2.5:2); s+=b[4]?ln.replace('/>',' stroke-dasharray="3 5"/>'):ln; }
+    });
+    atoms.forEach(a=>{ if(!a[2]) return; const [x,y]=P(a); s+=T(x,y+6,a[2],{s:a[4]||19,b:1,c:a[3]||'var(--ink)'}); });
+    const HH=H+(o.label?(o.sub?40:22):0);
+    if(o.label) s+=T(W/2,H+10,o.label,{s:15,b:1,c:o.lc||'var(--c)'});
+    if(o.sub) s+=T(W/2,H+28,o.sub,{s:13,c:'var(--soft)'});
+    return `<svg viewBox="0 0 ${W} ${HH}" style="width:${W}px;max-width:100%" role="img" aria-label="${o.aria||o.label||'structure'}">${s}</svg>`;
+  }
+
+  // ring: n sides, options circle, dbl (edge indexes), subs [[vertex,label,color]], label
+  function ring(n,o){
+    o=o||{}; const R=36, W=Math.max(200,(o.label||'').length*8.4+14), cx=W/2, cy=84; const p=[];
+    for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n; p.push([cx+R*Math.cos(a),cy+R*Math.sin(a)]);}
+    let s=`<polygon points="${p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}" style="fill:none;stroke:var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>`;
+    if(o.circle) s+=`<circle cx="${cx}" cy="${cy}" r="${R*0.58}" style="fill:none;stroke:var(--ink)" stroke-width="2"/>`;
+    (o.dbl||[]).forEach(e=>{const a=p[e], b=p[(e+1)%n]; const m=(q)=>[cx+(q[0]-cx)*0.78, cy+(q[1]-cy)*0.78];
+      const a2=m(a), b2=m(b); const t=0.15; s+=L(a2[0]+(b2[0]-a2[0])*t,a2[1]+(b2[1]-a2[1])*t,b2[0]-(b2[0]-a2[0])*t,b2[1]-(b2[1]-a2[1])*t,MT,2.2);});
+    (o.nums||[]).forEach((t,i)=>{ if(!t) return; const [x,y]=p[i]; s+=T(cx+(x-cx)*0.6,cy+(y-cy)*0.6+5,t,{s:13,b:1,c:OR}); });
+    (o.subs||[]).forEach(([v,l,c])=>{const [x,y]=p[v]; const ux=(x-cx)/R, uy=(y-cy)/R;
+      s+=L(x,y,x+ux*20,y+uy*20)+T(x+ux*36,y+uy*34+6,l,{s:18,b:1,c:c||PK});});
+    const H=o.label?196:172;
+    if(o.label) s+=T(cx,188,o.label,{s:15,b:1,c:'var(--c)'});
+    return `<svg viewBox="0 0 ${W} ${H}" style="width:${W}px;max-width:100%" role="img" aria-label="${o.label||'ring structure'}">${s}</svg>`;
+  }
+
+  // ---------- Lesson 1: general formulas ----------
+  const g=(o)=>Object.assign({u:36},o);
+  put('g-hal', mol([[0,0,'R'],[1,0,'X',PK]],[[0,1]],g()));
+  put('g-alc', mol([[0,0,'R'],[1,0,'OH',PK]],[[0,1]],g()));
+  put('g-eth', mol([[0,0,'R'],[1,0,'O',PK],[2,0,"R'"]],[[0,1],[1,2]],g()));
+  put('g-ami', mol([[0,0,'R'],[1,0,'NH₂',PK]],[[0,1]],g()));
+  put('g-ald', mol([[0,1,'R'],[1,1,'C',PK],[1,0,'O',PK],[2,1,'H',PK]],[[0,1],[1,2,2,PK],[1,3]],g()));
+  put('g-ket', mol([[0,1,'R'],[1,1,'C',PK],[1,0,'O',PK],[2,1,"R'"]],[[0,1],[1,2,2,PK],[1,3]],g()));
+  put('g-acd', mol([[0,1,'R'],[1,1,'C',PK],[1,0,'O',PK],[2,1,'OH',PK]],[[0,1],[1,2,2,PK],[1,3]],g()));
+  put('g-est', mol([[0,1,'R'],[1,1,'C',PK],[1,0,'O',PK],[2,1,'O',PK],[3,1,"R'"]],[[0,1],[1,2,2,PK],[1,3],[3,4]],g()));
+  put('g-amd', mol([[0,1,'R'],[1,1,'C',PK],[1,0,'O',PK],[2,1,'NH₂',PK]],[[0,1],[1,2,2,PK],[1,3]],g()));
+
+  // Lesson 1 examples
+  put('h1', mol([[1,0,'H'],[0,1,'Cl',PK],[1,1,'C'],[2,1,'H'],[1,2,'H']],[[0,2],[1,2],[2,3],[2,4]],{label:'chloromethane',sub:'alkyl halide'}));
+  put('h2', mol([[0,1,'CH₃'],[1,1,'CH'],[2,1,'CH'],[3,1,'CH₃'],[1,0,'Br',PK],[2,0,'CH₃',BL],[0,1.7,'1',OR,14],[1,1.7,'2',OR,14],[2,1.7,'3',OR,14],[3,1.7,'4',OR,14]],[[0,1],[1,2],[2,3],[1,4],[2,5]],{label:'2-bromo-3-methylbutane'}));
+  put('h3', mol([[0,1,'CH₂'],[1,1,'CH'],[2,1,'CH'],[3,1,'CH₃'],[0,0,'Br',PK],[1,0,'F',PK],[2,0,'Cl',PK],
+                 [0,1.7,'1',OR,14],[1,1.7,'2',OR,14],[2,1.7,'3',OR,14],[3,1.7,'4',OR,14]],
+                [[0,1],[1,2],[2,3],[0,4],[1,5],[2,6]],{label:'1-bromo-3-chloro-2-fluorobutane'}));
+  put('h4', ring(6,{circle:1,subs:[[0,'Br'],[2,'Br']],label:'1,3-dibromobenzene'}));
+  put('h5', ring(6,{circle:1,subs:[[0,'F'],[1,'Br'],[3,'Cl']],label:'2-bromo-4-chloro-1-fluorobenzene'}));
+  put('h6', ring(5,{dbl:[4],subs:[[0,'CH₃',BL],[1,'Cl']],nums:['2','3','','','1'],label:'3-chloro-2-methylcyclopentene'}));
+  put('h7', ring(6,{dbl:[0],subs:[[3,'Br'],[4,'Cl']],nums:['1','2','3','4','5','6'],label:'4-bromo-5-chlorocyclohexene'}));
+
+  // ---------- Lesson 2 ----------
+  put('a1', mol([[0,0,'CH₃'],[1,0,'CH₂'],[2,0,'CH₂'],[3,0,'CH₂'],[4,0,'OH',PK],
+                 [0,0.7,'4',OR,14],[1,0.7,'3',OR,14],[2,0.7,'2',OR,14],[3,0.7,'1',OR,14]],[[0,1],[1,2],[2,3],[3,4]],{label:'1-butanol'}));
+  put('a2', mol([[0,1,'CH₃'],[1,1,'CH'],[2,1,'CH₂'],[3,1,'CH₃'],[1,0,'OH',PK],
+                 [0,1.7,'1',OR,14],[1,1.7,'2',OR,14],[2,1.7,'3',OR,14],[3,1.7,'4',OR,14]],[[0,1],[1,2],[2,3],[1,4]],{label:'2-butanol'}));
+  put('am1', mol([[0,0,'R'],[1,0,'N',PU],[1,1,'H'],[2,0,'H']],[[0,1],[1,2],[1,3]],{u:40,label:'primary (1°)',sub:'1 R group'}));
+  put('am2', mol([[0,0,'R'],[1,0,'N',PU],[1,1,'H'],[2,0,"R'"]],[[0,1],[1,2],[1,3]],{u:40,label:'secondary (2°)',sub:'2 R groups'}));
+  put('am3', mol([[0,0,'R'],[1,0,'N',PU],[1,1,"R''"],[2,0,"R'"]],[[0,1],[1,2],[1,3]],{u:40,label:'tertiary (3°)',sub:'3 R groups'}));
+  // H-bond pictures
+  put('hb1', mol([[0,0,'CH₃'],[1.2,0,'O',PK],[1.7,0.8,'H',BL],[2.7,1.5,'O',PK],[3.9,1.5,'CH₃'],[2.2,2.3,'H',BL],
+                  [1.2,-0.6,'δ−',PK,15],[1.25,1.15,'δ+',BL,15],[2.95,0.95,'δ−',PK,15],[1.75,1.7,'H-bond',PK,14]],
+                 [[0,1],[1,2],[3,4],[3,5],[2,3,1,PK,1]],{u:48,aria:'Two methanol molecules joined by a hydrogen bond from the H of one O-H to the O of the other'}));
+  put('hb2', mol([[0,0,'CH₃'],[0.8,0.6,'O',PK],[1.6,0,'CH₃'],[2.3,1.6,'CH₃'],[3.1,2.2,'O',PK],[3.9,1.6,'CH₃'],
+                  [0.8,1.2,'δ−',PK,15],[3.1,2.8,'δ−',PK,15],[1.7,1.3,'✗',PK,28]],
+                 [[0,1],[1,2],[3,4],[4,5]],{u:48,aria:'Two methyl ether molecules with no hydrogen bond between them'}));
+  put('a5', mol([[0,0,'CH₃'],[1,0,'CH'],[2,0,'CH₂'],[3,0,'CH₂'],[4,0,'OH',PK],[1,1,'C₂H₅',BL]],[[0,1],[1,2],[2,3],[3,4],[1,5]],{label:'3-methyl-1-pentanol',sub:'longest chain with C–OH = 5 C'}));
+  put('al1', mol([[0,1,'H'],[1,1,'C'],[2,1,'OH',PK],[1,0,'H'],[1,2,'R',BL]],[[0,1],[1,2],[1,3],[1,4]],{u:40,label:'primary (1°)',sub:'1 C on the C–OH · ethanol'}));
+  put('al2', mol([[0,1,'R',BL],[1,1,'C'],[2,1,'OH',PK],[1,0,'H'],[1,2,"R'",BL]],[[0,1],[1,2],[1,3],[1,4]],{u:40,label:'secondary (2°)',sub:'2 C · 2-propanol CH₃CHOHCH₃'}));
+  put('al3', mol([[0,1,'R',BL],[1,1,'C'],[2,1,'OH',PK],[1,0,"R''",BL],[1,2,"R'",BL]],[[0,1],[1,2],[1,3],[1,4]],{u:40,label:'tertiary (3°)',sub:'3 C · (CH₃)₃C–OH'}));
+  put('a3', ring(6,{subs:[[0,'OH']],label:'cyclohexanol'}));
+  put('a4', mol([[0,0,'CH₂'],[1,0,'CH'],[2,0,'CH₂'],[0,1,'OH',PK],[1,1,'OH',PK],[2,1,'OH',PK]],[[0,1],[1,2],[0,3],[1,4],[2,5]],{label:'1,2,3-propanetriol',sub:'(glycerol)'}));
+
+  // ---------- Lesson 3 ----------
+  const small={u:38};
+  put('c1', mol([[0,1,'H'],[1,1,'C'],[2,1,'H'],[1,0,'O',MT]],[[0,1],[1,2],[1,3,2,MT]],Object.assign({label:'methanal',sub:'(formaldehyde)'},small)));
+  put('c2', mol([[0,1,'CH₃'],[1,1,'C'],[2,1,'H'],[1,0,'O',MT]],[[0,1],[1,2],[1,3,2,MT]],Object.assign({label:'ethanal',sub:'(acetaldehyde)'},small)));
+  put('c3', mol([[0,1,'CH₃'],[1,1,'C'],[2,1,'CH₃'],[1,0,'O',BL]],[[0,1],[1,2],[1,3,2,BL]],Object.assign({label:'2-propanone',sub:'(acetone)'},small)));
+  put('c4', mol([[0,1,'CH₃'],[1,1,'C'],[2,1,'CH₂'],[3,1,'CH₃'],[1,0,'O',BL]],[[0,1],[1,2],[2,3],[1,4,2,BL]],Object.assign({label:'2-butanone'},small)));
+  put('c5', mol([[0,1,'H'],[1,1,'C'],[2,1,'OH',PK],[1,0,'O',PK]],[[0,1],[1,2],[1,3,2,PK]],Object.assign({label:'methanoic acid',sub:'(formic acid)'},small)));
+  put('c6', mol([[0,1,'CH₃'],[1,1,'C'],[2,1,'OH',PK],[1,0,'O',PK]],[[0,1],[1,2],[1,3,2,PK]],Object.assign({label:'ethanoic acid',sub:'(acetic acid)'},small)));
+  put('c7', mol([[0,1,'CH₃'],[1,1,'C'],[1,0,'O',OR],[2,1,'O',OR],[3,1,'CH₂'],[4,1,'CH₂'],[5,1,'CH₃']],
+                [[0,1],[1,2,2,OR],[1,3],[3,4],[4,5],[5,6]],{label:'propyl ethanoate',sub:'ethanoate part  |  propyl part'}));
+  put('c8', mol([[0,1,'CH₃'],[1,1,'C'],[1,0,'O',PK],[2,1,'NH₂',PK]],[[0,1],[1,2,2,PK],[1,3]],{label:'ethanamide',sub:'(acetamide)'}));
+
+  // ---------- Lesson 4 ----------
+  const add=(a,b,label)=>mol([[0,1,'R'],[1,1,'C'],[2,1,'C'],[3,1,"R'"],[1,0,a,PK],[2,0,b,PK],[1,2,'H'],[2,2,'H']],
+                              [[0,1],[1,2],[2,3],[1,4],[2,5],[1,6],[2,7]],{label:label,u:40});
+  put('d1', add('H','OH','alcohol (+H₂O)'));
+  put('d2', add('H','H','alkane (+H₂)'));
+  put('d3', add('H','X','alkyl halide (+HX)'));
+  put('d4', add('X','X','alkyl dihalide (+X₂)'));
+
+  put('o0', mol([[0,1,'H'],[1,1,'C'],[2,1,'H'],[1,0,'H'],[1,2,'H']],[[0,1],[1,2],[1,3],[1,4]],{label:'methane',u:38}));
+  put('o1', mol([[0,1,'H'],[1,1,'C'],[2,1,'OH',PK],[1,0,'H'],[1,2,'H']],[[0,1],[1,2],[1,3],[1,4]],{label:'methanol',u:38}));
+  put('o2', mol([[0,1,'H'],[1,1,'C'],[2,1,'H'],[1,0,'O',PK]],[[0,1],[1,2],[1,3,2,PK]],{label:'methanal',u:38}));
+  put('o3', mol([[0,1,'H'],[1,1,'C'],[2,1,'OH',PK],[1,0,'O',PK]],[[0,1],[1,2],[1,3,2,PK]],{label:'methanoic acid',u:38}));
+  put('o4', mol([[0,1,'O',PK],[1,1,'C'],[2,1,'O',PK]],[[0,1,2],[1,2,2]],{label:'carbon dioxide',u:38}));
+
+  // recycling triangles (chasing arrows like the textbook symbol)
+  (function(){
+    const R=28, T=[0,-R], BR=[R*0.866,R/2], BL=[-R*0.866,R/2];
+    const lerp=(p,q,t)=>[p[0]+(q[0]-p[0])*t, p[1]+(q[1]-p[1])*t], F=v=>v.toFixed(2);
+    // one arrow: tail wraps around corner BR, runs along bottom side, head points at BL
+    const a0=lerp(BR,T,0.12), a1=lerp(BR,BL,0.2), a2=lerp(BR,BL,0.56), tip=lerp(BR,BL,0.8);
+    const arrow=`<path d="M${F(a0[0])} ${F(a0[1])} Q${F(BR[0])} ${F(BR[1])} ${F(a1[0])} ${F(a1[1])} L${F(a2[0])} ${F(a2[1])}" fill="none" style="stroke:var(--mint)" stroke-width="5.5"/>`+
+      `<path d="M${F(a2[0])} ${F(a2[1]-6.5)} L${F(tip[0])} ${F(tip[1])} L${F(a2[0])} ${F(a2[1]+6.5)} Z" style="fill:var(--mint)"/>`;
+    document.querySelectorAll('.rc .code').forEach(el=>{
+      const n=el.textContent.trim();
+      el.innerHTML=`<svg viewBox="-33 -33 66 60" role="img" aria-label="recycling code ${n}">`+
+        [0,120,240].map(r=>`<g transform="rotate(${r})">${arrow}</g>`).join('')+
+        `<text x="0" y="5" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--ink)">${n}</text></svg>`;
+    });
+  })();
+  // ethanoic acid H-bonded to water
+  put('solAcid', mol([
+    [0,1.5,'CH₃'],[1,1.5,'C'],[1,0.5,'O',PK],[2,1.5,'O',PK],[2.6,2.2,'H',BL],
+    [3.5,2.9,'O'],[4.2,2.6,'H'],[3.6,3.6,'H'],
+    [1.9,-0.1,'H',BL],[2.7,-0.6,'O'],[3.4,-0.2,'H'],
+    [0.1,-0.1,'H',BL],[-0.7,-0.6,'O'],[-1.4,-0.2,'H'],
+    [1.5,2.5,'H',BL],[1.1,3.2,'O'],[0.4,3.4,'H'],
+    [3.4,1.6,'gives',BL,13],[2.5,0.35,'receives',PK,13],[-0.35,0.55,'receives',PK,13],[0.45,2.2,'receives',PK,13]
+   ],[
+    [0,1],[1,2,2],[1,3],[3,4],
+    [5,6],[5,7],[9,8],[9,10],[12,11],[12,13],[15,14],[15,16],
+    [4,5,1,BL,1],[2,8,1,PK,1],[2,11,1,PK,1],[3,14,1,PK,1]
+   ],{u:54,aria:'Ethanoic acid forming four hydrogen bonds with water molecules'}));
+  put('e1', (function(){ const hx=(cx,cy)=>{const R=30,p=[];for(let i=0;i<6;i++){const a=i*Math.PI/3;p.push([cx+R*Math.cos(a),cy+R*Math.sin(a)]);}return [p,`<polygon points="${p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}" style="fill:none;stroke:var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>`];};
+    const [p1,a]=hx(50,50),[p2,b]=hx(190,50); let s=a+b+L(p1[0][0],p1[0][1],108,50)+L(132,50,p2[3][0],p2[3][1])+T(120,56,'O',{s:19,b:1,c:PK})+T(120,108,'dicyclohexyl ether',{s:14,b:1,c:'var(--c)'});
+    return `<svg viewBox="0 0 240 118" style="width:240px;max-width:100%" role="img" aria-label="dicyclohexyl ether">${s}</svg>`; })());
+  const poly=(atoms,bonds,label,sub)=>{ const m=mol(atoms,bonds,{u:44,label:label,sub:sub}); return m; };
+  const unit=(sub1,sub2,label,use)=>poly([[-0.2,1,'['],[0.4,1,''],[1,1,'C'],[2,1,'C'],[2.6,1,''],[3.2,1,']ₙ'],[1,0,'H'],[2,0,'H'],[1,2,sub1,PK],[2,2,sub2]],[[1,2],[2,3],[3,4],[2,6],[3,7],[2,8],[3,9]],label,use);
+  put('py1', unit('H','H','polyethylene','from ethene'));
+  put('py2', unit('Cl','H','polyvinyl chloride (PVC)','water pipes'));
+  put('py3', unit('CH₃','H','polypropylene (PP)','food boxes'));
+  put('py4', unit('C₆H₅','H','polystyrene (PS)','C₆H₅ = benzene ring'));
+  put('py5', poly([[-0.2,1,'['],[0.4,1,''],[1,1,'CH₂'],[2,1,'C'],[2.6,1,''],[3.2,1,']ₙ'],[2,0,'CH₃'],[2,2,'COOCH₃',PK]],[[1,2],[2,3],[3,4],[3,6],[3,7]],'polymethyl methacrylate','PMMA'));
+})();
+</script>
+
+</body>
+</html>
