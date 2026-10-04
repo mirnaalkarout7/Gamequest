@@ -22,7 +22,7 @@ nav a small{display:block;font-weight:400;color:var(--soft);font-size:13px}
 nav a:hover{background:var(--bg)}
 nav a.on{background:var(--bluebg);border-color:var(--blue)}
 nav a:focus-visible,button:focus-visible{outline:3px solid #e8962a;outline-offset:2px}
-.ico{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:18px;background:var(--tealbg)}
+.ico{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--tealbg)}.ico svg{width:34px;height:34px;display:block}.cico{width:64px;height:64px;border-radius:16px;background:var(--tealbg);display:grid;place-items:center}.cico svg{width:50px;height:50px;display:block}
 main{display:flex;flex-direction:column;min-width:0;min-height:0}
 .bar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--card);border-bottom:2px solid var(--line)}
 .bar b{font-family:var(--disp);font-size:18px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -92,9 +92,14 @@ iframe{flex:1;width:100%;border:0;background:var(--bg)}
 <script>
 // ====== ADD NEW ACTIVITIES HERE ======
 // group: 'Simulations' or 'Game Quests' · file: the file name you uploaded
+const ICON={
+  home:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><path d="M8 24 L24 9 L40 24" fill="none"/><path d="M12 22 V40 H36 V22 L24 11 Z" fill="#fff"/><path d="M20 40 V29 H28 V40" fill="#58d0c9"/><path d="M31 14 V9 H35 V18" fill="#e2708a"/></g></svg>',
+  hydrocarbon:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><polygon points="22,10 34,17 34,31 22,38 10,31 10,17" fill="#fff"/><circle cx="22" cy="24" r="7" fill="none" stroke="#1f9c9e"/><path d="M34 17 L42 11" fill="none"/><circle cx="42" cy="11" r="4.500" fill="#3b3550"/><circle cx="10" cy="31" r="3.500" fill="#58d0c9"/><circle cx="22" cy="38" r="3.500" fill="#58d0c9"/></g></svg>',
+  functional:'<svg viewBox="0 0 48 48" aria-hidden="true"><g stroke="#3b3550" stroke-width="2.600" stroke-linejoin="round" stroke-linecap="round"><path d="M8 32 L19 26 M19 26 L31 32 M31 32 L41 26" fill="none"/><path d="M17 24 V11 M21 24 V11" fill="none"/><circle cx="19" cy="9" r="5.500" fill="#e2708a"/><circle cx="19" cy="27" r="5" fill="#3b3550"/><circle cx="8" cy="33" r="4" fill="#fff"/><circle cx="31" cy="33" r="5.500" fill="#e2708a"/><circle cx="42" cy="25" r="3.800" fill="#fff"/></g></svg>',
+};
 const ITEMS=[
-  {group:'Game Quests', title:'Hydrocarbon Quest',      note:'Chapter 21 · 30 questions', file:'hydrocarbon-quest.html',      icon:'🧪'},
-  {group:'Game Quests', title:'Functional Group Quest', note:'Chapter 22 · 30 questions', file:'functional-group-quest.html', icon:'🧬'},
+  {group:'Game Quests', title:'Hydrocarbon Quest',      note:'Chapter 21 · 30 questions', file:'hydrocarbon-quest.html',      icon:ICON.hydrocarbon},
+  {group:'Game Quests', title:'Functional Group Quest', note:'Chapter 22 · 30 questions', file:'functional-group-quest.html', icon:ICON.functional},
 ];
 // =====================================
 const CHEM=document.querySelector('.bico').innerHTML;
@@ -102,7 +107,7 @@ const nav=document.getElementById('nav'), view=document.getElementById('view'), 
 const slug=f=>f.replace(/\.html$/,'');
 function drawNav(cur){
   const groups=[...new Set(ITEMS.map(i=>i.group))];
-  nav.innerHTML=`<a href="#" class="${cur?'':'on'}"><span class="ico">🏠</span><span>Home</span></a>`+
+  nav.innerHTML=`<a href="#" class="${cur?'':'on'}"><span class="ico">${ICON.home}</span><span>Home</span></a>`+
     groups.map(g=>`<h2>${g}</h2>`+ITEMS.filter(i=>i.group===g).map(i=>`<a href="#${slug(i.file)}" class="${cur===i?'on':''}"><span class="ico">${i.icon}</span><span>${i.title}<small>${i.note}</small></span></a>`).join('')).join('');
 }
 function route(){
@@ -112,7 +117,7 @@ function route(){
     view.innerHTML=`<iframe src="${it.file}" title="${it.title}" allow="fullscreen"></iframe>`; }
   else{ title.textContent='Home'; full.hidden=true;
     view.innerHTML=`<div class="home"><div class="hero"><div class="pic">${CHEM}</div><div><h1>Study with <span>Ms. Mirna</span></h1><p>SAAT-style chemistry game quests. Pick a quest to start.</p></div></div>
-      <div class="cards">${ITEMS.map(i=>`<a href="#${slug(i.file)}"><span class="tag ${i.group==='Game Quests'?'q':''}">${i.group}</span><b>${i.icon} ${i.title}</b><small>${i.note}</small></a>`).join('')}</div></div>`; }
+      <div class="cards">${ITEMS.map(i=>`<a href="#${slug(i.file)}"><span class="tag ${i.group==='Game Quests'?'q':''}">${i.group}</span><span class="cico">${i.icon}</span><b>${i.title}</b><small>${i.note}</small></a>`).join('')}</div></div>`; }
 }
 addEventListener('hashchange',route);
 document.getElementById('menu').onclick=()=>document.body.classList.toggle('open');
