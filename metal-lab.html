@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metal Lab · Study with Ms. Mirna</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Atkinson+Hyperlegible:wght@400;700&family=Caveat:wght@600&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eaf0f8; --grid:#dbe4f1; --ink:#18233a; --muted:#56637d;
+    --card:#ffffff; --border:#c9d4e6; --shadow:#c3cfe3;
+    --teal:#0f8b8d; --blue:#2b59c3; --plum:#8a4fbf; --amber:#e8962a; --coral:#e2708a; --red:#d4486e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background-color:var(--bg);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:"Atkinson Hyperlegible",Arial,sans-serif;
+    font-size:16px; line-height:1.45;
+  }
+  .wrap{max-width:1240px;margin:0 auto;padding:18px 16px 40px}
+  header{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+  .logo{width:58px;height:58px;flex:none}
+  .brand{font-family:"Caveat",cursive;font-size:22px;color:var(--muted);line-height:1}
+  .brand b{font-family:"Pacifico",cursive;font-weight:400;font-size:20px;color:var(--teal)}
+  h1{font-family:"Fredoka",sans-serif;font-weight:700;font-size:34px;margin:2px 0 0;line-height:1.1}
+  .sub{color:var(--muted);margin:2px 0 0}
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 16px}
+  .tab{
+    -webkit-appearance:none;appearance:none;
+    font-family:"Fredoka",sans-serif;font-size:16px;font-weight:600;color:var(--ink);
+    background:#fff;border:2px solid var(--border);border-radius:16px;padding:9px 14px;
+    box-shadow:0 4px 0 var(--shadow);cursor:pointer;display:flex;align-items:center;gap:8px;
+  }
+  .tab .n{display:inline-flex;width:26px;height:26px;border-radius:50%;align-items:center;justify-content:center;color:#fff;font-size:14px}
+  .tab.active{border-color:var(--ink);transform:translateY(2px);box-shadow:0 2px 0 var(--shadow)}
+  .grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:18px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:2px solid var(--border);border-radius:22px;box-shadow:0 6px 0 var(--shadow);padding:16px}
+  canvas{display:block;width:100%;height:auto;border-radius:14px;background:#f7f9fd;border:2px solid #e2e9f4;touch-action:manipulation}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px}
+  .group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+  .group-label{font-family:"Fredoka",sans-serif;font-weight:600;font-size:14px;color:var(--muted);margin-right:2px}
+  .btn{
+    -webkit-appearance:none;appearance:none;
+    font-family:"Fredoka",sans-serif;font-size:15px;font-weight:600;
+    color:#fff;background:var(--teal);border:none;border-radius:14px;padding:9px 14px;cursor:pointer;
+    box-shadow:0 4px 0 rgba(0,0,0,.18);line-height:1.1;
+  }
+  .btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+  .btn[disabled]{opacity:.4;cursor:not-allowed}
+  .btn.blue{background:var(--blue)} .btn.plum{background:var(--plum)} .btn.amber{background:var(--amber)} .btn.coral{background:var(--red)}
+  .btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--border);box-shadow:0 4px 0 var(--shadow)}
+  .chip{
+    -webkit-appearance:none;appearance:none;
+    font-family:"Fredoka",sans-serif;font-size:15px;font-weight:600;color:var(--ink);
+    background:#fff;border:2px solid var(--border);border-radius:12px;padding:7px 11px;cursor:pointer;line-height:1.1;
+  }
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .readout{font-family:"Fredoka",sans-serif;font-weight:500;background:#f2f6fb;border:2px solid #e2e9f4;border-radius:12px;padding:8px 12px;margin-top:12px;font-size:15px}
+  .slider-row{display:flex;align-items:center;gap:10px;flex:1 1 260px;min-width:220px}
+  .slider-row label{font-family:"Fredoka",sans-serif;font-weight:600;font-size:14px;color:var(--muted);white-space:nowrap}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:6px;background:linear-gradient(90deg,#2b59c3,#e8962a,#d4486e);outline:none;margin:0}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid var(--ink);cursor:pointer}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--ink);cursor:pointer}
+  .temp{font-family:"Fredoka",sans-serif;font-weight:700;min-width:84px;text-align:right}
+  h2{font-family:"Fredoka",sans-serif;font-size:24px;margin:0 0 4px}
+  h3{font-family:"Fredoka",sans-serif;font-size:17px;margin:14px 0 6px;color:var(--teal)}
+  .panel p{margin:4px 0}
+  .panel ol{margin:4px 0;padding-left:22px}
+  .panel li{margin:4px 0}
+  .q li{margin:6px 0}
+  .bigq{font-family:"Fredoka",sans-serif;font-weight:500;font-size:19px;line-height:1.35;background:#f2f6fb;border:2px solid #e2e9f4;border-radius:16px;padding:12px 14px;margin:10px 0 14px}
+  .bigq span{display:block;font-size:14px;font-weight:600;color:var(--teal);margin-bottom:4px}
+  .rule ul{margin:0;padding-left:20px} .rule li{margin:5px 0}
+  .rule{display:none;margin-top:12px;border:2.5px dashed #c00000;border-radius:16px;padding:10px 12px;background:#fff6f6}
+  .rule.show{display:block}
+  .rule strong{font-family:"Fredoka",sans-serif;color:#c00000;font-size:17px;display:block;margin-bottom:2px}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px;font-size:14px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:14px;height:14px;border-radius:50%;display:inline-block}
+  table.data{border-collapse:collapse;width:100%;margin-top:12px;font-size:14px}
+  table.data th,table.data td{border:2px solid #e2e9f4;padding:6px 6px;text-align:center}
+  table.data th{background:#f2f6fb;font-family:"Fredoka",sans-serif;font-weight:600}
+  table.data td.blank{color:#b3bfd3}
+  .hidden{display:none !important}
+  .fs-note{font-size:13px;color:var(--muted);margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+      <rect x="2" y="2" width="60" height="60" rx="16" fill="#fff" stroke="#c9d4e6" stroke-width="2"/>
+      <rect x="10" y="22" width="44" height="28" rx="9" fill="#2b59c3" opacity=".12"/>
+      <g fill="#d4486e"><circle cx="20" cy="30" r="6"/><circle cx="32" cy="30" r="6"/><circle cx="44" cy="30" r="6"/><circle cx="20" cy="43" r="6"/><circle cx="32" cy="43" r="6"/><circle cx="44" cy="43" r="6"/></g>
+      <g fill="#fff" font-family="Arial" font-weight="700" font-size="9" text-anchor="middle"><text x="20" y="33">+</text><text x="32" y="33">+</text><text x="44" y="33">+</text><text x="20" y="46">+</text><text x="32" y="46">+</text><text x="44" y="46">+</text></g>
+      <g fill="#0f8b8d"><circle cx="26" cy="25" r="2.2"/><circle cx="38" cy="36.5" r="2.2"/><circle cx="26" cy="36.5" r="2.2"/><circle cx="49" cy="37" r="2.2"/><circle cx="14" cy="48" r="2.2"/><circle cx="38" cy="25" r="2.2"/><circle cx="38" cy="49" r="2.2"/></g>
+      <path d="M44 8 l8 4 -4 6z" fill="#e8962a"/><rect x="40" y="10" width="4" height="14" rx="2" transform="rotate(-30 42 17)" fill="#8a4fbf"/>
+    </svg>
+    <div>
+      <div class="brand">Study with <b>Ms. Mirna</b></div>
+      <h1>Metal Lab</h1>
+      <p class="sub">Discover how the sea of electrons explains the properties of metals.</p>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <div class="grid">
+    <div class="card">
+      <canvas id="cv" width="1600" height="1000" aria-label="Metal Lab simulation"></canvas>
+      <div class="controls" id="controls"></div>
+      <div class="readout" id="readout"></div>
+      <div id="extra"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="card panel" id="panel"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById('cv');
+var ctx=cv.getContext('2d');
+ctx.scale(2,2);
+var W=800,H=500;
+var C={ink:'#18233a',muted:'#56637d',teal:'#0f8b8d',blue:'#2b59c3',plum:'#8a4fbf',amber:'#e8962a',coral:'#e2708a',red:'#d4486e',grid:'#dbe4f1',green:'#3f9a52'};
+var FONT='"Fredoka", Arial, sans-serif';
+function rand(a,b){return a+Math.random()*(b-a);}
+function clamp(v,a,b){return v<a?a:(v>b?b:v);}
+function lerp(a,b,t){return a+(b-a)*t;}
+function $(id){return document.getElementById(id);}
+
+/* ---------- drawing helpers ---------- */
+function circle(x,y,r,fill,stroke,lw){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw||2;ctx.stroke();}}
+function text(t,x,y,size,color,align,weight){ctx.font=(weight||600)+' '+size+'px '+FONT;ctx.fillStyle=color||C.ink;ctx.textAlign=align||'center';ctx.textBaseline='middle';ctx.fillText(t,x,y);}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
+function shade(hex,amt){var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  if(amt>0){r=Math.round(r+(255-r)*amt);g=Math.round(g+(255-g)*amt);b=Math.round(b+(255-b)*amt);}else{r=Math.round(r*(1+amt));g=Math.round(g*(1+amt));b=Math.round(b*(1+amt));}
+  return 'rgb('+r+','+g+','+b+')';}
+function mix(h1,h2,t){var a=parseInt(h1.slice(1),16),b=parseInt(h2.slice(1),16);
+  var r=Math.round(lerp((a>>16)&255,(b>>16)&255,t)),g=Math.round(lerp((a>>8)&255,(b>>8)&255,t)),bl=Math.round(lerp(a&255,b&255,t));
+  return '#'+((1<<24)+(r<<16)+(g<<8)+bl).toString(16).slice(1);}
+function ball(x,y,r,col,label,labelSize){
+  var g=ctx.createRadialGradient(x-r*.35,y-r*.4,r*.15,x,y,r);
+  g.addColorStop(0,shade(col,.55));g.addColorStop(1,col);
+  circle(x,y,r,g,shade(col,-.25),1.5);
+  if(label){text(label,x,y+1,labelSize||Math.max(9,r*.75),'#fff','center',700);}
+}
+function cation(x,y,r,label,col){ball(x,y,r,col||C.red,label,label&&label.length>2?Math.max(9,r*.62):Math.max(10,r*.8));}
+function electron(x,y,col,r){r=r||4.2;circle(x,y,r+2.5,'rgba(15,139,141,0.18)');circle(x,y,r,col||C.teal);}
+function sea(x,y,w,h,alpha){ctx.save();roundRect(x,y,w,h,26);ctx.fillStyle='rgba(43,89,195,'+(alpha==null?0.10:alpha)+')';ctx.fill();ctx.restore();}
+function banner(msg,col){ctx.save();ctx.font='600 17px '+FONT;var w=ctx.measureText(msg).width+30;roundRect(W/2-w/2,14,w,34,14);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=col||C.teal;ctx.stroke();ctx.restore();text(msg,W/2,31,17,col||C.teal);}
+function sup(n){return n===1?'⁺':(n===2?'²⁺':(n===3?'³⁺':'⁺'));}
+
+/* ---------- UI helpers ---------- */
+function mkBtn(label,cls,fn){var b=document.createElement('button');b.type='button';b.className='btn '+(cls||'');b.textContent=label;b.addEventListener('click',fn);return b;}
+function mkChips(label,items,cur,fn){var g=document.createElement('div');g.className='group';var l=document.createElement('span');l.className='group-label';l.textContent=label;g.appendChild(l);
+  items.forEach(function(it){var b=document.createElement('button');b.type='button';b.className='chip'+(it.v===cur?' on':'');b.textContent=it.t;b.addEventListener('click',function(){Array.prototype.forEach.call(g.querySelectorAll('.chip'),function(c){c.classList.remove('on');});b.classList.add('on');fn(it.v);});g.appendChild(b);});return g;}
+function setReadout(h){$('readout').innerHTML=h;}
+function setLegend(items){$('legend').innerHTML=items.map(function(i){return '<span><i class="dot" style="background:'+i[0]+(i[2]?';width:9px;height:9px':'')+'"></i>'+i[1]+'</span>';}).join('');}
+/* ---------- short side panels: one question + a concise visual rule ---------- */
+function sv(inner,h){return '<svg viewBox="0 0 300 '+(h||90)+'" width="100%" style="display:block;margin:4px 0 8px" aria-hidden="true">'+inner+'</svg>';}
+function cat(x,y,r,t){r=r||11;return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#d4486e"/><text x="'+x+'" y="'+(y+4)+'" font-size="'+(r>10?11:9)+'" font-weight="700" fill="#fff" text-anchor="middle" font-family="Fredoka,Arial">'+(t||'+')+'</text>';}
+function an(x,y,r){r=r||12;return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#0f8b8d"/><text x="'+x+'" y="'+(y+4)+'" font-size="12" font-weight="700" fill="#fff" text-anchor="middle" font-family="Fredoka,Arial">−</text>';}
+function el(x,y,c){return '<circle cx="'+x+'" cy="'+y+'" r="3.4" fill="'+(c||'#0f8b8d')+'"/>';}
+function lab(x,y,t,c,s,a){return '<text x="'+x+'" y="'+y+'" font-size="'+(s||12)+'" font-weight="600" fill="'+(c||'#18233a')+'" text-anchor="'+(a||'middle')+'" font-family="Fredoka,Arial">'+t+'</text>';}
+function seaBox(x,y,w,h){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="12" fill="#2b59c3" opacity=".12"/>';}
+function arrow(x1,y1,x2,y2,c){c=c||'#18233a';var a=Math.atan2(y2-y1,x2-x1),hx=x2-9*Math.cos(a-0.45),hy=y2-9*Math.sin(a-0.45),kx=x2-9*Math.cos(a+0.45),ky=y2-9*Math.sin(a+0.45);
+  return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="'+c+'" stroke-width="2.5" stroke-linecap="round"/><path d="M'+x2+' '+y2+' L'+hx+' '+hy+' L'+kx+' '+ky+' Z" fill="'+c+'"/>';}
+function grid(x,y,cols,rows,sp,fn){var s='';for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)s+=fn(x+c*sp,y+r*sp,r,c);return s;}
+var ELS=[[0.5,0.5],[1.5,0.6],[2.4,0.4],[0.6,1.5],[1.4,1.4],[2.6,1.6],[3.4,0.5],[3.5,1.5]];
+function metalPic(x,y,cols,rows,sp,t){var s=seaBox(x-16,y-16,(cols-1)*sp+32,(rows-1)*sp+32)+grid(x,y,cols,rows,sp,function(a,b){return cat(a,b,10,t);});
+  for(var r=0;r<rows;r++)for(var c=0;c<cols-1;c++)s+=el(x+(c+0.5)*sp,y+r*sp+((r+c)%2?-7:7));
+  for(var r2=0;r2<rows-1;r2++)for(var c2=0;c2<cols;c2++)if((r2+c2)%2===0)s+=el(x+c2*sp+((c2%3)-1)*6,y+(r2+0.5)*sp);
+  return s;}
+
+var PANELS=[
+ {q:'What holds the positive metal cations together in a solid metal?',
+  pic:sv(metalPic(40,22,6,2,44,'+')+lab(150,102,'cations + a sea of delocalized electrons','#2b59c3',12),108),
+  rule:['Metal atoms give their valence electrons to a shared <b>sea</b> → they become <b>cations</b>.','The electrons are <b>delocalized</b>: free to move, not held by any one atom.','<b>Metallic bond</b> = attraction between the cations and the sea of electrons.']},
+ {q:'Why does solid copper conduct electricity, but solid NaCl does not?',
+  pic:sv(lab(70,10,'Copper (solid)','#18233a',11)+metalPic(36,32,3,2,34,'+')+arrow(24,86,116,86,'#0f8b8d')+lab(70,104,'electrons move ✓','#0f8b8d',11)+
+   lab(230,10,'NaCl (solid)','#18233a',11)+grid(196,32,3,2,34,function(a,b,r,c){return (r+c)%2?an(a,b,12):cat(a,b,9);})+lab(230,104,'ions locked ✗','#c00000',11),110),
+  rule:['Metals conduct <b>even as solids</b>: delocalized electrons are free to move.','Ionic solids: ions are locked in place → no current.','The moving electrons also carry <b>heat</b> quickly.']},
+ {q:'Why does a metal bend when you hit it, but an ionic crystal shatters?',
+  pic:sv(seaBox(14,8,122,62)+grid(46,22,3,1,30,function(a,b){return cat(a,b,10);})+grid(28,54,3,1,30,function(a,b){return cat(a,b,10);})+el(62,38)+el(94,40)+el(40,40)+el(116,52)+lab(75,86,'slides, still bonded ✓','#0f8b8d',11)+
+   grid(185,22,3,1,30,function(a,b,r,c){return c%2?an(a,b,11):cat(a,b,9);})+grid(185,54,3,1,30,function(a,b,r,c){return c%2?an(a,b,11):cat(a,b,9);})+
+   '<path d="M185 33 l4 6 -4 4 4 6" stroke="#c00000" stroke-width="2" fill="none"/><path d="M245 33 l4 6 -4 4 4 6" stroke="#c00000" stroke-width="2" fill="none"/>'+lab(215,86,'like charges repel ✗','#c00000',11),94),
+  rule:['Metal: layers of cations <b>slide</b> and the sea moves with them → <b>malleable</b> (sheets) and <b>ductile</b> (wires).','Ionic crystal: sliding puts <b>like charges</b> together → they repel → it <b>shatters</b>.']},
+ {q:'How does the number of electrons each atom adds to the sea change the hardness and melting point?',
+  pic:sv('<rect x="20" y="52" width="70" height="16" rx="5" fill="#0f8b8d"/><rect x="115" y="38" width="70" height="30" rx="5" fill="#178a90"/><rect x="210" y="14" width="70" height="54" rx="5" fill="#2f4b7c"/>'+
+   lab(55,46,'1 e⁻','#18233a',12)+lab(150,32,'2 e⁻','#18233a',12)+lab(245,9+0,'s + d e⁻','#18233a',11)+lab(55,84,'Group 1','#56637d',11)+lab(150,84,'Group 2','#56637d',11)+lab(245,84,'Transition','#56637d',11),92),
+  rule:['More electrons in the sea → <b>stronger metallic bond</b>.','Stronger bond → <b>harder</b> and <b>higher melting point</b>: Group 1 &lt; Group 2 &lt; Transition.','<b>Boiling point ≫ melting point</b>: to boil, atoms must leave the sea completely.']},
+ {q:'Why is steel (iron + carbon) harder than pure iron?',
+  pic:sv(grid(25,18,3,3,22,function(a,b){return '<circle cx="'+a+'" cy="'+b+'" r="10" fill="#9aa7bd"/>';})+lab(47,96,'pure metal','#56637d',11)+
+   grid(128,18,3,3,22,function(a,b,r,c){return '<circle cx="'+a+'" cy="'+b+'" r="10" fill="'+((r*3+c)%4===1?'#e8962a':'#9aa7bd')+'"/>';})+lab(150,96,'substitutional','#e8962a',11)+
+   grid(231,18,3,3,22,function(a,b){return '<circle cx="'+a+'" cy="'+b+'" r="10" fill="#9aa7bd"/>';})+'<circle cx="242" cy="29" r="4.5" fill="#18233a"/><circle cx="264" cy="51" r="4.5" fill="#18233a"/><circle cx="242" cy="51" r="4.5" fill="#18233a"/><circle cx="264" cy="29" r="4.5" fill="#18233a"/>'+lab(253,96,'interstitial','#18233a',11),104),
+  rule:['<b>Alloy</b> = a mixture of elements with metallic properties.','<b>Substitutional</b>: similar-size atoms replace some atoms (sterling silver, brass).','<b>Interstitial</b>: small atoms fill the holes (steel: Fe + C).','Extra atoms stop the layers sliding → alloys are <b>harder and stronger</b>.']},
+ {q:'Why do metals look shiny?',
+  pic:sv('<rect x="20" y="58" width="260" height="26" rx="8" fill="#2b59c3" opacity=".12"/>'+el(150,66)+'<circle cx="150" cy="66" r="9" fill="#f2c500" opacity=".35"/>'+
+   arrow(40,10,145,58,'#f2c500')+arrow(155,58,260,10,'#f2c500')+lab(70,46,'light in','#56637d',11)+lab(232,46,'light out','#56637d',11)+lab(150,80,'electron absorbs & releases light','#0f8b8d',11),90),
+  rule:['Delocalized electrons <b>absorb light and release it again</b> → the light bounces back → <b>luster</b>.','Silver sends back all colours → silver shine. Gold keeps some blue → <b>yellow</b> shine.','Nonmetals have no free electrons → <b>dull</b>.']}
+];
+function panel(i,m){
+  var P=PANELS[i];
+  $('panel').innerHTML='<h2>'+m.title+'</h2>'+
+   '<div class="bigq"><span>Think about it</span>'+P.q+'</div>'+
+   '<button type="button" class="btn coral" id="ruleBtn">Reveal our rule</button>'+
+   '<div class="rule" id="rule"><strong>Our rule</strong>'+P.pic+'<ul>'+P.rule.map(function(r){return '<li>'+r+'</li>';}).join('')+'</ul></div>';
+  $('ruleBtn').addEventListener('click',function(){var r=$('rule');r.classList.toggle('show');this.textContent=r.classList.contains('show')?'Hide our rule':'Reveal our rule';});
+}
+
+/* =========================================================
+   MISSION 1 — The sea of electrons
+   ========================================================= */
+var M1={
+  title:'Mission 1 · The sea of electrons',
+  color:C.teal,
+  info:{
+    goal:'Find out what happens to the valence electrons when metal atoms pack together in a solid.',
+    steps:['Pick a metal: Na, Mg or Al.','Press <b>Pack the atoms together</b>. Watch the outer energy levels.','Press <b>Release the valence electrons</b>.','Turn on <b>Follow one electron</b> and watch its path.','Repeat with the other two metals.'],
+    qs:['Before packing: which atom does each electron belong to?','After release: does the electron you follow stay with one atom?','What happens to the charge of each atom once its electrons join the sea?','The atoms are now positive. Why doesn\'t the metal fly apart?','Na → Mg → Al: how does the sea change?'],
+    rule:'Metal atoms pack into a lattice and their outer energy levels overlap. Each atom gives its valence electrons to a shared <b>“sea” of delocalized electrons</b> that move freely through the whole metal. The atoms become <b>cations</b>. A <b>metallic bond</b> is the attraction between the metal cations and the delocalized electrons.'
+  },
+  metal:'Na',
+  metals:{Na:{v:1,name:'Sodium'},Mg:{v:2,name:'Magnesium'},Al:{v:3,name:'Aluminum'}},
+  init:function(){
+    var s=this; s.phase=0; s.t=0; s.follow=false; s.trail=[];
+    s.cols=6; s.rows=4; s.atoms=[]; s.els=[];
+    var v=s.metals[s.metal].v;
+    for(var r=0;r<s.rows;r++)for(var c=0;c<s.cols;c++){
+      var a={c:c,r:r};
+      a.x0=W/2+(c-(s.cols-1)/2)*112; a.y0=262+(r-(s.rows-1)/2)*92;
+      a.x1=W/2+(c-(s.cols-1)/2)*68;  a.y1=262+(r-(s.rows-1)/2)*62;
+      a.x=a.x0;a.y=a.y0; s.atoms.push(a);
+      for(var k=0;k<v;k++) s.els.push({a:a,ang:rand(0,6.28)+k*6.28/v,w:rand(.035,.05)*(Math.random()<.5?-1:1),x:a.x,y:a.y,vx:0,vy:0,free:false});
+    }
+    s.followIdx=Math.floor(s.els.length/2)+2;
+    s.ui(); s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Metal:',[{t:'Na',v:'Na'},{t:'Mg',v:'Mg'},{t:'Al',v:'Al'}],s.metal,function(v){s.metal=v;s.init();}));
+    s.bPack=mkBtn('Pack the atoms together','',function(){if(s.phase===0){s.phase=1;s.t=0;s.bPack.disabled=true;}});
+    s.bRel=mkBtn('Release the valence electrons','blue',function(){if(s.phase===2){s.phase=3;s.release();s.bRel.disabled=true;s.read();}});
+    s.bRel.disabled=true;
+    s.bFol=mkBtn('Follow one electron','plum',function(){s.follow=!s.follow;s.trail=[];s.bFol.textContent=s.follow?'Stop following':'Follow one electron';});
+    c.appendChild(s.bPack);c.appendChild(s.bRel);c.appendChild(s.bFol);
+    c.appendChild(mkBtn('Reset','ghost',function(){s.init();}));
+    $('extra').innerHTML='';
+    setLegend([[C.red,'metal cation (+)'],[C.teal,'valence electron (−)',1],['#9aa7bd','neutral metal atom']]);
+  },
+  release:function(){this.els.forEach(function(e){e.free=true;var a=rand(0,6.28),sp=rand(1.2,2.0);e.vx=Math.cos(a)*sp;e.vy=Math.sin(a)*sp;});},
+  read:function(){
+    var s=this,m=s.metals[s.metal],n=s.atoms.length,e=s.els.length,ion=s.metal+sup(m.v);
+    if(s.phase<3) setReadout(n+' neutral '+m.name.toLowerCase()+' atoms · each has '+m.v+' valence electron'+(m.v>1?'s':'')+' held by its own atom');
+    else setReadout(n+' '+ion+' cations (charge +'+(n*m.v)+') · '+e+' delocalized electrons (charge −'+e+') · total charge = 0');
+  },
+  update:function(){
+    var s=this; s.t++;
+    if(s.phase===1){var k=clamp(s.t/90,0,1);k=k*k*(3-2*k);
+      s.atoms.forEach(function(a){a.x=lerp(a.x0,a.x1,k);a.y=lerp(a.y0,a.y1,k);});
+      if(s.t>=90){s.phase=2;s.bRel.disabled=false;}}
+    var bx0=W/2-3*68-20,bx1=W/2+3*68+20,by0=262-2*62-14,by1=262+2*62+14;
+    s.els.forEach(function(e,i){
+      if(!e.free){e.ang+=e.w;var R=30;e.x=e.a.x+Math.cos(e.ang)*R;e.y=e.a.y+Math.sin(e.ang)*R;}
+      else{var a=rand(-.25,.25),cs=Math.cos(a),sn=Math.sin(a),vx=e.vx*cs-e.vy*sn,vy=e.vx*sn+e.vy*cs;e.vx=vx;e.vy=vy;
+        e.x+=e.vx;e.y+=e.vy;
+        if(e.x<bx0){e.x=bx0;e.vx=Math.abs(e.vx);} if(e.x>bx1){e.x=bx1;e.vx=-Math.abs(e.vx);}
+        if(e.y<by0){e.y=by0;e.vy=Math.abs(e.vy);} if(e.y>by1){e.y=by1;e.vy=-Math.abs(e.vy);} }
+    });
+    if(s.follow){var f=s.els[s.followIdx];s.trail.push([f.x,f.y]);if(s.trail.length>260)s.trail.shift();}
+  },
+  draw:function(){
+    var s=this,m=s.metals[s.metal];
+    if(s.phase>=3) sea(W/2-3*68-28,262-2*62-24,6*68+56,4*62+48-14,0.12);
+    // outer energy levels
+    s.atoms.forEach(function(a){
+      ctx.save();ctx.setLineDash([5,5]);circle(a.x,a.y,36,s.phase<3?'rgba(15,139,141,0.05)':null,s.phase<3?'rgba(15,139,141,0.55)':'rgba(15,139,141,0.18)',1.5);ctx.restore();
+    });
+    if(s.follow&&s.trail.length>1){ctx.save();ctx.strokeStyle='rgba(138,79,191,0.75)';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(s.trail[0][0],s.trail[0][1]);for(var i=1;i<s.trail.length;i++)ctx.lineTo(s.trail[i][0],s.trail[i][1]);ctx.stroke();ctx.restore();}
+    s.atoms.forEach(function(a){
+      if(s.phase<3) ball(a.x,a.y,17,'#8f9bb3',s.metal,13);
+      else cation(a.x,a.y,17,s.metal+sup(m.v));
+    });
+    s.els.forEach(function(e,i){
+      if(s.follow&&i===s.followIdx){circle(e.x,e.y,9,'rgba(138,79,191,0.25)');electron(e.x,e.y,C.plum,5);}
+      else electron(e.x,e.y);
+    });
+    if(s.phase===0) banner('Separate '+m.name.toLowerCase()+' atoms: each electron belongs to one atom');
+    else if(s.phase===1) banner('Packing… the outer energy levels start to overlap');
+    else if(s.phase===2) banner('Outer energy levels overlap. Now release the electrons!',C.blue);
+    else banner('A sea of delocalized electrons around '+s.metal+sup(m.v)+' cations',C.blue);
+  }
+};
+
+/* =========================================================
+   MISSION 2 — Conduct it! (electricity + heat)
+   ========================================================= */
+var M2={
+  title:'Mission 2 · Conducting in the solid state',
+  color:C.blue,
+  info:{
+    goal:'Test which solids conduct electricity and heat, and find out what has to move.',
+    steps:['Predict first: will solid copper conduct? Will solid sodium chloride?','Choose <b>Copper (solid)</b>. Close the switch and watch the bulb.','Choose <b>NaCl (solid)</b> and close the switch again.','Choose <b>NaCl (melted)</b> and test it.','Back on copper, open the switch and press <b>Heat the left end</b>. Then try it on solid NaCl.'],
+    qs:['In copper, which particles move when the switch is closed? Which way do they go?','Do the copper cations travel along the wire too?','Why does the bulb stay off for solid NaCl?','What changes when NaCl melts?','Why does heat reach the far end of the copper so quickly?'],
+    rule:'Metals conduct electricity <b>even in the solid state</b> because their <b>delocalized electrons</b> are free to move through the lattice. A voltage makes them drift towards the + terminal. Ionic solids cannot conduct: their ions are locked in place (they conduct only when melted or dissolved). Mobile electrons also carry heat quickly, so metals are good conductors of heat.'
+  },
+  mode:'metal',
+  init:function(){
+    var s=this; s.on=false; s.heat=0; s.heatT=0; s.hotTime=null; s.t=0; s.glow=0; s.flowPh=0;
+    s.x0=200;s.x1=600;s.y0=150;s.y1=350;
+    s.ions=[]; s.els=[];
+    var cols=8,rows=4,sp=50,ox=(s.x0+s.x1)/2-(cols-1)*sp/2,oy=(s.y0+s.y1)/2-(rows-1)*sp/2;
+    for(var r=0;r<rows;r++)for(var c=0;c<cols;c++){
+      var ion={hx:ox+c*sp,hy:oy+r*sp,c:c,E:0};
+      if(s.mode==='metal'){ion.q=1;ion.r=16;}
+      else{ion.q=((r+c)%2===0)?1:-1;ion.r=ion.q>0?13:20;}
+      ion.x=ion.hx;ion.y=ion.hy;
+      if(s.mode==='melt'){ion.x=rand(s.x0+20,s.x1-20);ion.y=rand(s.y0+20,s.y1-20);var a=rand(0,6.28);ion.vx=Math.cos(a)*.8;ion.vy=Math.sin(a)*.8;}
+      s.ions.push(ion);
+    }
+    if(s.mode==='metal'){for(var i=0;i<56;i++){var a2=rand(0,6.28);s.els.push({x:rand(s.x0+8,s.x1-8),y:rand(s.y0+8,s.y1-8),vx:Math.cos(a2)*1.6,vy:Math.sin(a2)*1.6});}}
+    s.ui(); s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Sample:',[{t:'Copper (solid)',v:'metal'},{t:'NaCl (solid)',v:'ionic'},{t:'NaCl (melted)',v:'melt'}],s.mode,function(v){s.mode=v;s.init();}));
+    s.bSw=mkBtn('Close the switch','blue',function(){s.on=!s.on;s.bSw.textContent=s.on?'Open the switch':'Close the switch';s.read();});
+    c.appendChild(s.bSw);
+    s.bHeat=mkBtn('Heat the left end','amber',function(){s.ions.forEach(function(i){i.E=0;});s.heat=1;s.heatT=0;s.hotTime=null;s.read();});
+    if(s.mode==='melt')s.bHeat.disabled=true;
+    c.appendChild(s.bHeat);
+    c.appendChild(mkBtn('Reset','ghost',function(){s.init();}));
+    $('extra').innerHTML='';
+    if(s.mode==='metal')setLegend([[C.red,'Cu cation (+)'],[C.teal,'delocalized electron (−)',1],[C.amber,'hot (vibrating strongly)']]);
+    else setLegend([[C.red,'Na⁺ ion'],[C.teal,'Cl⁻ ion'],[C.amber,'hot (vibrating strongly)']]);
+  },
+  read:function(){
+    var s=this,t;
+    if(s.mode==='metal') t=s.on?'Bulb ON · delocalized electrons drift towards the + terminal. The cations stay in place.':'Switch open · the electrons wander in every direction, so there is no overall flow.';
+    else if(s.mode==='ionic') t=s.on?'Bulb OFF · the ions are locked in the lattice and there are no free electrons.':'Switch open · the ions can only vibrate in place.';
+    else t=s.on?'Bulb ON (dimmer) · in the melt the ions themselves move: + ions to the − side, − ions to the + side.':'Switch open · in the melt the ions move around freely.';
+    if(s.heat&&s.mode!=='melt'){t+=s.hotTime!=null?'<br>🌡 The right end got hot after <b>'+s.hotTime.toFixed(1)+' s</b>.':'<br>🌡 Heating the left end… watch how the heat travels.';}
+    setReadout(t);
+  },
+  update:function(){
+    var s=this; s.t++;
+    var conducting=s.on&&(s.mode!=='ionic');
+    s.glow=lerp(s.glow,conducting?(s.mode==='metal'?1:0.55):0,0.08);
+    if(conducting)s.flowPh+=(s.mode==='metal'?1.6:0.9);
+    // heat
+    if(s.heat&&s.mode!=='melt'){
+      s.heatT++;
+      var D=s.mode==='metal'?0.12:0.012;
+      var colE=[];for(var c=0;c<8;c++)colE[c]=0;
+      s.ions.forEach(function(i){colE[i.c]+=i.E/4;});
+      var nE=colE.slice();
+      if(s.heatT<600)nE[0]=1;
+      for(var c2=1;c2<8;c2++){var left=colE[c2-1],right=c2<7?colE[c2+1]:colE[c2];nE[c2]=colE[c2]+D*(left+right-2*colE[c2]);}
+      s.ions.forEach(function(i){i.E=clamp(nE[i.c],0,1);});
+      if(s.hotTime==null&&colE[7]>0.35){s.hotTime=s.heatT/60;s.read();}
+    }
+    var e;
+    s.ions.forEach(function(i){
+      if(s.mode==='melt'){
+        var dr=s.on?(i.q>0?-0.55:0.55):0;
+        var a=rand(-.4,.4),cs=Math.cos(a),sn=Math.sin(a),vx=i.vx*cs-i.vy*sn,vy=i.vx*sn+i.vy*cs;i.vx=vx;i.vy=vy;
+        i.x+=i.vx+dr;i.y+=i.vy;
+        if(i.y<s.y0+16){i.y=s.y0+16;i.vy=Math.abs(i.vy);} if(i.y>s.y1-16){i.y=s.y1-16;i.vy=-Math.abs(i.vy);}
+        if(i.x<s.x0+16){if(s.on&&i.q>0){i.x=s.x1-16;}else{i.x=s.x0+16;i.vx=Math.abs(i.vx);}}
+        if(i.x>s.x1-16){if(s.on&&i.q<0){i.x=s.x0+16;}else{i.x=s.x1-16;i.vx=-Math.abs(i.vx);}}
+      } else {
+        var amp=1.3+i.E*6;i.x=i.hx+rand(-amp,amp)*.6;i.y=i.hy+rand(-amp,amp)*.6;
+      }
+    });
+    if(s.mode==='melt'){for(var a1=0;a1<s.ions.length;a1++)for(var b1=a1+1;b1<s.ions.length;b1++){var P1=s.ions[a1],Q1=s.ions[b1],ddx=Q1.x-P1.x,ddy=Q1.y-P1.y,dd=ddx*ddx+ddy*ddy,md=P1.r+Q1.r+2;if(dd<md*md&&dd>0.01){var d1=Math.sqrt(dd),pp=(md-d1)/2/d1;P1.x-=ddx*pp;P1.y-=ddy*pp;Q1.x+=ddx*pp;Q1.y+=ddy*pp;}}}
+    for(var k=0;k<s.els.length;k++){e=s.els[k];
+      var a3=rand(-.35,.35),cs3=Math.cos(a3),sn3=Math.sin(a3),vx3=e.vx*cs3-e.vy*sn3,vy3=e.vx*sn3+e.vy*cs3;e.vx=vx3;e.vy=vy3;
+      e.x+=e.vx+(s.on?1.1:0);e.y+=e.vy;
+      if(e.y<s.y0+6){e.y=s.y0+6;e.vy=Math.abs(e.vy);} if(e.y>s.y1-6){e.y=s.y1-6;e.vy=-Math.abs(e.vy);}
+      if(s.on){if(e.x>s.x1-4){e.x=s.x0+4;} if(e.x<s.x0+4){e.x=s.x0+4;e.vx=Math.abs(e.vx);} }
+      else{if(e.x<s.x0+6){e.x=s.x0+6;e.vx=Math.abs(e.vx);} if(e.x>s.x1-6){e.x=s.x1-6;e.vx=-Math.abs(e.vx);} }
+    }
+  },
+  wirePath:function(){var s=this,ym=(s.y0+s.y1)/2;return [[s.x0,ym],[110,ym],[110,445],[350,445],[450,445],[690,445],[690,ym],[s.x1,ym]];},
+  draw:function(){
+    var s=this,ym=(s.y0+s.y1)/2,p=s.wirePath();
+    // wires
+    ctx.save();ctx.lineWidth=7;ctx.strokeStyle='#b07a3a';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(p[0][0],p[0][1]);
+    for(var i=1;i<4;i++)ctx.lineTo(p[i][0],p[i][1]);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(p[4][0],p[4][1]);for(i=5;i<8;i++)ctx.lineTo(p[i][0],p[i][1]);ctx.stroke();ctx.restore();
+    // flow dots along wires (electron flow: from − terminal (left) round into sample, out right to +)
+    if(s.glow>0.05){
+      var segs=[[p[3],p[2]],[p[2],p[1]],[p[1],p[0]],[p[7],p[6]],[p[6],p[5]],[p[5],p[4]]];
+      segs.forEach(function(sg){var dx=sg[1][0]-sg[0][0],dy=sg[1][1]-sg[0][1],L=Math.sqrt(dx*dx+dy*dy);
+        for(var d=(s.flowPh%30);d<L;d+=30){circle(sg[0][0]+dx*d/L,sg[0][1]+dy*d/L,3.2,'rgba(15,139,141,'+(0.35+0.6*s.glow)+')');}});
+    }
+    // battery
+    ctx.save();roundRect(350,425,100,40,8);ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=C.ink;ctx.stroke();ctx.restore();
+    ctx.fillStyle=C.ink;ctx.fillRect(450,436,6,18);
+    text('−',372,445,22,C.blue);text('+',428,445,22,C.red);text('battery',400,477,13,C.muted,'center',500);
+    // bulb on right wire
+    var bx=690,by=ym+70;
+    if(s.glow>0.05){var g=ctx.createRadialGradient(bx,by,4,bx,by,70);g.addColorStop(0,'rgba(255,214,90,'+(0.85*s.glow)+')');g.addColorStop(1,'rgba(255,214,90,0)');circle(bx,by,70,g);}
+    circle(bx,by,20,s.glow>0.05?mix('#fff3c4','#ffd23f',s.glow):'#fff','#8a93a6',2);
+    ctx.save();ctx.strokeStyle='#8a93a6';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(bx-7,by+6);ctx.lineTo(bx-3,by-5);ctx.lineTo(bx+3,by+5);ctx.lineTo(bx+7,by-6);ctx.stroke();ctx.restore();
+    text('bulb',bx+42,by,13,C.muted,'center',500);
+    // switch
+    var sx=230,sy=445;ctx.fillStyle='#fff';
+    ctx.clearRect(sx-28,sy-10,56,20);ctx.fillStyle='#f7f9fd';ctx.fillRect(sx-28,sy-12,56,24);
+    circle(sx-24,sy,5,C.ink);circle(sx+24,sy,5,C.ink);
+    ctx.save();ctx.strokeStyle=C.ink;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(sx-24,sy);if(s.on)ctx.lineTo(sx+24,sy);else ctx.lineTo(sx+18,sy-24);ctx.stroke();ctx.restore();
+    text(s.on?'switch closed':'switch open',sx,sy+28,13,C.muted,'center',500);
+    // electrodes labels
+    text('−',s.x0-20,ym-26,22,C.blue);text('+',s.x1+20,ym-26,22,C.red);
+    // sample box
+    ctx.save();roundRect(s.x0,s.y0,s.x1-s.x0,s.y1-s.y0,18);
+    ctx.fillStyle=s.mode==='metal'?'rgba(43,89,195,0.10)':(s.mode==='melt'?'rgba(232,150,42,0.10)':'rgba(200,210,230,0.18)');ctx.fill();
+    ctx.lineWidth=2;ctx.strokeStyle='#c9d4e6';ctx.stroke();ctx.restore();
+    var lab=s.mode==='metal'?'solid copper':(s.mode==='ionic'?'solid sodium chloride':'melted sodium chloride');
+    text(lab,(s.x0+s.x1)/2,s.y1+18,14,C.muted,'center',600);
+    s.ions.forEach(function(i){
+      var col=i.q>0?C.red:C.teal; if(i.E>0.02)col=mix(col,C.amber,clamp(i.E*1.2,0,1));
+      if(s.mode==='metal')cation(i.x,i.y,i.r,'Cu⁺',col);
+      else ball(i.x,i.y,i.r,col,i.q>0?'Na⁺':'Cl⁻',i.q>0?10:12);
+    });
+    s.els.forEach(function(e){electron(e.x,e.y);});
+    if(s.heat&&s.mode!=='melt'&&s.heatT<600){ // flame
+      var fx=s.x0+12,fy=s.y1+40;ctx.save();ctx.fillStyle=C.amber;ctx.beginPath();ctx.moveTo(fx,fy-26);ctx.quadraticCurveTo(fx+16,fy-6,fx,fy+4);ctx.quadraticCurveTo(fx-16,fy-6,fx,fy-26);ctx.fill();ctx.fillStyle='#ffd23f';ctx.beginPath();ctx.moveTo(fx,fy-14);ctx.quadraticCurveTo(fx+8,fy-2,fx,fy+3);ctx.quadraticCurveTo(fx-8,fy-2,fx,fy-14);ctx.fill();ctx.restore();
+    }
+    banner(s.mode==='ionic'?(s.on?'Switch closed… but nothing can move':'Solid ionic compound'):(s.on?'Current is flowing!':'Close the switch to apply a voltage'),s.on&&s.mode!=='ionic'?C.blue:C.teal);
+  }
+};
+
+/* =========================================================
+   MISSION 3 — Hammer time (malleable & ductile)
+   ========================================================= */
+var M3={
+  title:'Mission 3 · Hammer it, pull it',
+  color:C.plum,
+  info:{
+    goal:'Zoom in to the particles to see why a metal bends into a new shape while an ionic crystal shatters.',
+    steps:['Predict: what will happen to each solid when you hit it with a hammer?','Choose <b>Metal</b> and press <b>Hammer it!</b> up to three times.','Press <b>Pull into a wire</b>.','Reset, choose <b>Ionic crystal</b> and press <b>Hammer it!</b>','Look closely at the charges on both sides of the slip line.'],
+    qs:['After each hit, did the metal break? What happened to the layers of cations?','What did the electron sea do while the layers moved?','In the ionic crystal, which charges end up next to each other after one hit?','Why does that make the crystal shatter?','Use your answers to explain why metals are <b>malleable</b> and <b>ductile</b>.'],
+    rule:'When a metal is hit, layers of cations <b>slide past each other</b> and the sea of electrons moves with them, so the metallic bond holds. The metal changes shape without breaking: it is <b>malleable</b> (hammered into sheets) and <b>ductile</b> (drawn into wires). In an ionic crystal, sliding puts <b>like charges side by side</b>, they repel, and the crystal shatters.'
+  },
+  mode:'metal',
+  init:function(){
+    var s=this; s.hits=0; s.anim=null; s.broken=false; s.wire=false; s.t=0; s.crack=0; s.repel=false; s.brk=0;
+    s.cols=9; s.rows=5; s.sp=50; s.ox=W/2-(s.cols-1)*s.sp/2; s.oy=175;
+    s.atoms=[];
+    for(var r=0;r<s.rows;r++)for(var c=0;c<s.cols;c++){var a={r:r,c:c,shift:0,q:(s.mode==='metal'?1:((r+c)%2===0?1:-1)),fly:0};a.x=s.ox+c*s.sp;a.y=s.oy+r*s.sp;a.tx=a.x;a.ty=a.y;s.atoms.push(a);}
+    s.els=[];if(s.mode==='metal'){for(var i=0;i<70;i++){var an=rand(0,6.28);s.els.push({x:rand(s.ox,s.ox+(s.cols-1)*s.sp),y:rand(s.oy,s.oy+(s.rows-1)*s.sp),vx:Math.cos(an)*1.5,vy:Math.sin(an)*1.5});}}
+    s.ui(); s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Solid:',[{t:'Metal',v:'metal'},{t:'Ionic crystal',v:'ionic'}],s.mode,function(v){s.mode=v;s.init();}));
+    s.bHit=mkBtn('Hammer it!','plum',function(){s.hammer();});
+    s.bWire=mkBtn('Pull into a wire','blue',function(){s.pull();});
+    if(s.mode!=='metal')s.bWire.disabled=true;
+    c.appendChild(s.bHit);c.appendChild(s.bWire);c.appendChild(mkBtn('Reset','ghost',function(){s.init();}));
+    $('extra').innerHTML='';
+    if(s.mode==='metal')setLegend([[C.red,'metal cation (+)'],[C.teal,'delocalized electron (−)',1]]);
+    else setLegend([[C.red,'positive ion (+)'],[C.teal,'negative ion (−)']]);
+  },
+  read:function(){
+    var s=this,t;
+    if(s.mode==='metal'){t=s.wire?'Drawn into a wire: same cations, same sea, new shape. Nothing broke.':(s.hits?'Hits: '+s.hits+' · the layers slid and the metal changed shape, but it is still in one piece.':'Ready · press Hammer it!');}
+    else t=s.broken?'The crystal broke where it was hit: after the layers slid, + sat next to + and − next to −, they repelled, and the piece split off along the slip line.':'Ready · press Hammer it!';
+    setReadout(t);
+  },
+  hammer:function(){
+    var s=this; if(s.anim||s.wire||s.broken)return;
+    if(s.mode==='metal'&&s.hits>=3)return;
+    s.anim={t:0,kind:'hit'};
+  },
+  target:function(){ // where the hammer face touches: the left surface of the layers that will slide
+    var s=this,rm=s.mode==='metal'?(s.hits+2):2,minx=1e9;
+    s.atoms.forEach(function(a){if(a.r<rm)minx=Math.min(minx,a.x);});
+    var ys=[];s.atoms.forEach(function(a){if(a.r<rm&&Math.abs(a.x-minx)<1&&ys.indexOf(a.y)<0)ys.push(a.y);});
+    var cy=ys.reduce(function(p,v){return p+v;},0)/ys.length;
+    var rad=s.mode==='metal'?16:19;
+    return {x:minx-rad-1,y:cy,rows:rm};
+  },
+  drawHammer:function(fx,fy,ang,glow){
+    // face of the head at (fx,fy) facing right; handle hangs down; swings about the handle end
+    ctx.save();ctx.translate(fx,fy);
+    var px=-34,py=190;ctx.translate(px,py);ctx.rotate(ang);ctx.translate(-px,-py);
+    // handle
+    var g=ctx.createLinearGradient(-42,0,-26,0);g.addColorStop(0,'#c58f52');g.addColorStop(1,'#8a5a2b');
+    ctx.fillStyle=g;roundRect(-42,30,16,165,7);ctx.fill();
+    ctx.fillStyle='#5d3b1c';roundRect(-43,150,18,46,7);ctx.fill();
+    // head
+    var h=ctx.createLinearGradient(0,-40,0,40);h.addColorStop(0,'#9aa3b5');h.addColorStop(.5,'#6b7488');h.addColorStop(1,'#4a5266');
+    ctx.fillStyle=h;roundRect(-78,-40,74,80,8);ctx.fill();
+    ctx.fillStyle='#3d4456';roundRect(-8,-36,8,72,3);ctx.fill(); // striking face
+    ctx.fillStyle='#4a5266';roundRect(-96,-26,22,52,6);ctx.fill(); // back of head
+    ctx.restore();
+    if(glow){ctx.save();ctx.strokeStyle=C.amber;ctx.lineWidth=3;for(var i=0;i<8;i++){var a=-Math.PI/2+i*Math.PI/7-0.0;ctx.beginPath();ctx.moveTo(fx+Math.cos(a)*14,fy+Math.sin(a)*14);ctx.lineTo(fx+Math.cos(a)*30,fy+Math.sin(a)*30);ctx.stroke();}ctx.restore();}
+  },
+  pull:function(){
+    var s=this; if(s.anim||s.wire||s.mode!=='metal')return;
+    var n=s.atoms.length,rows=3,cols=Math.ceil(n/rows),sp=46,ox=W/2-(cols-1)*sp/2,oy=250-sp;
+    var sorted=s.atoms.slice().sort(function(a,b){return a.x-b.x;});
+    sorted.forEach(function(a,i){a.sx=a.x;a.sy=a.y;var c=Math.floor(i/rows),r=i%rows;a.tx=ox+c*sp;a.ty=oy+r*sp;});
+    s.anim={t:0,kind:'wire'};
+  },
+  update:function(){
+    var s=this; s.t++;
+    if(s.anim){var A=s.anim;A.t++;
+      if(A.kind==='hit'){
+        if(A.t===1){A.tg=s.target();}
+        if(A.t===22){ // impact
+          var rowsMoved=A.tg.rows;
+          s.atoms.forEach(function(a){if(a.r<rowsMoved){a.sx=a.x;a.tx=a.x+s.sp;}else{a.sx=a.x;a.tx=a.x;}});
+        }
+        if(A.t>22&&A.t<=62){var k=(A.t-22)/40;k=k*k*(3-2*k);s.atoms.forEach(function(a){a.x=lerp(a.sx,a.tx,k);});}
+        if(A.t===62){
+          if(s.mode==='metal'){s.hits++;s.anim=null;s.read();}
+          else{s.repel=true;}
+        }
+        if(s.mode!=='metal'&&A.t>=80&&A.t<=110){s.brk=(A.t-80)/30;} // crack runs from the hammered side
+        if(s.mode!=='metal'&&A.t===110){var bx=0,by=0,n=0;s.atoms.forEach(function(a){if(a.r<2){bx+=a.x;by+=a.y;n++;}});s.bcx=bx/n;s.bcy=by/n;}
+        if(s.mode!=='metal'&&A.t>110){ // the hammered piece breaks off as one piece
+          s.broken=true;var k2=clamp((A.t-110)/40,0,1);k2=k2*k2*(3-2*k2);
+          s.atoms.forEach(function(a){if(a.r<2){a.fly=k2;}});
+          if(A.t===155){s.anim=null;s.read();}
+        }
+      } else if(A.kind==='wire'){
+        var k3=clamp(A.t/90,0,1);k3=k3*k3*(3-2*k3);
+        s.atoms.forEach(function(a){a.x=lerp(a.sx,a.tx,k3);a.y=lerp(a.sy,a.ty,k3);});
+        if(A.t>=90){s.anim=null;s.wire=true;s.read();}
+      }
+    }
+    // electrons wander within the current lattice bounds
+    if(s.els.length){var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;s.atoms.forEach(function(a){minx=Math.min(minx,a.x);maxx=Math.max(maxx,a.x);miny=Math.min(miny,a.y);maxy=Math.max(maxy,a.y);});
+      var near=function(x,y){for(var i=0;i<s.atoms.length;i++){var a=s.atoms[i];if(Math.abs(a.x-x)<s.sp*0.75&&Math.abs(a.y-y)<s.sp*0.75)return true;}return false;};
+      s.els.forEach(function(e){var a=rand(-.3,.3),cs=Math.cos(a),sn=Math.sin(a),vx=e.vx*cs-e.vy*sn,vy=e.vx*sn+e.vy*cs;e.vx=vx;e.vy=vy;
+        var nx=e.x+e.vx,ny=e.y+e.vy;
+        if(!near(nx,ny)){e.vx=-e.vx;e.vy=-e.vy;
+          if(!near(e.x,e.y)){var t=s.atoms[Math.floor(Math.random()*s.atoms.length)];e.x=t.x+rand(-15,15);e.y=t.y+rand(-15,15);}}
+        else{e.x=nx;e.y=ny;}
+        e.x=clamp(e.x,minx-22,maxx+22);e.y=clamp(e.y,miny-22,maxy+22);
+      });}
+  },
+  draw:function(){
+    var s=this,A=s.anim;
+    // anvil / ground
+    ctx.fillStyle='#d9e1ee';ctx.fillRect(60,s.oy+(s.rows-1)*s.sp+30,W-120,14);
+    // sea glow
+    if(s.mode==='metal'){ctx.save();ctx.fillStyle='rgba(43,89,195,0.10)';s.atoms.forEach(function(a){circle(a.x,a.y,s.sp*0.72,'rgba(43,89,195,0.07)');});ctx.restore();}
+    // slip line
+    if(A&&A.kind==='hit'&&A.t>15&&A.t<70||s.repel&&!s.broken){var rm=s.mode==='metal'?(s.hits+2):2;var y=s.oy+(rm-0.5)*s.sp;ctx.save();ctx.setLineDash([8,6]);ctx.strokeStyle=C.plum;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(90,y);ctx.lineTo(W-90,y);ctx.stroke();ctx.restore();text('slip line',W-60,y,13,C.plum,'center',600);}
+    s.atoms.forEach(function(a){
+      var x=a.x,y=a.y;
+      if(a.fly){var an=-0.12*a.fly,dx=x-s.bcx,dy=y-s.bcy;x=s.bcx+dx*Math.cos(an)-dy*Math.sin(an)+28*a.fly;y=s.bcy+dx*Math.sin(an)+dy*Math.cos(an)-34*a.fly;}
+      if(s.mode==='metal')cation(x,y,16,'+');
+      else ball(x,y,a.q>0?14:19,a.q>0?C.red:C.teal,a.q>0?'+':'−',16);
+    });
+    s.els.forEach(function(e){electron(e.x,e.y);});
+    // repulsion zaps
+    if(s.mode!=='metal'&&A&&A.kind==='hit'&&A.t>62&&A.t<100){
+      s.atoms.forEach(function(a){if(a.r===1){var below=null;for(var i=0;i<s.atoms.length;i++){var b=s.atoms[i];if(b.r===2&&Math.abs(b.x-a.x)<5){below=b;}}
+        if(below&&below.q===a.q){var x=a.x,y1=a.y+18,y2=below.y-18;ctx.save();ctx.strokeStyle='#c00000';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(x,y1);ctx.lineTo(x+6,y1+5);ctx.lineTo(x-6,y1+9);ctx.lineTo(x+5,y2);ctx.stroke();
+          ctx.beginPath();ctx.moveTo(x-8,y1+2);ctx.lineTo(x,y1-6);ctx.lineTo(x+8,y1+2);ctx.stroke();ctx.restore();}}});
+    }
+    // crack line after shatter
+    if(s.mode!=='metal'&&s.brk>0){var y=s.oy+1.5*s.sp,x0=s.ox-20,x1=s.ox+s.cols*s.sp+20,xe=lerp(x0,x1,s.brk);ctx.save();ctx.strokeStyle='#c00000';ctx.lineWidth=3;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(x0,y);for(var x=x0,zi=0;x+10<xe;x+=20,zi++)ctx.lineTo(x+10,y+(zi%2?6:-6));ctx.stroke();ctx.restore();}
+    // hammer
+    var BACK=-0.75;
+    if(A&&A.kind==='hit'&&A.tg){var tg=A.tg,ang,push=0;
+      if(A.t<=22){var k=A.t/22;ang=lerp(BACK,0,k*k);}            // swing in, speeding up
+      else if(A.t<=62){ang=0;var kk=(A.t-22)/40;kk=kk*kk*(3-2*kk);push=s.sp*kk;} // stays on the surface and pushes the layers
+      else{ang=lerp(0,BACK,clamp((A.t-62)/25,0,1));push=s.sp;}       // lifts away
+      s.drawHammer(tg.x+push,tg.y,ang,A.t>=22&&A.t<32);
+    } else if(!s.wire&&!s.broken&&!(s.mode==='metal'&&s.hits>=3)){var t0=s.target();s.drawHammer(t0.x,t0.y,BACK,false);}
+    var msg=s.mode==='metal'?(s.wire?'Ductile: drawn into a wire!':(s.hits?'Malleable: new shape, still one piece':'A metal lattice in its sea of electrons')):(s.broken?'Brittle: the hammered piece breaks off along the slip line':(s.repel?'Like charges are now side by side… they repel!':'An ionic crystal: + and − ions in fixed places'));
+    banner(msg,s.broken?'#c00000':(s.mode==='metal'?C.plum:C.teal));
+  }
+};
+
+/* =========================================================
+   MISSION 4 — Hard or soft? Melting and boiling
+   ========================================================= */
+var METALS={
+  K:{name:'Potassium',group:'Group 1',v:1,d:0,ion:'K⁺',r:21,mohs:0.4,mp:63,bp:759,feel:'very soft – cut with a knife'},
+  Na:{name:'Sodium',group:'Group 1',v:1,d:0,ion:'Na⁺',r:19,mohs:0.5,mp:98,bp:883,feel:'very soft – cut with a knife'},
+  Ca:{name:'Calcium',group:'Group 2',v:2,d:0,ion:'Ca²⁺',r:18,mohs:1.75,mp:842,bp:1484,feel:'soft'},
+  Mg:{name:'Magnesium',group:'Group 2',v:2,d:0,ion:'Mg²⁺',r:16,mohs:2.5,mp:650,bp:1090,feel:'fairly soft'},
+  Fe:{name:'Iron',group:'Transition',v:2,d:3,ion:'Fe',r:15,mohs:4,mp:1538,bp:2861,feel:'hard'},
+  Cr:{name:'Chromium',group:'Transition',v:2,d:3,ion:'Cr',r:15,mohs:8.5,mp:1907,bp:2671,feel:'very hard'}
+};
+var M4={
+  title:'Mission 4 · Hard or soft? Melting and boiling',
+  color:C.amber,
+  info:{
+    goal:'Compare group 1, group 2 and transition metals. Collect your own data on hardness, melting point and boiling point, then find the pattern.',
+    steps:['Pick a metal and count how many electrons each atom adds to the sea.','Press <b>Press test</b>: the same force pushes into each metal. Look at the dent.','Drag the <b>temperature</b> slider up slowly until the metal melts, then keep going until it boils.','Fill the data table for all six metals (it records your results for you).','Compare group 1 → group 2 → transition metals.'],
+    qs:['Which metals dent the most? How many electrons do their atoms add to the sea?','Why do transition metals add more electrons to the sea than group 1 and 2 metals?','What happens to the cations at the melting point? Are they still in the sea?','What happens at the boiling point?','Why is the boiling point so much higher than the melting point for every metal?'],
+    rule:'The <b>more delocalized electrons</b> each atom adds to the sea (and the bigger the cation\'s charge), the <b>stronger the metallic bond</b>. Group 1 metals (1 electron, ns¹) are soft with low melting points. Group 2 metals (2 electrons, ns²) are harder. Transition metals give their outer <b>s and d electrons</b>, so they are the hardest and strongest, with high melting points. <b>Boiling points are much higher than melting points</b>: when a metal melts, the cations can slide around but stay in the sea; to boil, atoms must be pulled completely out of the sea.'
+  },
+  metal:'Na',
+  data:{},
+  init:function(){
+    var s=this,m=METALS[s.metal];
+    s.T=25;s.state='solid';s.press=null;s.dent=0;s.t=0;
+    s.cols=8;s.rows=4;s.sp=54;s.ox=W/2-(s.cols-1)*s.sp/2-40;s.oy=228;
+    s.bx0=s.ox-40;s.bx1=s.ox+(s.cols-1)*s.sp+40;s.by0=110;s.by1=s.oy+(s.rows-1)*s.sp+32;
+    s.atoms=[];for(var r=0;r<s.rows;r++)for(var c=0;c<s.cols;c++){var a={r:r,c:c,hx:s.ox+c*s.sp,hy:s.oy+r*s.sp,dy:0};a.x=a.hx;a.y=a.hy;a.vx=0;a.vy=0;s.atoms.push(a);}
+    s.els=[];var n=s.atoms.length*(m.v+m.d);
+    for(var i=0;i<n;i++){var an=rand(0,6.28);s.els.push({x:rand(s.ox-10,s.ox+(s.cols-1)*s.sp+10),y:rand(s.oy-10,s.oy+(s.rows-1)*s.sp+10),vx:Math.cos(an)*1.3,vy:Math.sin(an)*1.3,d:i>=s.atoms.length*m.v});}
+    if(!s.data[s.metal])s.data[s.metal]={};
+    s.ui();s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Metal:',[{t:'K',v:'K'},{t:'Na',v:'Na'},{t:'Ca',v:'Ca'},{t:'Mg',v:'Mg'},{t:'Fe',v:'Fe'},{t:'Cr',v:'Cr'}],s.metal,function(v){s.metal=v;s.init();}));
+    s.bPress=mkBtn('Press test','plum',function(){if(s.state!=='solid'||s.press)return;s.atoms.forEach(function(a){a.dy=0;a.dx=0;});s.dent=0;s.press={t:0};});
+    c.appendChild(s.bPress);
+    var row=document.createElement('div');row.className='slider-row';
+    row.innerHTML='<label for="tSlider">Temperature</label><input type="range" id="tSlider" min="25" max="3200" step="1" value="25"><span class="temp" id="tVal">25 °C</span>';
+    c.appendChild(row);
+    c.appendChild(mkBtn('Cool to 25 °C','ghost',function(){$('tSlider').value=25;s.setT(25);}));
+    $('tSlider').addEventListener('input',function(){s.setT(+this.value);});
+    s.table();
+    setLegend([[C.red,'metal cation (+)'],[C.teal,'s electron in the sea',1],[C.plum,'d electron in the sea',1]]);
+  },
+  setT:function(T){var s=this,m=METALS[s.metal],old=s.state;s.T=T;$('tVal').textContent=Math.round(T)+' °C';
+    s.state=T>=m.bp?'gas':(T>=m.mp?'liquid':'solid');
+    var d=s.data[s.metal];
+    if(old==='solid'&&s.state!=='solid'&&d.mp==null){d.mp=m.mp;s.table();}
+    if(s.state==='gas'&&d.bp==null){d.bp=m.bp;if(d.mp==null)d.mp=m.mp;s.table();}
+    if(old!=='solid'&&s.state==='solid'){s.atoms.forEach(function(a){a.dy=0;a.dx=0;});s.dent=0;}
+    if(old==='gas'&&s.state!=='gas'){s.atoms.forEach(function(a){if(a.y<s.by0-10||a.y>H+20){a.x=rand(s.bx0+30,s.bx1-30);a.y=s.by0+20;}});}
+    s.read();},
+  read:function(){var s=this,m=METALS[s.metal];
+    var e=m.d?m.v+' s electrons + some d electrons':m.v+' s electron'+(m.v>1?'s':'');
+    var st=s.state==='solid'?'solid':(s.state==='liquid'?'<b>liquid</b> – the cations slide past each other but are still in the sea':'<b>gas</b> – atoms escape completely from the sea');
+    setReadout('<b>'+m.name+'</b> ('+m.group+') · each atom adds '+e+' to the sea · state: '+st);},
+  table:function(){var s=this;
+    var rows=['K','Na','Ca','Mg','Fe','Cr'].map(function(k){var m=METALS[k],d=s.data[k]||{};
+      function cell(v,u){return v==null?'<td class="blank">?</td>':'<td>'+v+(u||'')+'</td>';}
+      return '<tr><td><b>'+k+'</b></td><td>'+m.group+'</td><td>'+(m.d?'2 s + d':m.v)+'</td>'+cell(d.dent)+cell(d.mp,' °C')+cell(d.bp,' °C')+'</tr>';}).join('');
+    $('extra').innerHTML='<table class="data"><thead><tr><th>Metal</th><th>Group</th><th>e⁻ per atom in sea</th><th>Dent (press test)</th><th>Melting point</th><th>Boiling point</th></tr></thead><tbody>'+rows+'</tbody></table>';},
+  update:function(){
+    var s=this,m=METALS[s.metal];s.t++;
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;
+    if(s.state==='solid'){
+      var amp=0.8+5*(s.T/m.mp);
+      s.atoms.forEach(function(a){var tx=a.hx+(a.dx||0)+rand(-amp,amp)*.5,ty=a.hy+a.dy+rand(-amp,amp)*.5;a.x=lerp(a.x,tx,0.25);a.y=lerp(a.y,ty,0.25);});
+    } else if(s.state==='liquid'){
+      var floor=s.by1-20,top=floor-(s.rows-0.3)*s.sp*0.95;
+      s.atoms.forEach(function(a){a.vx+=rand(-.35,.35);a.vy+=rand(-.35,.35)+0.05;a.vx*=0.94;a.vy*=0.94;a.x+=a.vx;a.y+=a.vy;
+        if(a.x<s.bx0+22){a.x=s.bx0+22;a.vx=Math.abs(a.vx);} if(a.x>s.bx1-22){a.x=s.bx1-22;a.vx=-Math.abs(a.vx);}
+        if(a.y>floor){a.y=floor;a.vy=-Math.abs(a.vy);} if(a.y<top){a.vy+=0.25;}});
+      // gentle separation
+      for(var i=0;i<s.atoms.length;i++)for(var j=i+1;j<s.atoms.length;j++){var A=s.atoms[i],B=s.atoms[j],dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy,md=m.r*2+6;if(d2<md*md&&d2>0.01){var d=Math.sqrt(d2),p=(md-d)/2/d;A.x-=dx*p;A.y-=dy*p;B.x+=dx*p;B.y+=dy*p;}}
+    } else {
+      s.atoms.forEach(function(a){a.vx+=rand(-.3,.3);a.vy-=0.12;a.x+=a.vx;a.y+=a.vy*1.4;});
+    }
+    s.atoms.forEach(function(a){if(a.y>-40&&a.y<H+40){minx=Math.min(minx,a.x);maxx=Math.max(maxx,a.x);miny=Math.min(miny,a.y);maxy=Math.max(maxy,a.y);}});
+    var self=s;
+    var gas=s.state==='gas';
+    s.els.forEach(function(e,idx){
+      if(gas){var a0=s.atoms[idx%s.atoms.length];e.x=lerp(e.x,a0.x+Math.cos(idx+s.t*.1)*a0.r*1.3,0.3);e.y=lerp(e.y,a0.y+Math.sin(idx+s.t*.1)*a0.r*1.3,0.3);return;}
+      var a=rand(-.35,.35),cs=Math.cos(a),sn=Math.sin(a),vx=e.vx*cs-e.vy*sn,vy=e.vx*sn+e.vy*cs;e.vx=vx;e.vy=vy;e.x+=e.vx;e.y+=e.vy;
+      if(e.x<minx-18){e.x=minx-18;e.vx=Math.abs(e.vx);} if(e.x>maxx+18){e.x=maxx+18;e.vx=-Math.abs(e.vx);}
+      if(e.y<miny-18){e.y=miny-18;e.vy=Math.abs(e.vy);} if(e.y>maxy+18){e.y=maxy+18;e.vy=-Math.abs(e.vy);}
+    });
+    // press test
+    if(s.press){var P=s.press;P.t++;
+      var depth=Math.round(62*(1-m.mohs/10));
+      s.dent=P.t<50?depth*(P.t/50):depth;
+      var cx=s.ox+3.5*s.sp;s.atoms.forEach(function(a){var dxs=a.hx-cx,dx=Math.abs(dxs);var f=Math.max(0,1-dx/(s.sp*2.2));var rowF=(s.rows-1-a.r)/(s.rows-1);a.dy=s.dent*f*rowF;a.dx=(dxs<0?-1:1)*s.dent*f*rowF*0.35;});
+      if(P.t===50){var lbl=depth>50?'deep':(depth>30?'medium':(depth>15?'small':'tiny'));s.data[s.metal].dent=lbl;s.table();}
+      if(P.t>130){s.press=null;}
+    }
+  },
+  draw:function(){
+    var s=this,m=METALS[s.metal];
+    // container
+    ctx.save();ctx.lineWidth=3;ctx.strokeStyle='#9fb0cc';ctx.beginPath();ctx.moveTo(s.bx0,s.by0);ctx.lineTo(s.bx0,s.by1);ctx.lineTo(s.bx1,s.by1);ctx.lineTo(s.bx1,s.by0);ctx.stroke();ctx.restore();
+    // heat glow under container
+    var hk=clamp((s.T-25)/2500,0,1);if(hk>0.01){var g=ctx.createLinearGradient(0,s.by1,0,s.by1+40);g.addColorStop(0,'rgba(232,150,42,'+(0.7*hk)+')');g.addColorStop(1,'rgba(212,72,110,0)');ctx.fillStyle=g;ctx.fillRect(s.bx0,s.by1+2,s.bx1-s.bx0,40);}
+    // sea
+    if(s.state!=='gas'){var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9;s.atoms.forEach(function(a){minx=Math.min(minx,a.x);maxx=Math.max(maxx,a.x);miny=Math.min(miny,a.y);maxy=Math.max(maxy,a.y);});
+      var dens=(m.v+m.d)/5; sea(minx-28,miny-28,maxx-minx+56,maxy-miny+56,0.07+0.13*dens);}
+    // indenter
+    var ix=s.ox+3.5*s.sp;
+    if(s.press||(s.dent>0&&s.state==='solid')){var tipY=s.oy-m.r-2+(s.dent||0);ctx.save();ctx.fillStyle='#6b7488';ctx.beginPath();ctx.moveTo(ix-22,tipY-60);ctx.lineTo(ix+22,tipY-60);ctx.lineTo(ix,tipY);ctx.closePath();ctx.fill();ctx.fillRect(ix-8,tipY-110,16,52);ctx.restore();
+      text('same force',ix+70,tipY-70,13,C.muted,'center',600);}
+    var vib=s.state==='solid'?clamp(s.T/m.mp,0,1):1;
+    s.atoms.forEach(function(a){cation(a.x,a.y,m.r,m.ion,mix(C.red,'#e8962a',vib*0.35));});
+    s.els.forEach(function(e){electron(e.x,e.y,e.d?C.plum:C.teal,3.4);});
+    // thermometer
+    var tx=W-70,ty0=110,ty1=390;roundRect(tx-12,ty0,24,ty1-ty0,12);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#9fb0cc';ctx.lineWidth=2;ctx.stroke();
+    var fh=(ty1-ty0-16)*clamp(s.T/3200,0,1);ctx.fillStyle=C.red;roundRect(tx-6,ty1-8-fh,12,fh+4,6);ctx.fill();circle(tx,ty1+14,16,C.red);
+    text(Math.round(s.T)+' °C',tx,ty0-16,15,C.ink,'center',700);
+    var stCol=s.state==='solid'?C.teal:(s.state==='liquid'?C.amber:C.red);
+    banner(m.name+' · '+s.state.toUpperCase(),stCol);
+    text(m.group+' · '+(m.d?'2 s + d electrons per atom':m.v+' electron'+(m.v>1?'s':'')+' per atom')+' in the sea',s.ox+3.5*s.sp,H-22,14,C.muted,'center',600);
+  }
+};
+
+/* =========================================================
+   MISSION 5 — Alloys
+   ========================================================= */
+var M5={
+  title:'Mission 5 · Alloys: why mix metals?',
+  color:C.coral,
+  info:{
+    goal:'Build two kinds of alloy and test how easily the layers slide compared with the pure metal.',
+    steps:['Choose <b>Pure iron</b> and press <b>Push the top layers</b>.','Choose <b>Carbon steel</b> and push again. Look where the small carbon atoms sit.','Choose <b>Pure silver</b>, then <b>Sterling silver</b>, and push each one.','Compare how far the layers slide each time.'],
+    qs:['In carbon steel, where do the carbon atoms go? Are they bigger or smaller than iron atoms?','In sterling silver, where do the copper atoms go? Are they a similar size to silver atoms?','Which one is the <b>interstitial</b> alloy and which is the <b>substitutional</b> alloy?','Why do the extra atoms make it harder for the layers to slide?','So why is steel harder and stronger than pure iron?'],
+    rule:'An <b>alloy</b> is a mixture of elements that has metallic properties. In a <b>substitutional alloy</b>, some atoms are replaced by atoms of a similar size (sterling silver: Ag + Cu; brass: Cu + Zn). In an <b>interstitial alloy</b>, small atoms fill the holes between the larger atoms (carbon steel: Fe + C). The different atoms make it harder for the layers to slide, so alloys are often harder and stronger than the pure metal.'
+  },
+  mode:'fe',
+  init:function(){
+    var s=this;s.t=0;s.push=null;s.off=0;s.pushes=0;s.result=null;
+    s.cols=10;s.rows=5;s.sp=50;s.ox=W/2-(s.cols-1)*s.sp/2;s.oy=170;
+    s.atoms=[];s.small=[];
+    var base=s.mode==='fe'||s.mode==='steel'?'Fe':'Ag';
+    for(var r=0;r<s.rows;r++)for(var c=0;c<s.cols;c++)s.atoms.push({r:r,c:c,hx:s.ox+c*s.sp,hy:s.oy+r*s.sp,el:base});
+    if(s.mode==='sterling'){var idx=[3,8,12,17,21,26,30,34,38,43,46];idx.forEach(function(i){s.atoms[i].el='Cu';});}
+    if(s.mode==='steel'){var holes=[[1,0],[4,0],[7,0],[2,1],[5,1],[8,1],[0,2],[3,2],[6,2],[1,3],[4,3],[7,3]];holes.forEach(function(h){s.small.push({c:h[0],r:h[1],hx:s.ox+(h[0]+0.5)*s.sp,hy:s.oy+(h[1]+0.5)*s.sp});});}
+    s.els=[];for(var i=0;i<80;i++){var an=rand(0,6.28);s.els.push({x:rand(s.ox,s.ox+(s.cols-1)*s.sp),y:rand(s.oy,s.oy+(s.rows-1)*s.sp),vx:Math.cos(an)*1.4,vy:Math.sin(an)*1.4});}
+    s.ui();s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Sample:',[{t:'Pure iron',v:'fe'},{t:'Carbon steel',v:'steel'},{t:'Pure silver',v:'ag'},{t:'Sterling silver',v:'sterling'}],s.mode,function(v){s.mode=v;s.init();}));
+    c.appendChild(mkBtn('Push the top layers','coral',function(){if(s.push)return;if((s.mode==='fe'||s.mode==='ag')&&s.pushes>=2)return;s.pushes=(s.pushes||0)+1;s.off=0;s.push={t:0};}));
+    c.appendChild(mkBtn('Reset','ghost',function(){s.init();}));
+    $('extra').innerHTML='';
+    var L=[[C.red,s.mode==='fe'||s.mode==='steel'?'iron (Fe) cation':'silver (Ag) cation']];
+    if(s.mode==='steel')L.push([C.ink,'carbon (C) atom – small']);
+    if(s.mode==='sterling')L.push([C.amber,'copper (Cu) cation – similar size']);
+    L.push([C.teal,'delocalized electron',1]);setLegend(L);
+  },
+  read:function(){var s=this,t={fe:'Pure iron: every atom is the same size, so the layers are smooth.',steel:'Carbon steel (Fe + C): small carbon atoms sit in the holes between iron atoms.',ag:'Pure silver: every atom is the same size, so the layers are smooth.',sterling:'Sterling silver (92.5% Ag + 7.5% Cu): some silver atoms are replaced by copper atoms.'}[s.mode];
+    if(s.result)t+='<br>Result: the layers slid <b>'+s.result+'</b>.';setReadout(t);},
+  update:function(){
+    var s=this;s.t++;
+    var maxOff={fe:s.sp,ag:s.sp,sterling:s.sp*0.32,steel:s.sp*0.14}[s.mode];
+    var stays={fe:true,ag:true,sterling:false,steel:false}[s.mode];
+    if(s.push){var P=s.push;P.t++;
+      if(P.t<=45){var k=P.t/45;k=k*k*(3-2*k);s.off=maxOff*k;}
+      else if(!stays&&P.t<=80){var k2=(P.t-45)/35;s.off=maxOff*(1-k2*k2*(3-2*k2));}
+      if(P.t===46){s.result=stays?'easily – one whole atom along':(s.mode==='steel'?'hardly at all – the carbon atoms block them':'only a little – the different atoms make the layers bumpy');s.read();}
+      if(P.t>85){if(stays){s.atoms.forEach(function(a){if(a.r<2)a.hx+=s.sp;});s.small.forEach(function(a){if(a.r<1)a.hx+=s.sp;});s.off=0;}s.push=null;}
+    }
+    s.els.forEach(function(e){var a=rand(-.3,.3),cs=Math.cos(a),sn=Math.sin(a),vx=e.vx*cs-e.vy*sn,vy=e.vx*sn+e.vy*cs;e.vx=vx;e.vy=vy;e.x+=e.vx;e.y+=e.vy;
+      if(e.x<s.ox-20){e.x=s.ox-20;e.vx=Math.abs(e.vx);} if(e.x>s.ox+(s.cols)*s.sp+10){e.x=s.ox+s.cols*s.sp+10;e.vx=-Math.abs(e.vx);}
+      if(e.y<s.oy-20){e.y=s.oy-20;e.vy=Math.abs(e.vy);} if(e.y>s.oy+(s.rows-1)*s.sp+20){e.y=s.oy+(s.rows-1)*s.sp+20;e.vy=-Math.abs(e.vy);}});
+  },
+  draw:function(){
+    var s=this;
+    sea(s.ox-34,s.oy-34,(s.cols-1)*s.sp+68+(s.mode==='fe'||s.mode==='ag'?s.sp:0),(s.rows-1)*s.sp+68,0.09);
+    ctx.fillStyle='#d9e1ee';ctx.fillRect(70,s.oy+(s.rows-1)*s.sp+36,W-140,14);
+    // push arrow
+    if(s.push){var y=s.oy+0.5*s.sp;ctx.save();ctx.fillStyle=C.red;ctx.globalAlpha=.85;ctx.beginPath();ctx.moveTo(30,y-12);ctx.lineTo(70,y-12);ctx.lineTo(70,y-24);ctx.lineTo(100,y);ctx.lineTo(70,y+24);ctx.lineTo(70,y+12);ctx.lineTo(30,y+12);ctx.closePath();ctx.fill();ctx.restore();text('push',58,y-38,14,C.red,'center',700);}
+    s.atoms.forEach(function(a){var x=a.hx+(a.r<2?s.off:0),y=a.hy;
+      if(a.el==='Cu')ball(x,y,19,C.amber,'Cu',12);else cation(x,y,18,a.el,C.red);});
+    s.small.forEach(function(a){var x=a.hx+(a.r<1?s.off:0);ball(x,a.hy,8,'#3a4660','C',9);});
+    s.els.forEach(function(e){electron(e.x,e.y,C.teal,3.2);});
+    if(s.push&&!({fe:1,ag:1})[s.mode]&&s.push.t>35&&s.push.t<75){text(s.mode==='steel'?'blocked by the carbon atoms!':'the bumpy layers resist!',W/2,s.oy-50,18,'#c00000','center',700);}
+    var title={fe:'Pure iron',steel:'Carbon steel – an interstitial alloy',ag:'Pure silver',sterling:'Sterling silver – a substitutional alloy'}[s.mode];
+    banner(title,({fe:C.teal,ag:C.teal,steel:C.ink,sterling:C.amber})[s.mode]);
+  }
+};
+
+/* =========================================================
+   MISSION 6 — Why metals shine (luster)
+   ========================================================= */
+var PH=[{n:'red',c:'#e5383b'},{n:'orange',c:'#f48c06'},{n:'yellow',c:'#f2c500'},{n:'green',c:'#38b000'},{n:'blue',c:'#1e6bd6'},{n:'violet',c:'#7b2cbf'}];
+var M6={
+  title:'Mission 6 · Why metals shine',
+  color:'#b8860b',
+  info:{
+    goal:'Shine light on a metal and find out which particles make it look shiny (luster).',
+    steps:['Choose <b>Silver</b> and press <b>Turn on the light</b>.','Turn on <b>Slow motion</b> and watch one ray of light hit the surface.','Look at <b>What your eye sees</b>.','Choose <b>Gold</b>. Watch which colours come back and which do not.','Choose <b>Sulfur</b> (a nonmetal) and compare.'],
+    qs:['Which particles at the surface of the metal does the light hit?','What happens to the light after an electron takes it in?','Silver sends back every colour. What colour does the shine look?','Gold keeps most of the blue and violet light. Which colours reach your eye? So what colour is gold?','Sulfur has no sea of electrons. Why does it look dull?'],
+    rule:'Metals have <b>luster</b> (they are shiny) because their <b>delocalized electrons</b> interact with light: they <b>absorb</b> the light and immediately <b>release it again</b>, so the light bounces back from the surface. Silver sends back all colours, so it shines white-silver. Gold keeps some of the blue light, so its shine looks yellow. Nonmetals have no sea of free electrons, so they look dull.'
+  },
+  mode:'ag',
+  data:{ag:{name:'Silver',lab:'Ag⁺',col:'#9aa7bd',absorb:[]},au:{name:'Gold',lab:'Au⁺',col:'#c9971c',absorb:['blue','violet']},s:{name:'Sulfur',lab:'S',col:'#d8c24a'}},
+  init:function(){
+    var s=this;s.on=false;s.slow=false;s.t=0;s.ph=[];s.flash=[];s.seen={n:0,r:0,g:0,b:0,lost:0,back:0};s.hits=0;
+    s.surf=318;s.cols=11;s.rows=3;s.sp=52;s.ox=W/2-(s.cols-1)*s.sp/2;s.oy=s.surf+28;
+    s.lamp={x:105,y:92};s.eye={x:W-105,y:92};
+    s.atoms=[];for(var r=0;r<s.rows;r++)for(var c=0;c<s.cols;c++)s.atoms.push({x:s.ox+c*s.sp+(s.mode==='s'&&r%2?s.sp/2:0),y:s.oy+r*s.sp});
+    s.els=[];if(s.mode!=='s'){for(var i=0;i<60;i++){var a=rand(0,6.28);s.els.push({x:rand(s.ox-20,s.ox+(s.cols-1)*s.sp+20),y:rand(s.surf+4,s.oy+(s.rows-1)*s.sp+16),vx:Math.cos(a)*1.2,vy:Math.sin(a)*1.2,fl:0,fc:null});}}
+    s.ui();s.read();
+  },
+  ui:function(){
+    var s=this,c=$('controls');c.innerHTML='';
+    c.appendChild(mkChips('Sample:',[{t:'Silver (Ag)',v:'ag'},{t:'Gold (Au)',v:'au'},{t:'Sulfur (nonmetal)',v:'s'}],s.mode,function(v){var on=s.on,sl=s.slow;s.mode=v;s.init();if(on){s.on=true;s.bOn.textContent='Turn off the light';}if(sl){s.slow=true;s.bSl.textContent='Normal speed';}}));
+    s.bOn=mkBtn('Turn on the light','amber',function(){s.on=!s.on;s.bOn.textContent=s.on?'Turn off the light':'Turn on the light';});
+    s.bSl=mkBtn('Slow motion','plum',function(){s.slow=!s.slow;s.bSl.textContent=s.slow?'Normal speed':'Slow motion';});
+    c.appendChild(s.bOn);c.appendChild(s.bSl);c.appendChild(mkBtn('Reset','ghost',function(){s.init();}));
+    $('extra').innerHTML='';
+    if(s.mode==='s')setLegend([['#d8c24a','sulfur atom (no free electrons)'],['#f2c500','light (photon)',1]]);
+    else setLegend([[C.red,s.mode==='ag'?'silver cation':'gold cation'],[C.teal,'delocalized electron',1],['#f2c500','light (photon)',1]]);
+  },
+  read:function(){var s=this,d=s.data[s.mode],t;
+    if(!s.on&&!s.seen.n){t='Turn on the light to shine white light (all colours) on '+d.name.toLowerCase()+'.';}
+    else if(s.mode==='s')t='Sulfur: most of the light is taken in and not sent back; the little that comes back goes in random directions.';
+    else t=d.name+': the delocalized electrons at the surface take in the light and release it again, so it bounces back towards your eye'+(s.mode==='au'?' — but blue and violet light are kept, not sent back.':'.');
+    setReadout(t);},
+  spawn:function(){var s=this,p=PH[Math.floor(Math.random()*PH.length)],tx=rand(W/2-22,W/2+22),dx=tx-s.lamp.x,dy=s.surf-s.lamp.y,L=Math.sqrt(dx*dx+dy*dy);
+    s.ph.push({x:s.lamp.x+dx/L*30,y:s.lamp.y+dy/L*30,vx:dx/L,vy:dy/L,col:p,st:'in',age:0});},
+  update:function(){
+    var s=this,sp=s.slow?1.3:4.2;s.t++;
+    if(s.on&&(s.t%(s.slow?34:5)===0))s.spawn();
+    s.els.forEach(function(e){var a=rand(-.35,.35),cs=Math.cos(a),sn=Math.sin(a),vx=e.vx*cs-e.vy*sn,vy=e.vx*sn+e.vy*cs;e.vx=vx;e.vy=vy;e.x+=e.vx;e.y+=e.vy;
+      if(e.x<s.ox-24){e.x=s.ox-24;e.vx=Math.abs(e.vx);}if(e.x>s.ox+(s.cols-1)*s.sp+24){e.x=s.ox+(s.cols-1)*s.sp+24;e.vx=-Math.abs(e.vx);}
+      if(e.y<s.surf+4){e.y=s.surf+4;e.vy=Math.abs(e.vy);}if(e.y>s.oy+(s.rows-1)*s.sp+18){e.y=s.oy+(s.rows-1)*s.sp+18;e.vy=-Math.abs(e.vy);}
+      if(e.fl>0)e.fl--;});
+    var keep=[];
+    s.ph.forEach(function(p){p.age++;
+      if(p.st==='hold'){p.wait-=(s.slow?1:3);if(p.e){p.x=p.e.x;p.y=p.e.y;}
+        if(p.wait<=0){if(p.fate==='absorb'){s.seen.lost++;return;}p.st='out';p.y=Math.min(p.y,s.surf-2);}
+        keep.push(p);return;}
+      p.x+=p.vx*sp;p.y+=p.vy*sp;
+      if(p.st==='in'&&p.y>=s.surf){s.hits++;
+        if(s.mode==='s'){ // nonmetal: mostly taken in, a few scattered randomly
+          if(Math.random()<0.75||p.col.n==='blue'||p.col.n==='violet'){s.flash.push({x:p.x,y:s.surf+6,t:18,c:'#8a7a2a'});s.seen.lost++;return;}
+          var a=rand(-2.9,-0.25);p.vx=Math.cos(a);p.vy=Math.sin(a);p.st='out';p.y=s.surf-2;p.dim=true;keep.push(p);return;}
+        // metal: nearest surface electron absorbs then re-emits
+        var best=null,bd=1e9;s.els.forEach(function(e){var d=(e.x-p.x)*(e.x-p.x)+(e.y-s.surf)*(e.y-s.surf);if(d<bd){bd=d;best=e;}});
+        if(best){best.fl=s.slow?60:22;best.fc=p.col.c;best.x=lerp(best.x,p.x,.7);best.y=s.surf+8;}
+        p.st='hold';p.e=best;p.wait=22;p.vy=-p.vy;
+        p.fate=(s.data[s.mode].absorb.indexOf(p.col.n)>=0)?'absorb':'back';
+        if(p.fate==='absorb')s.flash.push({x:p.x,y:s.surf+10,t:24,c:'#e8962a'});
+        keep.push(p);return;}
+      if(p.st==='out'){var dx=p.x-s.eye.x,dy=p.y-s.eye.y;
+        if(dx*dx+dy*dy<58*58){var c=parseInt(p.col.c.slice(1),16),w=p.dim?0.3:1;s.seen.r+=((c>>16)&255)*w;s.seen.g+=((c>>8)&255)*w;s.seen.b+=(c&255)*w;s.seen.n+=w;s.seen.back++;return;}
+        if(p.x<-20||p.x>W+20||p.y<-20)return;}
+      keep.push(p);});
+    s.ph=keep;
+    s.flash=s.flash.filter(function(f){f.t--;return f.t>0;});
+    if(s.t%30===0)s.read();
+  },
+  wave:function(p){var L=22,ang=Math.atan2(p.vy,p.vx),ph=p.age*0.6;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(ang);ctx.strokeStyle=p.col.c;ctx.globalAlpha=p.dim?0.45:1;ctx.lineWidth=2.4;ctx.beginPath();
+    for(var i=0;i<=L;i++){var x=-L+i,y=Math.sin(i*0.75+ph)*4;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();circle(0,0,3.2,p.col.c);ctx.restore();},
+  draw:function(){
+    var s=this,d=s.data[s.mode];
+    // lamp
+    ctx.save();ctx.translate(s.lamp.x,s.lamp.y);ctx.rotate(Math.atan2(s.surf-s.lamp.y,W/2-s.lamp.x));
+    ctx.fillStyle='#56637d';roundRect(-46,-16,40,32,8);ctx.fill();ctx.fillStyle='#3d4456';ctx.beginPath();ctx.moveTo(-8,-16);ctx.lineTo(22,-28);ctx.lineTo(22,28);ctx.lineTo(-8,16);ctx.closePath();ctx.fill();
+    if(s.on){var g=ctx.createRadialGradient(22,0,2,22,0,40);g.addColorStop(0,'rgba(255,240,170,0.95)');g.addColorStop(1,'rgba(255,240,170,0)');circle(22,0,40,g);}
+    ctx.restore();text('white light',s.lamp.x,s.lamp.y-50,13,C.muted,'center',600);
+    // eye
+    var ex=s.eye.x,ey=s.eye.y;ctx.save();ctx.beginPath();ctx.moveTo(ex-34,ey);ctx.quadraticCurveTo(ex,ey-30,ex+34,ey);ctx.quadraticCurveTo(ex,ey+30,ex-34,ey);ctx.closePath();ctx.fillStyle='#fff';ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle=C.ink;ctx.stroke();ctx.restore();
+    circle(ex,ey,13,'#3a6ea5');circle(ex,ey,6,C.ink);circle(ex-4,ey-4,2.5,'#fff');
+    text('your eye',ex,ey-46,13,C.muted,'center',600);
+    // material
+    if(s.mode!=='s'){ctx.save();roundRect(s.ox-40,s.surf,(s.cols-1)*s.sp+80,(s.rows-1)*s.sp+64,14);ctx.fillStyle='rgba(43,89,195,0.10)';ctx.fill();ctx.restore();}
+    else{ctx.save();roundRect(s.ox-40,s.surf,(s.cols-1)*s.sp+80,(s.rows-1)*s.sp+64,14);ctx.fillStyle='rgba(216,194,74,0.12)';ctx.fill();ctx.restore();}
+    ctx.save();ctx.strokeStyle='#9fb0cc';ctx.lineWidth=2;ctx.setLineDash([6,5]);ctx.beginPath();ctx.moveTo(s.ox-40,s.surf);ctx.lineTo(s.ox+(s.cols-1)*s.sp+40,s.surf);ctx.stroke();ctx.restore();
+    text('surface of '+d.name.toLowerCase(),s.ox+(s.cols-1)*s.sp+30,s.surf-12,12,C.muted,'right',600);
+    s.atoms.forEach(function(a){if(s.mode==='s')ball(a.x,a.y,17,'#c9b23a','S',12);else cation(a.x,a.y,17,d.lab,s.mode==='au'?'#c9971c':C.red);});
+    s.flash.forEach(function(f){var k=f.t/24;circle(f.x,f.y,10+(1-k)*12,'rgba(232,150,42,'+(0.35*k)+')');});
+    s.els.forEach(function(e){if(e.fl>0){circle(e.x,e.y,12,e.fc+'55');circle(e.x,e.y,7,e.fc+'88');}electron(e.x,e.y);});
+    s.ph.forEach(function(p){if(p.st!=='hold')s.wave(p);});
+    if(s.slow){var hp=null;s.ph.forEach(function(p){if(p.st==='hold')hp=p;});if(hp){text(hp.fate==='absorb'?'electron keeps this '+hp.col.n+' light':'electron takes in the light… and releases it again',hp.x,s.surf-40,14,hp.fate==='absorb'?'#c00000':C.teal,'center',700);}}
+    // what the eye sees
+    var bx=W/2-110,by=104,bw=220,bh=58;text('What your eye sees',W/2,by-16,14,C.ink,'center',700);
+    ctx.save();roundRect(bx,by,bw,bh,12);ctx.clip();
+    if((s.mode==='s'?s.hits<15:s.seen.n<6)){ctx.fillStyle='#e6eaf1';ctx.fillRect(bx,by,bw,bh);ctx.restore();text(s.on?'collecting light…':'?',W/2,by+bh/2,15,C.muted,'center',600);}
+    else{var shiny=s.mode!=='s',r=s.seen.r/s.seen.n,g=s.seen.g/s.seen.n,b=s.seen.b/s.seen.n;
+      var m=Math.max(r,g,b)||1;r=r/m*255;g=g/m*255;b=b/m*255;
+      var base='rgb('+Math.round(r*0.62)+','+Math.round(g*0.62)+','+Math.round(b*0.62)+')',hi='rgb('+Math.round(lerp(r,255,.75))+','+Math.round(lerp(g,255,.75))+','+Math.round(lerp(b,255,.75))+')';
+      if(s.mode==='ag'){base='#8e98a8';hi='#ffffff';}if(s.mode==='au'){base='#a87a12';hi='#ffe48a';}
+      if(s.mode==='s'){ctx.fillStyle='#cdbb5a';ctx.fillRect(bx,by,bw,bh);}
+      else{var gr=ctx.createLinearGradient(bx,by,bx+bw,by+bh);gr.addColorStop(0,base);gr.addColorStop(0.42,hi);gr.addColorStop(0.5,'#ffffff');gr.addColorStop(0.58,hi);gr.addColorStop(1,base);ctx.fillStyle=gr;ctx.fillRect(bx,by,bw,bh);}
+      ctx.restore();
+      text(s.mode==='ag'?'shiny · white-silver':(s.mode==='au'?'shiny · golden yellow':'dull · no shine'),W/2,by+bh+16,14,shiny?C.teal:'#c00000','center',700);}
+    ctx.save();roundRect(bx,by,bw,bh,12);ctx.lineWidth=2;ctx.strokeStyle='#c9d4e6';ctx.stroke();ctx.restore();
+  }
+};
+
+/* ---------- tabs and main loop ---------- */
+var missions=[M1,M2,M3,M4,M5,M6],cur=null;
+var tabs=$('tabs');
+missions.forEach(function(m,i){var b=document.createElement('button');b.type='button';b.className='tab';
+  b.innerHTML='<span class="n" style="background:'+m.color+'">'+(i+1)+'</span>'+m.title.split('· ')[1];
+  b.addEventListener('click',function(){select(i);});tabs.appendChild(b);});
+function select(i){cur=missions[i];Array.prototype.forEach.call(tabs.children,function(t,j){t.classList.toggle('active',i===j);});
+  panel(i,cur);cur.init();
+  try{history.replaceState(null,'','#mission'+(i+1));}catch(e){}}
+var start=0;var h=(location.hash||'').match(/mission(\d)/);if(h)start=clamp(+h[1]-1,0,5);
+function frame(){ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#f7f9fd';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='rgba(219,228,241,0.7)';ctx.lineWidth=1;ctx.beginPath();for(var x=0;x<=W;x+=28){ctx.moveTo(x,0);ctx.lineTo(x,H);}for(var y=0;y<=H;y+=28){ctx.moveTo(0,y);ctx.lineTo(W,y);}ctx.stroke();
+  if(cur){cur.update();cur.draw();}
+  requestAnimationFrame(frame);}
+function go(){select(start);requestAnimationFrame(frame);}
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(go);}else go();
+})();
+</script>
+</body>
+</html>
