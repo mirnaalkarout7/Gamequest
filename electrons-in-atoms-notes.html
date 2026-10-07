@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter 5 · Electrons in Atoms – Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet"><style>
+:root{--ink:#1f2a44;--grid:#dbe4f1;--paper:#eaf0f8}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;color:var(--ink);font-family:'Patrick Hand',cursive;font-size:18px;line-height:1.5;
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+.wrap{max-width:900px;margin:0 auto;padding:34px 22px 60px}
+b{font-family:'Kalam',cursive;font-weight:700;font-style:italic}
+mark{background:linear-gradient(transparent 66%,#fff176 66%);color:inherit;padding:0 2px 1px}
+sup,sub{font-size:.65em}
+.small{font-size:.85em;color:#55627e}
+.center{text-align:center}
+.kick{font-size:14px;letter-spacing:1.6px;color:#55627e}
+h1{font-family:'Kalam',cursive;font-weight:700;font-size:60px;line-height:1.05;margin:8px 0 14px;position:relative;display:inline-block}
+.squig{position:absolute;left:0;bottom:-8px;width:100%;height:16px}
+.intro{max-width:620px;color:#3a4766;margin:16px 0}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 6px}
+.pills a{font-family:'Kalam';font-weight:700;color:var(--c);border:2px solid var(--c);border-radius:10px;padding:2px 14px;text-decoration:none;background:#fff;letter-spacing:.5px}
+.pills a.dark{--c:#1f2a44}
+section{margin-top:34px}
+.lesson{display:flex;align-items:center;gap:16px;margin-bottom:4px}
+.ltag{background:var(--c);color:#fff;font-family:'Kalam';font-weight:700;font-size:20px;padding:2px 14px;border-radius:6px;transform:rotate(-3deg);box-shadow:2px 3px 0 rgba(0,0,0,.12);white-space:nowrap}
+h2{font-family:'Kalam',cursive;font-weight:700;color:var(--c);font-size:38px;margin:0;line-height:1.15}
+.focusq{margin:4px 0 6px}
+.fq{color:var(--c)}
+.dash{border-top:3px dashed var(--c);margin:6px 0 20px}
+.card{background:#fff;border:2px solid var(--ink);border-radius:14px;box-shadow:3px 4px 0 rgba(31,42,68,.16);padding:16px 20px;margin:0 0 18px;break-inside:avoid}
+.card.tint{background:var(--t);border-color:var(--c)}
+h3{font-family:'Kalam',cursive;font-weight:700;color:var(--c);font-size:23px;margin:0 0 10px;line-height:1.2}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.row>.card{margin-bottom:18px}
+.row.in{gap:16px;align-items:start}
+.row.w{grid-template-columns:1.2fr 1fr;align-items:center}
+.row.diag{grid-template-columns:330px 1fr;align-items:start}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.stack{display:grid;gap:10px}
+.kw{display:grid;grid-template-columns:150px 1fr;gap:10px;margin:0 0 10px}
+.kw>b{color:var(--c);font-size:18px;line-height:1.3}
+.pen{list-style:none;padding-left:0;margin:6px 0}
+.pen li{position:relative;padding-left:26px;margin:6px 0}
+.pen li:before{content:"\270E";position:absolute;left:0;top:0;color:var(--c);font-family:'DejaVu Sans',sans-serif}
+.mini{border:2px dashed var(--m);border-radius:12px;padding:10px 12px;background:#fff;font-size:.95em}
+.card.tint .mini{background:rgba(255,255,255,.75)}
+.mini>b:first-child{display:block;color:var(--m);font-size:19px;margin-bottom:2px;font-style:normal}
+.res{font-family:'Kalam';font-weight:700;color:var(--m);margin-top:4px}
+.pill{display:inline-block;border:2px solid var(--p);color:var(--p);border-radius:9px;padding:0 10px;font-family:'Kalam';font-weight:700;font-size:15px;background:#fff;margin:2px}
+.chipsrow{margin:8px 0}
+.formula{font-family:'Kalam';font-weight:700;font-size:28px;text-align:center;background:#fffbe6;border:2px dashed #e0c95a;border-radius:12px;padding:6px 14px;margin:8px auto;width:fit-content}
+.formula.sm{font-size:19px;padding:3px 10px}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.9em;line-height:1.15;margin:0 3px}
+.frac span:first-child{border-bottom:2px solid currentColor;padding:0 4px}
+.note{font-size:.88em;color:#55627e;margin:8px 0 0}
+.answerbox{border:2px dashed #9aa7bd;border-radius:10px;padding:8px 14px;margin-top:12px;background:#fcfdff}
+.sticky{background:#fff3a8;padding:10px 14px;border-radius:3px;box-shadow:2px 4px 8px rgba(0,0,0,.14);transform:rotate(-1.3deg);margin:14px 4px;font-size:.95em;width:fit-content;max-width:100%}
+.sticky.pink{background:#ffd9e3;transform:rotate(1deg)}
+.fig{width:100%;height:auto;display:block;margin:4px auto}
+.fig.narrow{max-width:320px}
+.lab{font-family:'Patrick Hand',cursive;font-size:17px;fill:#1f2a44}
+.lab.b{font-family:'Kalam';font-weight:700;font-size:17px}
+.lab.s{font-size:15px;fill:#55627e}
+.lab.c{fill:#2b59c3}
+.lab.big{font-size:24px;font-family:'Patrick Hand';font-weight:bold}
+.tbl{width:100%;border-collapse:collapse;margin:10px 0 4px;font-size:.95em}
+.tbl th{color:var(--c);font-family:'Kalam';font-weight:700;font-style:italic;text-align:left;border-bottom:2px solid var(--c);padding:4px 8px}
+.tbl td{border-bottom:1px solid #dfe5ef;padding:5px 8px;vertical-align:middle}
+.tbl.c th,.tbl.c td{text-align:center}
+.cfg{font-family:'Patrick Hand',cursive;white-space:nowrap}
+.hl{background:#fff176;border-radius:3px;padding:0 3px}
+.chips{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.chips i{font-style:normal;color:#9aa7bd;font-size:15px}
+.chip{display:inline-flex;flex-direction:column;align-items:center;border-radius:9px;padding:2px 8px;font-family:'Patrick Hand';font-weight:700;font-size:18px;color:#fff;line-height:1.1}
+.chip small{color:#fff;opacity:.85;font-size:12px;font-weight:normal}
+.chip.s{background:#2b59c3}.chip.p{background:#0f8b8d}.chip.d{background:#8a4fbf}.chip.f{background:#c9730f}
+.chip.hot{box-shadow:0 0 0 3px #fff176,0 0 0 5px #d4486e}
+.cap{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.cap .chip{flex-direction:row;font-size:19px;padding:3px 12px}
+.fill{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0 4px}
+.ob{display:inline-flex;gap:10px;align-items:flex-end;vertical-align:middle;flex-wrap:nowrap}
+.grp{display:inline-flex;flex-direction:column;align-items:center}
+.cells{display:inline-flex}
+.box{width:34px;min-width:34px;height:32px;border:2.5px solid var(--ink);margin-left:-2.5px;display:inline-flex;align-items:center;justify-content:center;background:#fff;font-family:'DejaVu Sans',sans-serif}
+.box:first-child{margin-left:0}
+.box i{font-style:normal;font-size:19px;font-weight:bold;line-height:1}
+.box i.up{color:#2b59c3}.box i.dn{color:#d4486e}
+.grp em{font-style:normal;font-size:14px;color:#55627e}
+.ob.sm .box{width:24px;height:24px;border-width:2px;margin-left:-2px}
+.ob.sm .box i{font-size:15px}
+.ob.sm{gap:7px}
+.okno{display:flex;align-items:center;gap:12px;margin:8px 0}
+.okno.ok{color:#3f9a52}.okno.no{color:#d4486e}
+.seq{display:grid;grid-template-columns:repeat(3,auto);gap:8px 14px;justify-content:start;margin:4px 0 8px}
+.seq small{display:block;color:#55627e}
+.ways{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;margin:6px 0}
+.ways .pic{min-height:84px;display:flex;align-items:center;justify-content:center}
+.ways .big{font-size:30px}
+.ways>div>span{font-family:'Kalam';font-weight:700;font-size:18px}
+.el td:first-child b{font-style:normal}
+.dot{display:inline-grid;grid-template-columns:auto auto auto;grid-template-areas:". t ." "l s r" ". b .";align-items:center;justify-items:center;vertical-align:middle;line-height:1;margin:0 5px}
+.dot .s{grid-area:s;font-family:'Kalam';font-weight:bold;font-size:22px;padding:0 1px}
+.dot .t{grid-area:t}.dot .b{grid-area:b}.dot .l{grid-area:l}.dot .r{grid-area:r}
+.dot b{color:#d4486e;font-size:15px;letter-spacing:-1px;min-width:6px;min-height:8px;display:block;font-family:'DejaVu Sans',sans-serif;font-style:normal}
+.dot .l b,.dot .r b{writing-mode:vertical-lr;letter-spacing:-3px}
+.ways .big .dot .s{font-size:34px}.ways .big .dot b{font-size:20px}
+.dotrow{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.wrong{color:#d4486e;text-decoration:line-through;text-decoration-thickness:2px}
+.right{color:#3f9a52;font-family:'Kalam';font-weight:700}
+.nums{padding-left:22px;margin:4px 0}
+.nums li{margin:6px 0}
+.tryb{border:2px dashed var(--m);border-radius:12px;padding:10px 14px;margin-bottom:12px;background:#fff}
+.tryb>b{color:var(--m);font-style:normal;font-size:19px}
+.tryb ul{list-style:none;padding:0;margin:4px 0}
+.tryb ul.two{columns:2;column-gap:24px}
+.qa{margin:6px 0;cursor:pointer;break-inside:avoid}
+.qa .go{color:var(--m)}
+.qa .a{font-family:'Kalam';font-weight:700;color:var(--m);background:#eef2f8;border-radius:6px;padding:0 8px;color:transparent;text-shadow:none;user-select:none}
+.qa .a *{visibility:hidden}
+.qa:not(.open) .a:after{content:"tap";color:#9aa7bd;font-weight:400;font-size:13px}
+.qa.open .a{color:var(--m);background:none;padding:0}
+.qa.open .a *{visibility:visible}
+.cheat{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sign{font-family:'Kalam';font-weight:700;font-style:italic;text-align:right;color:#55627e;font-size:20px;margin-top:8px}
+
+.nuc{white-space:nowrap}
+.nuc sub{font-size:.62em;vertical-align:-.35em;margin-right:1px}
+.nuc sup{font-size:.62em;margin-left:1px}
+.calc{border:2px dashed var(--m);border-radius:12px;padding:10px 14px;background:#fff;margin-top:6px}
+.card.tint .calc{background:rgba(255,255,255,.8)}
+.calc .ct{font-family:'Kalam';font-weight:700;color:var(--m);font-size:19px}
+.calc .given{font-size:.95em;margin:2px 0 4px;color:#3a4766}
+.calc ol{margin:4px 0;padding-left:22px}
+.calc li{margin:4px 0}
+.calc .res{font-family:'Kalam';font-weight:700;color:var(--m);border-top:2px solid var(--m);padding-top:4px;margin-top:6px;font-size:1.05em}
+.pn{font-family:'Patrick Hand';font-style:normal}
+.ob.sm .box{min-width:0}
+.anat2 .big2{font-family:'Patrick Hand';font-size:40px;font-weight:700;margin-right:10px}
+.anat2 .big2 sup{font-size:.6em}
+.anat{display:flex;justify-content:center;align-items:flex-end;gap:4px;margin:10px 0 2px}
+.anat .pt{display:flex;flex-direction:column;align-items:center;max-width:150px;text-align:center}
+.anat .pt span{font-family:'Kalam';font-weight:700;font-size:40px;line-height:1;color:var(--m);height:48px;display:flex;align-items:flex-end}
+.anat .pt span.sp{font-size:26px;align-items:flex-start}
+.anat .pt small{font-size:13px;color:var(--m);font-family:'Kalam';font-weight:700;border-top:2px solid var(--m);padding-top:2px;margin-top:4px}
+.seq .step{display:block;color:#55627e;font-size:13px}
+.answerbox.big{font-size:1.15em;text-align:center}
+
+@media screen and (max-width:640px){.cheat{grid-template-columns:1fr 1fr}.row,.row.w,.row.diag,.row3,.ways{grid-template-columns:1fr}.kw{grid-template-columns:1fr;gap:0}h1{font-size:44px}h2{font-size:30px}.tryb ul.two{columns:1}}
+</style></head>
+<body><div class="wrap">
+<header class="hero">
+  <div class="kick">CHEMISTRY · CHAPTER 5 · REVISION NOTES</div>
+  <h1>Electrons in Atoms<svg class="squig" viewBox="0 0 400 22" preserveAspectRatio="none"><path d="M4,14 C60,4 110,20 170,11 S290,4 396,12" fill="none" stroke="#d4486e" stroke-width="5" stroke-linecap="round"/></svg></h1>
+  <p class="intro">Atoms give off light when their electrons <mark>jump between energy levels</mark>. This chapter goes from light, to Bohr&rsquo;s atom, to the modern model, and ends with <b>writing electron configurations</b> &mdash; the part SAAT asks about most.</p>
+  <nav class="pills">
+    <a href="#s1" style="--c:#d4486e">1 · Light &amp; Energy</a>
+    <a href="#s2" style="--c:#2b59c3">2 · Quantum Theory</a>
+    <a href="#s3" style="--c:#0f8b8d">3 · Electron Configuration ★</a>
+    <a href="#bp" class="dark">Big Picture</a>
+  </nav>
+</header>
+
+<!-- ================= SECTION 1 ================= -->
+<section id="s1" style="--c:#d4486e;--t:#ffe3ea">
+<div class="keep"><div class="lesson" style="--c:#d4486e"><span class="ltag">Section 1</span><h2>Light and Quantized Energy</h2></div><p class="focusq" style="--c:#d4486e"><b class="fq">Focus question:</b> What is light made of? &rarr; Light is a <b>wave</b> that also behaves like a stream of <mark>particles (photons)</mark>.</p><div class="dash" style="--c:#d4486e"></div>
+
+<div class="row">
+  <div class="card">
+    <h3>Key words</h3>
+    <div class="kw"><b>EM radiation</b><span>energy that travels as a <b>wave</b> through space: light, microwaves, X-rays, radio&hellip; <b>Sound is NOT</b> an EM wave (it needs a medium).</span></div>
+    <div class="kw"><b>Wavelength &#955;</b><span>distance from crest to crest. Unit: m (1 nm = 10<sup>&minus;9</sup> m)</span></div>
+    <div class="kw"><b>Frequency &#957;</b><span>number of waves per second. Unit: Hz = s<sup>&minus;1</sup></span></div>
+    <div class="kw"><b>Photon</b><span>a particle of light with <mark><b>energy but no mass</b></mark> (Einstein)</span></div>
+    <div class="kw"><b>Quantum</b><span>the <b>minimum</b> amount of energy an atom can gain or lose (Planck)</span></div>
+  </div>
+  <div class="card tint">
+    <h3>The speed of light</h3>
+    <div class="formula">c = &#955;&#957;</div>
+    <p class="center small">c = 3 &times; 10<sup>8</sup> m/s for <b>all</b> EM waves</p>
+    <ul class="pen">
+      <li>&#955; and &#957; are <mark><b>inversely related</b></mark>: one goes up, the other goes down.</li>
+      <li>Higher &#957; &rArr; shorter &#955; &rArr; <b>more energy</b>.</li>
+    </ul>
+    <svg viewBox="0 0 560 200" class="fig">
+<polyline points="20.0,50.0 22.0,47.7 24.0,45.3 26.0,43.0 28.0,40.8 30.0,38.6 32.0,36.5 34.0,34.5 36.0,32.6 38.0,30.8 40.0,29.2 42.0,27.7 44.0,26.4 46.0,25.2 48.0,24.2 50.0,23.4 52.0,22.7 54.0,22.3 56.0,22.1 58.0,22.0 60.0,22.2 62.0,22.5 64.0,23.0 66.0,23.8 68.0,24.7 70.0,25.8 72.0,27.0 74.0,28.4 76.0,30.0 78.0,31.7 80.0,33.5 82.0,35.5 84.0,37.6 86.0,39.7 88.0,41.9 90.0,44.2 92.0,46.5 94.0,48.8 96.0,51.2 98.0,53.5 100.0,55.8 102.0,58.1 104.0,60.3 106.0,62.4 108.0,64.5 110.0,66.5 112.0,68.3 114.0,70.0 116.0,71.6 118.0,73.0 120.0,74.2 122.0,75.3 124.0,76.2 126.0,77.0 128.0,77.5 130.0,77.8 132.0,78.0 134.0,77.9 136.0,77.7 138.0,77.3 140.0,76.6 142.0,75.8 144.0,74.8 146.0,73.6 148.0,72.3 150.0,70.8 152.0,69.2 154.0,67.4 156.0,65.5 158.0,63.5 160.0,61.4 162.0,59.2 164.0,57.0 166.0,54.7 168.0,52.3 170.0,50.0 172.0,47.7 174.0,45.3 176.0,43.0 178.0,40.8 180.0,38.6 182.0,36.5 184.0,34.5 186.0,32.6 188.0,30.8 190.0,29.2 192.0,27.7 194.0,26.4 196.0,25.2 198.0,24.2 200.0,23.4 202.0,22.7 204.0,22.3 206.0,22.1 208.0,22.0 210.0,22.2 212.0,22.5 214.0,23.0 216.0,23.8 218.0,24.7 220.0,25.8 222.0,27.0 224.0,28.4 226.0,30.0 228.0,31.7 230.0,33.5 232.0,35.5 234.0,37.6 236.0,39.7 238.0,41.9 240.0,44.2 242.0,46.5 244.0,48.8 246.0,51.2 248.0,53.5 250.0,55.8 252.0,58.1 254.0,60.3 256.0,62.4 258.0,64.5 260.0,66.5 262.0,68.3 264.0,70.0 266.0,71.6 268.0,73.0 270.0,74.2 272.0,75.3 274.0,76.2 276.0,77.0 278.0,77.5 280.0,77.8 282.0,78.0 284.0,77.9 286.0,77.7 288.0,77.3 290.0,76.6 292.0,75.8 294.0,74.8 296.0,73.6 298.0,72.3 300.0,70.8 302.0,69.2 304.0,67.4 306.0,65.5 308.0,63.5 310.0,61.4 312.0,59.2 314.0,57.0 316.0,54.7 318.0,52.3 320.0,50.0" fill="none" stroke="#d63b3b" stroke-width="3.5" stroke-linecap="round"/>
+<text x="340" y="45" class="lab" fill="#d63b3b">long &#955; &#8594; low &#957; &#8594; LOW energy</text>
+<polyline points="20.0,145.0 22.0,138.0 24.0,131.5 26.0,125.8 28.0,121.4 30.0,118.4 32.0,117.1 34.0,117.5 36.0,119.7 38.0,123.4 40.0,128.5 42.0,134.7 44.0,141.5 46.0,148.5 48.0,155.3 50.0,161.5 52.0,166.6 54.0,170.3 56.0,172.5 58.0,172.9 60.0,171.6 62.0,168.6 64.0,164.2 66.0,158.5 68.0,152.0 70.0,145.0 72.0,138.0 74.0,131.5 76.0,125.8 78.0,121.4 80.0,118.4 82.0,117.1 84.0,117.5 86.0,119.7 88.0,123.4 90.0,128.5 92.0,134.7 94.0,141.5 96.0,148.5 98.0,155.3 100.0,161.5 102.0,166.6 104.0,170.3 106.0,172.5 108.0,172.9 110.0,171.6 112.0,168.6 114.0,164.2 116.0,158.5 118.0,152.0 120.0,145.0 122.0,138.0 124.0,131.5 126.0,125.8 128.0,121.4 130.0,118.4 132.0,117.1 134.0,117.5 136.0,119.7 138.0,123.4 140.0,128.5 142.0,134.7 144.0,141.5 146.0,148.5 148.0,155.3 150.0,161.5 152.0,166.6 154.0,170.3 156.0,172.5 158.0,172.9 160.0,171.6 162.0,168.6 164.0,164.2 166.0,158.5 168.0,152.0 170.0,145.0 172.0,138.0 174.0,131.5 176.0,125.8 178.0,121.4 180.0,118.4 182.0,117.1 184.0,117.5 186.0,119.7 188.0,123.4 190.0,128.5 192.0,134.7 194.0,141.5 196.0,148.5 198.0,155.3 200.0,161.5 202.0,166.6 204.0,170.3 206.0,172.5 208.0,172.9 210.0,171.6 212.0,168.6 214.0,164.2 216.0,158.5 218.0,152.0 220.0,145.0 222.0,138.0 224.0,131.5 226.0,125.8 228.0,121.4 230.0,118.4 232.0,117.1 234.0,117.5 236.0,119.7 238.0,123.4 240.0,128.5 242.0,134.7 244.0,141.5 246.0,148.5 248.0,155.3 250.0,161.5 252.0,166.6 254.0,170.3 256.0,172.5 258.0,172.9 260.0,171.6 262.0,168.6 264.0,164.2 266.0,158.5 268.0,152.0 270.0,145.0 272.0,138.0 274.0,131.5 276.0,125.8 278.0,121.4 280.0,118.4 282.0,117.1 284.0,117.5 286.0,119.7 288.0,123.4 290.0,128.5 292.0,134.7 294.0,141.5 296.0,148.5 298.0,155.3 300.0,161.5 302.0,166.6 304.0,170.3 306.0,172.5 308.0,172.9 310.0,171.6 312.0,168.6 314.0,164.2 316.0,158.5 318.0,152.0 320.0,145.0" fill="none" stroke="#7b3fe4" stroke-width="3.5" stroke-linecap="round"/>
+<text x="340" y="140" class="lab" fill="#7b3fe4">short &#955; &#8594; high &#957; &#8594; HIGH energy</text>
+<text x="340" y="72" class="lab s">(red light)</text>
+<text x="340" y="167" class="lab s">(violet light)</text>
+</svg>
+  </div>
+</div>
+</div>
+
+<div class="card">
+  <h3>The electromagnetic spectrum</h3>
+  <svg viewBox="0 0 590 210" class="fig">
+<defs><linearGradient id="rainbow" x1="0" x2="1">
+<stop offset="0" stop-color="#e02b2b"/><stop offset=".2" stop-color="#ff8a00"/><stop offset=".38" stop-color="#ffe100"/>
+<stop offset=".55" stop-color="#2fc23a"/><stop offset=".72" stop-color="#2b6cff"/><stop offset=".86" stop-color="#4b2bd1"/><stop offset="1" stop-color="#8a2be2"/></linearGradient>
+<marker id="ahe" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#3f9a52"/></marker>
+<marker id="ahf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d4486e"/></marker></defs>
+<rect x="20" y="60" width="150" height="60" fill="#c9d4e6" stroke="#fff" stroke-width="2"/><text x="95.0" y="94" class="lab" text-anchor="middle">Radio</text><rect x="170" y="60" width="75" height="60" fill="#d4dcec" stroke="#fff" stroke-width="2"/><text x="207.5" y="86" class="lab" text-anchor="middle">Micro-</text><text x="207.5" y="103" class="lab" text-anchor="middle">wave</text><rect x="245" y="60" width="80" height="60" fill="#f3c7c7" stroke="#fff" stroke-width="2"/><text x="285.0" y="94" class="lab" text-anchor="middle">Infrared</text><rect x="325" y="60" width="34" height="60" fill="url(#rainbow)"/><text x="342.0" y="140" class="lab s" text-anchor="middle">visible</text><rect x="359" y="60" width="60" height="60" fill="#dccdf3" stroke="#fff" stroke-width="2"/><text x="389.0" y="94" class="lab" text-anchor="middle">UV</text><rect x="419" y="60" width="70" height="60" fill="#cfd8ea" stroke="#fff" stroke-width="2"/><text x="454.0" y="94" class="lab" text-anchor="middle">X-rays</text><rect x="489" y="60" width="80" height="60" fill="#bfc9de" stroke="#fff" stroke-width="2"/><text x="529.0" y="94" class="lab" text-anchor="middle">Gamma</text>
+<line x1="560" y1="30" x2="30" y2="30" stroke="#3f9a52" stroke-width="4" marker-end="url(#ahe)"/>
+<text x="295" y="20" class="lab b" fill="#3f9a52" text-anchor="middle">wavelength &#955; increases</text>
+<line x1="30" y1="165" x2="560" y2="165" stroke="#d4486e" stroke-width="4" marker-end="url(#ahf)"/>
+<text x="295" y="195" class="lab b" fill="#d4486e" text-anchor="middle">frequency &#957; and ENERGY increase</text>
+</svg>
+  <p>Low &rarr; high energy: <b>R</b>adio · <b>M</b>icrowave · <b>I</b>nfrared · <b>V</b>isible · <b>U</b>V · <b>X</b>-rays · <b>G</b>amma</p>
+  <p class="note">Memory trick: <b>R</b>aging <b>M</b>artians <b>I</b>nvaded <b>V</b>enus <b>U</b>sing <b>X</b>-ray <b>G</b>uns. &nbsp;·&nbsp; <mark><b>Gamma rays = high-energy photons</b></mark> (not particles with charge).</p>
+</div>
+
+<div class="row">
+  <div class="card">
+    <h3>Energy of a photon</h3>
+    <div class="formula">E = h&#957;</div>
+    <p class="center small">h = Planck&rsquo;s constant = 6.625 &times; 10<sup>&minus;34</sup> J·s</p>
+    <ul class="pen">
+      <li>E is <mark><b>directly proportional to frequency</b></mark>: double &#957; &rArr; double E.</li>
+      <li>Light has a <b>dual nature</b>: wave <u>and</u> particle.</li>
+    </ul>
+  </div>
+  <div class="card tint">
+    <h3>The photoelectric effect</h3>
+    <svg viewBox="0 0 590 190" class="fig">
+<defs><marker id="ahp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e8962a"/></marker>
+<marker id="ahk" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#18233a"/></marker></defs>
+<rect x="30" y="120" width="500" height="55" rx="8" fill="#c9d4e6"/>
+<text x="540" y="152" class="lab s">metal</text>
+<circle cx="60" cy="140" r="8" fill="#2b59c3"/><circle cx="115" cy="156" r="8" fill="#2b59c3"/><circle cx="170" cy="140" r="8" fill="#2b59c3"/><circle cx="225" cy="156" r="8" fill="#2b59c3"/><circle cx="280" cy="140" r="8" fill="#2b59c3"/><circle cx="335" cy="156" r="8" fill="#2b59c3"/><circle cx="390" cy="140" r="8" fill="#2b59c3"/><circle cx="445" cy="156" r="8" fill="#2b59c3"/><circle cx="500" cy="140" r="8" fill="#2b59c3"/>
+<path d="M120,20 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 t20,0" fill="none" stroke="#e8962a" stroke-width="3.5"/>
+<line x1="245" y1="28" x2="265" y2="112" stroke="#e8962a" stroke-width="4" marker-end="url(#ahp)"/>
+<text x="90" y="56" class="lab" fill="#c9730f">light at or above</text><text x="90" y="76" class="lab" fill="#c9730f">threshold frequency</text>
+<circle cx="390" cy="35" r="8" fill="#2b59c3"/>
+<line x1="280" y1="112" x2="380" y2="42" stroke="#18233a" stroke-width="2" marker-end="url(#ahk)"/>
+<text x="405" y="40" class="lab">photoelectron</text><text x="405" y="60" class="lab">ejected!</text>
+</svg>
+    <ul class="pen">
+      <li>Electrons are ejected only when <mark><b>high-frequency</b> light</mark> (at or above the <b>threshold frequency &#957;<sub>0</sub></b>) hits the metal.</li>
+      <li>Work function = h&#957;<sub>0</sub> (energy needed to free one electron).</li>
+      <li>Photon energy <b>= </b>h&#957;<sub>0</sub> &rArr; electron is ejected but has <b>no kinetic energy</b>.</li>
+      <li>Einstein explained it: light is made of <b>photons</b>.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Atomic emission spectra</h3>
+  <div class="row in w">
+    <div><svg viewBox="0 0 560 270" class="fig">
+<defs><linearGradient id="rb2" x1="0" x2="1">
+<stop offset="0" stop-color="#8a2be2"/><stop offset=".12" stop-color="#3b4cff"/><stop offset=".3" stop-color="#00b5d8"/>
+<stop offset=".45" stop-color="#2fc23a"/><stop offset=".6" stop-color="#ffe100"/><stop offset=".75" stop-color="#ff8a00"/><stop offset="1" stop-color="#e02b2b"/></linearGradient></defs>
+<text x="30" y="22" class="lab b">Continuous spectrum (white light) – ALL colours, no gaps</text><rect x="30" y="30" width="480" height="34" fill="url(#rb2)" rx="4"/>
+<text x="30" y="107" class="lab b">Emission spectrum of hydrogen – bright LINES only</text><rect x="30" y="115" width="480" height="34" fill="#18233a" rx="4"/><rect x="41.214285714285715" y="115" width="5" height="34" fill="#7b2ff7"/><rect x="74.12857142857143" y="115" width="5" height="34" fill="#3b4cff"/><rect x="145.44285714285715" y="115" width="5" height="34" fill="#00b5d8"/><rect x="378.5857142857143" y="115" width="5" height="34" fill="#e0262b"/>
+<text x="30" y="192" class="lab b">Absorption spectrum – DARK lines at the SAME places</text><rect x="30" y="200" width="480" height="34" fill="url(#rb2)" rx="4"/><rect x="41.714285714285715" y="200" width="4" height="34" fill="#18233a"/><rect x="74.62857142857143" y="200" width="4" height="34" fill="#18233a"/><rect x="145.94285714285715" y="200" width="4" height="34" fill="#18233a"/><rect x="379.0857142857143" y="200" width="4" height="34" fill="#18233a"/>
+<text x="30" y="160" class="lab s">410 nm</text><text x="88" y="160" class="lab s">434</text><text x="150" y="160" class="lab s">486</text><text x="365" y="160" class="lab s">656 nm</text>
+<text x="520" y="52" class="lab s">&#955;&#8594;</text>
+</svg></div>
+    <ul class="pen">
+      <li>Excited atoms give off light of <b>certain frequencies only</b> = <mark>atomic emission spectrum</mark> (lines).</li>
+      <li>Every element&rsquo;s lines are <b>unique</b>, like a <b>fingerprint</b>.</li>
+      <li>An element <b>absorbs</b> the same frequencies it <b>emits</b> (absorption spectrum = dark lines).</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h3>How to calculate</h3>
+  <div class="row in">
+    <div class="calc" style="--m:#2b59c3"><div class="ct">&#9312; Frequency from wavelength</div><div class="given">An EM wave has &#955; = 2 &times; 10<sup>&minus;8</sup> m. Find &#957;.</div><ol><li>Write the law and solve for &#957;: &nbsp; c = &#955;&#957; &rArr; &#957; = <span class="frac"><span>c</span><span>&#955;</span></span></li><li>Substitute: &nbsp; &#957; = <span class="frac"><span>3 &times; 10<sup>8</sup></span><span>2 &times; 10<sup>&minus;8</sup></span></span></li><li>Divide the numbers: 3 &divide; 2 = <b>1.5</b></li><li>Divide the powers (subtract them): 10<sup>8</sup> &divide; 10<sup>&minus;8</sup> = 10<sup>8 &minus; (&minus;8)</sup> = <b>10<sup>16</sup></b></li></ol><div class="res">&#957; = 1.5 &times; 10<sup>16</sup> Hz</div></div>
+    <div class="calc" style="--m:#0f8b8d"><div class="ct">&#9313; Energy of a photon</div><div class="given">A photon has &#957; = 2 &times; 10<sup>15</sup> Hz. Find E. (h = 6.625 &times; 10<sup>&minus;34</sup> J·s)</div><ol><li>Write the law: &nbsp; E = h&#957;</li><li>Substitute: &nbsp; E = (6.625 &times; 10<sup>&minus;34</sup>) &times; (2 &times; 10<sup>15</sup>)</li><li>Multiply the numbers: 6.625 &times; 2 = <b>13.25</b></li><li>Multiply the powers (add them): 10<sup>&minus;34</sup> &times; 10<sup>15</sup> = 10<sup>&minus;34 + 15</sup> = <b>10<sup>&minus;19</sup></b></li></ol><div class="res">E = 13.25 &times; 10<sup>&minus;19</sup> J</div></div>
+  </div>
+  <div class="answerbox">&#955; given in nm? Change it to <b>metres</b> first: 1 nm &rarr; 1 &times; 10<sup>&minus;9</sup> m.</div>
+</div>
+</section>
+
+<!-- ================= SECTION 2 ================= -->
+<section id="s2" style="--c:#2b59c3;--t:#e3ecff">
+<div class="keep"><div class="lesson" style="--c:#2b59c3"><span class="ltag">Section 2</span><h2>Quantum Theory and the Atom</h2></div><p class="focusq" style="--c:#2b59c3"><b class="fq">Focus question:</b> Why does every element produce a unique emission spectrum? &rarr; Each element has its <b>own energy levels</b>; electrons dropping between them give off <mark>only certain energies</mark>.</p><div class="dash" style="--c:#2b59c3"></div>
+
+<div class="card">
+  <h3>Bohr&rsquo;s model of the hydrogen atom</h3>
+  <div class="row in w">
+    <div><svg viewBox="0 0 560 300" class="fig">
+<defs><marker id="ahg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3f9a52"/></marker>
+<marker id="ahr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d4486e"/></marker></defs>
+<circle cx="170" cy="150" r="32" fill="none" stroke="#c9d4e6" stroke-width="2.5"/><text x="196.72" y="125.28" class="lab s">n=1</text><circle cx="170" cy="150" r="60" fill="none" stroke="#c9d4e6" stroke-width="2.5"/><text x="216.6" y="105.4" class="lab s">n=2</text><circle cx="170" cy="150" r="88" fill="none" stroke="#c9d4e6" stroke-width="2.5"/><text x="236.48" y="85.52000000000001" class="lab s">n=3</text><circle cx="170" cy="150" r="116" fill="none" stroke="#c9d4e6" stroke-width="2.5"/><text x="256.36" y="65.64" class="lab s">n=4</text><circle cx="170" cy="150" r="14" fill="#e2708a"/><text x="170" y="156" class="lab b" text-anchor="middle" fill="#fff">+</text><circle cx="138" cy="150" r="7" fill="#2b59c3"/><path d="M130,142 Q95,80 90,122" fill="none" stroke="#3f9a52" stroke-width="3" marker-end="url(#ahg)"/><circle cx="82" cy="150" r="7" fill="#2b59c3" opacity=".35"/><circle cx="258" cy="150" r="7" fill="#2b59c3"/><path d="M258,140 Q250,110 234,138" fill="none" stroke="#d4486e" stroke-width="3" marker-end="url(#ahr)"/><path d="M270,110 q8,-8 16,0 t16,0 t16,0 t16,0" fill="none" stroke="#d4486e" stroke-width="3"/>
+<text x="330" y="70" class="lab b" fill="#3f9a52">ABSORBS energy</text><text x="330" y="92" class="lab">e&#8315; jumps UP (n=1 &#8594; n=3)</text><text x="330" y="114" class="lab">= excited state</text>
+<text x="330" y="160" class="lab b" fill="#d4486e">EMITS a photon</text><text x="330" y="182" class="lab">e&#8315; drops DOWN (n=3 &#8594; n=2)</text><text x="330" y="204" class="lab">= one coloured line</text>
+<text x="330" y="250" class="lab s">n = 1 is the ground state</text><text x="330" y="272" class="lab s">(lowest energy, closest to nucleus)</text>
+</svg></div>
+    <div>
+      <ul class="pen">
+        <li>The electron moves only in allowed <b>energy levels</b>, numbered by <mark>n</mark>.</li>
+        <li><b>Ground state</b> = lowest energy (n = 1). Gains energy &rArr; <b>excited state</b>.</li>
+        <li>Electron moves <b>up</b> (e.g. n = 1 &rarr; 2) &rArr; atom <b>absorbs</b> energy.</li>
+        <li>Electron moves <b>down</b> (e.g. n = 2 &rarr; 1) &rArr; atom <mark><b>emits</b> energy</mark> as a photon &rArr; this makes the emission spectrum.</li>
+        <li>Bohr&rsquo;s model worked for <b>hydrogen only</b>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <h3>Energy levels are like a ladder</h3>
+    <svg viewBox="0 0 580 365" class="fig"><defs><marker id="m7b2ff7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7b2ff7"/></marker><marker id="m3b4cff" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3b4cff"/></marker><marker id="m00b5d8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#00b5d8"/></marker><marker id="me0262b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e0262b"/></marker><marker id="m8a4fbf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8a4fbf"/></marker><marker id="ma8850a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a8850a"/></marker></defs><line x1="90" y1="300.0" x2="520" y2="300.0" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="305.0" class="lab s">n=1</text><line x1="90" y1="195.0" x2="520" y2="195.0" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="200.0" class="lab s">n=2</text><line x1="90" y1="140.0" x2="520" y2="140.0" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="145.0" class="lab s">n=3</text><line x1="90" y1="105.0" x2="520" y2="105.0" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="110.0" class="lab s">n=4</text><line x1="90" y1="80.0" x2="520" y2="80.0" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="85.0" class="lab s">n=5</text><line x1="90" y1="62.5" x2="520" y2="62.5" stroke="#9aa7bd" stroke-width="2" stroke-dasharray="6 4"/><text x="528" y="67.5" class="lab s">n=6</text><line x1="90" y1="50.0" x2="520" y2="50.0" stroke="#9aa7bd" stroke-width="1.5"/><text x="528" y="55.0" class="lab s">&#8734;</text><line x1="115" y1="195.0" x2="115" y2="294.0" stroke="#8a4fbf" stroke-width="4" marker-end="url(#m8a4fbf)"/><line x1="133" y1="140.0" x2="133" y2="294.0" stroke="#8a4fbf" stroke-width="4" marker-end="url(#m8a4fbf)"/><line x1="151" y1="105.0" x2="151" y2="294.0" stroke="#8a4fbf" stroke-width="4" marker-end="url(#m8a4fbf)"/><line x1="169" y1="80.0" x2="169" y2="294.0" stroke="#8a4fbf" stroke-width="4" marker-end="url(#m8a4fbf)"/><line x1="250" y1="62.5" x2="250" y2="189.0" stroke="#7b2ff7" stroke-width="4" marker-end="url(#m7b2ff7)"/><line x1="274" y1="80.0" x2="274" y2="189.0" stroke="#3b4cff" stroke-width="4" marker-end="url(#m3b4cff)"/><line x1="298" y1="105.0" x2="298" y2="189.0" stroke="#00b5d8" stroke-width="4" marker-end="url(#m00b5d8)"/><line x1="322" y1="140.0" x2="322" y2="189.0" stroke="#e0262b" stroke-width="4" marker-end="url(#me0262b)"/><line x1="420" y1="105.0" x2="420" y2="134.0" stroke="#a8850a" stroke-width="4" marker-end="url(#ma8850a)"/><line x1="440" y1="80.0" x2="440" y2="134.0" stroke="#a8850a" stroke-width="4" marker-end="url(#ma8850a)"/><line x1="460" y1="62.5" x2="460" y2="134.0" stroke="#a8850a" stroke-width="4" marker-end="url(#ma8850a)"/><text x="100" y="330" class="lab b" fill="#8a4fbf">Lyman &#8594; n=1</text><text x="100" y="352" class="lab s">ultraviolet</text><text x="245" y="330" class="lab b" fill="#2b59c3">Balmer &#8594; n=2</text><text x="245" y="352" class="lab s">VISIBLE (4 lines)</text><text x="400" y="330" class="lab b" fill="#a8850a">Paschen &#8594; n=3</text><text x="400" y="352" class="lab s">infrared</text><text x="20" y="180" class="lab s" transform="rotate(-90 30 180)">energy &#8594;</text></svg>
+    <p class="note"><b>Bigger drop = more energy = higher frequency.</b> E<sub>6</sub> &rarr; E<sub>2</sub> gives a higher frequency than E<sub>6</sub> &rarr; E<sub>3</sub> or E<sub>3</sub> &rarr; E<sub>2</sub>. (E<sub>2</sub> &rarr; E<sub>7</sub> goes up, so it absorbs.)</p>
+  </div>
+  <div class="card tint">
+    <h3>Hydrogen&rsquo;s three series</h3>
+    <div class="stack">
+      <div class="mini" style="--m:#8a4fbf"><b>Lyman</b>drops to <b>n = <span class="pn">1</span></b> &rarr; ultraviolet</div>
+      <div class="mini" style="--m:#2b59c3"><b>Balmer</b>drops to <b>n = 2</b> &rarr; <mark>visible</mark> (e.g. n = 4 &rarr; 2)</div>
+      <div class="mini" style="--m:#c9730f"><b>Paschen</b>drops to <b>n = 3</b> &rarr; infrared (e.g. n = 4 &rarr; 3)</div>
+    </div>
+    <div class="sticky">Memory hook: <b>L B P</b> &rarr; <b><span class="pn">1, 2, 3</span></b> &rarr; <b>UV, Visible, IR</b></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>How to calculate &#9314; Energy of the emitted photon</h3>
+  <div class="calc" style="--m:#2b59c3"><div class="ct">Energy between two levels (in eV)</div><div class="given">An electron drops from level B (&minus;3.4 eV) to level A (&minus;13.6 eV). Find the energy of the emitted photon.</div><ol><li>Write the law: &nbsp; &#916;E = E<sub>high</sub> &minus; E<sub>low</sub> &nbsp; (the higher level has the <b>less negative</b> value)</li><li>Substitute: &nbsp; &#916;E = (&minus;3.4) &minus; (&minus;13.6)</li><li>Minus a minus = plus: &nbsp; &minus;3.4 + 13.6</li></ol><div class="res">&#916;E = 10.2 eV (emitted, because the electron moved down)</div></div>
+</div>
+
+<div class="card">
+  <h3>The quantum mechanical model</h3>
+  <div class="row3">
+    <div class="mini" style="--m:#d4486e"><b>de Broglie</b>moving particles, electrons too, behave like <b>waves</b>.<div class="formula sm">&#955; = <span class="frac"><span>h</span><span>m&#957;</span></span></div><span class="small">m = mass (kg), &#957; = velocity (m/s)</span></div>
+    <div class="mini" style="--m:#2b59c3"><b>Heisenberg</b><mark>uncertainty principle</mark>: it is impossible to know an electron&rsquo;s <b>position</b> and <b>velocity</b> at the same time.</div>
+    <div class="mini" style="--m:#0f8b8d"><b>Quantum mechanics</b>studying matter using its <b>wave properties</b> &rArr; the <mark>quantum mechanical model</mark> (Schr&ouml;dinger). Works for <b>all</b> atoms.</div>
+  </div>
+  <div class="row in" style="margin-top:12px">
+    <div class="kw"><b>Electron cloud</b><span>an instant picture of the electron&rsquo;s <b>movement</b> around the nucleus: a 3-D region of <b>probable</b> location</span></div>
+    <div class="kw"><b>Big objects</b><span>a moving car has a <b>very small wavelength</b> (huge mass), so we can&rsquo;t see its wave nature</span></div>
+  </div>
+  <div class="calc" style="--m:#d4486e"><div class="ct">&#9315; de Broglie wavelength</div><div class="given">An electron (m = 9.11 &times; 10<sup>&minus;31</sup> kg) moves at 391 m/s. Find &#955;. (h = 6.625 &times; 10<sup>&minus;34</sup> J·s)</div><ol><li>Write the law: &nbsp; &#955; = <span class="frac"><span>h</span><span>m&#957;</span></span></li><li>Work out the bottom first: 9.11 &times; 10<sup>&minus;31</sup> &times; 391 = <b>3.56 &times; 10<sup>&minus;28</sup></b></li><li>Divide: &nbsp; <span class="frac"><span>6.625 &times; 10<sup>&minus;34</sup></span><span>3.56 &times; 10<sup>&minus;28</sup></span></span> &nbsp; &rarr; 6.625 &divide; 3.56 = <b>1.86</b>; &nbsp; 10<sup>&minus;34 &minus; (&minus;28)</sup> = <b>10<sup>&minus;6</sup></b></li></ol><div class="res">&#955; = 1.86 &times; 10<sup>&minus;6</sup> m &asymp; 1.9 &times; 10<sup>&minus;6</sup> m</div></div>
+</div>
+
+<div class="card">
+  <h3>Levels, sublevels and orbitals</h3>
+  <div class="chipsrow center"><span class="pill" style="--p:#d4486e">energy level n</span> &supset; <span class="pill" style="--p:#2b59c3">sublevels s p d f</span> &supset; <span class="pill" style="--p:#c9730f">orbitals (max 2 e&#8315; each)</span></div>
+  <div class="row in w">
+    <div><svg viewBox="0 0 560 170" class="fig">
+<defs><radialGradient id="sg" cx=".4" cy=".35"><stop offset="0" stop-color="#cfe0ff"/><stop offset="1" stop-color="#2b59c3"/></radialGradient></defs>
+<circle cx="70" cy="80" r="34" fill="url(#sg)"/><text x="70" y="150" class="lab b" text-anchor="middle">s – sphere</text>
+<text x="70" y="166" class="lab s" text-anchor="middle">1 orbital</text>
+<g transform="translate(220,80)"><line x1="-60" y1="0" x2="60" y2="0" stroke="#9aa7bd"/><ellipse cx="-28" cy="0" rx="28" ry="15" fill="url(#sg)"/><ellipse cx="28" cy="0" rx="28" ry="15" fill="url(#sg)"/><text x="0" y="-26" class="lab s" text-anchor="middle">p&#8339;</text></g>
+<g transform="translate(330,80)"><line x1="0" y1="-60" x2="0" y2="60" stroke="#9aa7bd"/><ellipse cx="0" cy="-28" rx="15" ry="28" fill="url(#sg)"/><ellipse cx="0" cy="28" rx="15" ry="28" fill="url(#sg)"/><text x="26" y="-40" class="lab s">p&#7611;</text></g>
+<g transform="translate(430,80) rotate(-35)"><line x1="-60" y1="0" x2="60" y2="0" stroke="#9aa7bd"/><ellipse cx="-28" cy="0" rx="28" ry="15" fill="url(#sg)"/><ellipse cx="28" cy="0" rx="28" ry="15" fill="url(#sg)"/></g>
+<text x="460" y="40" class="lab s">p&#7522;</text>
+<text x="330" y="150" class="lab b" text-anchor="middle">p – dumbbell</text><text x="330" y="166" class="lab s" text-anchor="middle">3 orbitals (x, y, z), same energy</text>
+</svg></div>
+    <ul class="pen">
+      <li><mark><b>Principal quantum number n</b></mark> = 1, 2, 3, &hellip; (whole numbers, never 0). It decides the <b>energy</b> and size of the level.</li>
+      <li><b>s</b> = sphere (1s, 2s &hellip;). &nbsp;<b>p</b> = dumbbell.</li>
+      <li>p<sub>x</sub>, p<sub>y</sub>, p<sub>z</sub> have the <b>same energy and size</b> and are at <b>90&deg;</b> to each other.</li>
+    </ul>
+  </div>
+  <table class="tbl c">
+    <tr><th>sublevel</th><th>s</th><th>p</th><th>d</th><th>f</th></tr>
+    <tr><td><b>orbitals</b></td><td>1</td><td>3</td><td>5</td><td>7</td></tr>
+    <tr><td><b>max electrons</b></td><td>2</td><td>6</td><td>10</td><td><b>14</b> (most)</td></tr>
+    <tr><td><b>first appears in</b></td><td>n = 1</td><td>n = 2</td><td>n = 3</td><td>n = 4 &rArr; <mark>no 3f</mark></td></tr>
+  </table>
+  <table class="tbl c">
+    <tr><th>n</th><th>sublevels</th><th>orbitals = n&sup2;</th><th>max e&#8315; = 2n&sup2;</th></tr>
+    <tr><td>1</td><td>1s</td><td>1</td><td>2</td></tr>
+    <tr><td>2</td><td>2s 2p</td><td>4</td><td>8</td></tr>
+    <tr><td>3</td><td>3s 3p 3d</td><td>9</td><td>18</td></tr>
+    <tr><td>4</td><td>4s 4p 4d 4f</td><td>16</td><td>32</td></tr>
+  </table>
+  <div class="calc" style="--m:#c9730f"><div class="ct">&#9316; Orbitals and electrons in a level</div><div class="given">How many orbitals and electrons can energy level n = 4 hold?</div><ol><li>Orbitals = n&sup2; = 4&sup2; = <b>16</b></li><li>Electrons = 2n&sup2; = 2 &times; 16 = <b>32</b> (2 electrons in each orbital)</li></ol><div class="res">n = 4 &rarr; 16 orbitals, 32 electrons</div></div>
+</div>
+</section>
+
+<!-- ================= SECTION 3 ================= -->
+<section id="s3" style="--c:#0f8b8d;--t:#dff4f1">
+<div class="keep"><div class="lesson" style="--c:#0f8b8d"><span class="ltag">Section 3</span><h2>Electron Configuration</h2></div><p class="focusq" style="--c:#0f8b8d"><b class="fq">Focus question:</b> How are electrons arranged in atoms? &rarr; In the <mark>lowest-energy</mark> way, following <b>three rules</b>.</p><div class="dash" style="--c:#0f8b8d"></div>
+
+<div class="row">
+  <div class="card">
+    <h3>Key words</h3>
+    <div class="kw"><b>Electron configuration</b><span>the arrangement of electrons in an atom</span></div>
+    <div class="kw"><b>Ground state</b><span>the <b>lowest-energy</b>, most stable arrangement</span></div>
+    <div class="kw"><b>Valence electrons</b><span>electrons in the <b>outermost</b> energy level. They decide the <b>chemical properties</b></span></div>
+    <div class="kw"><b>Electron-dot structure</b><span>symbol + dots for the <b>valence</b> electrons</span></div>
+  </div>
+  <div class="card tint">
+    <h3>The three rules</h3>
+    <div class="stack">
+      <div class="mini" style="--m:#2b59c3"><b>1 · Aufbau principle</b>each electron goes into the <mark>lowest-energy</mark> orbital available</div>
+      <div class="mini" style="--m:#8a4fbf"><b>2 · Pauli exclusion principle</b>max <b>2 electrons</b> per orbital, with <b>opposite spins</b> &#8593;&#8595;</div>
+      <div class="mini" style="--m:#c9730f"><b>3 · Hund&rsquo;s rule</b>equal-energy orbitals: <b>one each, same spin</b>, before pairing</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="card">
+  <h3>Rule 1 · Aufbau: the filling order</h3>
+  <div class="row in diag">
+    <div><svg viewBox="0 0 340 360" class="fig narrow"><defs><marker id="ahd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d4486e"/></marker></defs><text x="50" y="47" text-anchor="middle" class="lab big" fill="#2b59c3">1s</text><text x="50" y="91" text-anchor="middle" class="lab big" fill="#2b59c3">2s</text><text x="122" y="91" text-anchor="middle" class="lab big" fill="#0f8b8d">2p</text><text x="50" y="135" text-anchor="middle" class="lab big" fill="#2b59c3">3s</text><text x="122" y="135" text-anchor="middle" class="lab big" fill="#0f8b8d">3p</text><text x="194" y="135" text-anchor="middle" class="lab big" fill="#8a4fbf">3d</text><text x="50" y="179" text-anchor="middle" class="lab big" fill="#2b59c3">4s</text><text x="122" y="179" text-anchor="middle" class="lab big" fill="#0f8b8d">4p</text><text x="194" y="179" text-anchor="middle" class="lab big" fill="#8a4fbf">4d</text><text x="266" y="179" text-anchor="middle" class="lab big" fill="#c9730f">4f</text><text x="50" y="223" text-anchor="middle" class="lab big" fill="#2b59c3">5s</text><text x="122" y="223" text-anchor="middle" class="lab big" fill="#0f8b8d">5p</text><text x="194" y="223" text-anchor="middle" class="lab big" fill="#8a4fbf">5d</text><text x="266" y="223" text-anchor="middle" class="lab big" fill="#c9730f">5f</text><text x="50" y="267" text-anchor="middle" class="lab big" fill="#2b59c3">6s</text><text x="122" y="267" text-anchor="middle" class="lab big" fill="#0f8b8d">6p</text><text x="194" y="267" text-anchor="middle" class="lab big" fill="#8a4fbf">6d</text><text x="50" y="311" text-anchor="middle" class="lab big" fill="#2b59c3">7s</text><text x="122" y="311" text-anchor="middle" class="lab big" fill="#0f8b8d">7p</text><line x1="76" y1="20" x2="30" y2="62" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="84" cy="12" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="84" y="17" class="lab s" text-anchor="middle">1</text><line x1="76" y1="64" x2="30" y2="106" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="84" cy="56" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="84" y="61" class="lab s" text-anchor="middle">2</text><line x1="148" y1="64" x2="30" y2="150" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="156" cy="56" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="156" y="61" class="lab s" text-anchor="middle">3</text><line x1="148" y1="108" x2="30" y2="194" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="156" cy="100" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="156" y="105" class="lab s" text-anchor="middle">4</text><line x1="220" y1="108" x2="30" y2="238" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="228" cy="100" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="228" y="105" class="lab s" text-anchor="middle">5</text><line x1="220" y1="152" x2="30" y2="282" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="228" cy="144" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="228" y="149" class="lab s" text-anchor="middle">6</text><line x1="292" y1="152" x2="30" y2="326" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="300" cy="144" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="300" y="149" class="lab s" text-anchor="middle">7</text><line x1="292" y1="196" x2="102" y2="326" stroke="#d4486e" stroke-width="2.5" opacity=".75" marker-end="url(#ahd)"/><circle cx="300" cy="188" r="10" fill="#fff3a8" stroke="#d4486e" stroke-width="1.5"/><text x="300" y="193" class="lab s" text-anchor="middle">8</text></svg></div>
+    <div>
+      <ul class="pen">
+        <li>Write the sublevels in rows, then follow the arrows <b>top-right &rarr; bottom-left</b>: arrow 1, 2, 3&hellip;</li>
+        <li>Each sublevel holds:</li>
+      </ul>
+      <div class="cap"><span class="chip s">s = 2</span><span class="chip p">p = 6</span><span class="chip d">d = 10</span><span class="chip f">f = 14</span></div>
+      <div class="sticky pink"><b>Traps!</b><br>· <b>4s is lower than 3d</b>, so 4s fills first<br>· 3d is higher than 4s, 3s and 2p<br>· 5p is higher than 4d</div>
+    </div>
+  </div>
+  <p class="small"><b>The order:</b></p>
+  <div class="chips"><span class="chip s">1s</span><i>&#8594;</i><span class="chip s">2s</span><i>&#8594;</i><span class="chip p">2p</span><i>&#8594;</i><span class="chip s">3s</span><i>&#8594;</i><span class="chip p">3p</span><i>&#8594;</i><span class="chip s hot">4s</span><i>&#8594;</i><span class="chip d hot">3d</span><i>&#8594;</i><span class="chip p">4p</span><i>&#8594;</i><span class="chip s hot">5s</span><i>&#8594;</i><span class="chip d hot">4d</span><i>&#8594;</i><span class="chip p">5p</span><i>&#8594;</i><span class="chip s hot">6s</span><i>&#8594;</i><span class="chip f hot">4f</span><i>&#8594;</i><span class="chip d">5d</span><i>&#8594;</i><span class="chip p">6p</span><i>&#8594;</i><span class="chip s">7s</span><i>&#8594;</i><span class="chip f">5f</span><i>&#8594;</i><span class="chip d">6d</span><i>&#8594;</i><span class="chip p">7p</span></div>
+</div>
+
+<div class="row">
+  <div class="card">
+    <h3>Rule 2 · Pauli: arrows in boxes</h3>
+    <p>box = orbital &nbsp;·&nbsp; &#8593; / &#8595; = electron spins</p>
+    <div class="okno"><span><span class="ob "><span class="grp"><span class="cells"><span class="box"></span></span></span></span></span> empty orbital</div>
+    <div class="okno"><span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span></span></span></span></span> one electron</div>
+    <div class="okno ok"><span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span></span></span></span> a pair, opposite spins &#10003;</div>
+    <div class="okno no"><span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="up">&#8593;</i></span></span></span></span></span> same spins &#10007; breaks Pauli</div>
+  </div>
+  <div class="card tint">
+    <h3>Rule 3 · Hund: filling 2p</h3>
+    <div class="seq">
+      <div><span class="step">1</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"></span><span class="box"></span></span></span></span></div><div><span class="step">2</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"></span></span></span></span></div><div><span class="step">3</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span></span></span></div><div><span class="step">4</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span></span></span></div><div><span class="step">5</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i></span></span></span></span></div><div><span class="step">6</span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span></span></span></div>
+    </div>
+    <div class="okno no"><span><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"></span><span class="box"></span></span></span></span></span> &#10007; paired too early</div>
+    <p class="note"><b>Unpaired electrons:</b> <span class="nuc"><sub>7</sub>N</span> 2p<sup>3</sup> &rArr; <span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span></span></span> &rArr; <mark><b>3 unpaired</b></mark>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>3 ways to show <span class="nuc"><sub>6</sub>C</span> (6 electrons)</h3>
+  <div class="ways">
+    <div><div class="pic"><span class="ob "><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"></span></span><em>2p</em></span></span></div><span style="color:#d4486e">orbital diagram</span></div>
+    <div><div class="pic big"><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>2</sup></span></div><span style="color:#2b59c3">configuration notation</span></div>
+    <div><div class="pic big"><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">C</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span></div><span style="color:#0f8b8d">electron-dot structure</span></div>
+  </div>
+  <p class="center anat2"><span class="big2"><span style="color:#d4486e">2</span><span style="color:#2b59c3">p</span><sup style="color:#0f8b8d">3</sup></span>
+  &nbsp; <span style="color:#d4486e"><b>2</b> = energy level n</span> · <span style="color:#2b59c3"><b>p</b> = sublevel</span> · <span style="color:#0f8b8d"><b>3</b> (top right) = number of electrons</span></p>
+</div>
+
+<div class="card">
+  <h3>Elements 1&ndash;10</h3>
+  <div class="row in">
+  <table class="tbl el">
+    <tr><th>Element</th><th>Orbital diagram</th><th>Configuration</th><th>Dot</th></tr>
+    <tr><td><span class="nuc"><sub>1</sub>H</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span></span><em>1s</em></span></span></td><td><span class="cfg">1s<sup>1</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">H</span><span class="r"><b></b></span><span class="b"><b></b></span></span></td></tr><tr><td><span class="nuc"><sub>2</sub>He</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span></span></td><td><span class="cfg">1s<sup>2</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">He</span><span class="r"><b>&bull;</b></span><span class="b"><b></b></span></span></td></tr><tr><td><span class="nuc"><sub>3</sub>Li</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span></span><em>2s</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>1</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">Li</span><span class="r"><b></b></span><span class="b"><b></b></span></span></td></tr><tr><td><span class="nuc"><sub>4</sub>Be</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">Be</span><span class="r"><b>&bull;</b></span><span class="b"><b></b></span></span></td></tr><tr><td><span class="nuc"><sub>5</sub>B</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"></span><span class="box"></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>1</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">B</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span></td></tr>
+  </table>
+  <table class="tbl el">
+    <tr><th>Element</th><th>Orbital diagram</th><th>Configuration</th><th>Dot</th></tr>
+    <tr><td><span class="nuc"><sub>6</sub>C</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>2</sup></span></td><td><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">C</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span></td></tr><tr><td><span class="nuc"><sub>7</sub>N</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>3</sup></span></td><td><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">N</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span></td></tr><tr><td><span class="nuc"><sub>8</sub>O</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>4</sup></span></td><td><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">O</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;</b></span></span></td></tr><tr><td><span class="nuc"><sub>9</sub>F</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>5</sup></span></td><td><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">F</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;&bull;</b></span></span></td></tr><tr><td><span class="nuc"><sub>10</sub>Ne</span></td><td><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>1s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>2p</em></span></span></td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup></span></td><td><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;&bull;</b></span><span class="s">Ne</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;&bull;</b></span></span></td></tr>
+  </table>
+  </div>
+  <p class="note">Look at <span class="nuc"><sub>7</sub>N</span>: three single electrons in 2p (Hund). Pairing starts at <span class="nuc"><sub>8</sub>O</span>.</p>
+</div>
+
+<div class="card">
+  <h3>Writing a configuration step by step: <span class="nuc"><sub>22</sub>Ti</span></h3>
+  <ol class="nums">
+    <li><b>Count electrons</b> = atomic number &rArr; <span class="nuc"><sub>22</sub>Ti</span> has <b>22</b> electrons.</li>
+    <li><b>Fill in Aufbau order</b> (s = 2, p = 6, d = 10) until you reach 22. The last sublevel takes only what is left:
+      <div class="answerbox big"><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup> 3s<sup>2</sup> 3p<sup>6</sup> 4s<sup>2</sup> 3d<sup>2</sup></span></div></li>
+    <li><b>Check:</b> add the superscripts &rArr; 2 + 2 + 6 + 2 + 6 + 2 + 2 = <b>22</b> &#10003;</li>
+    <li><b>Shorten</b> with the noble gas before it (<span class="nuc"><sub>18</sub>Ar</span> = first 18 electrons): <mark><b>[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>2</sup></span></b></mark></li>
+  </ol>
+  <p class="note">Write <b>4s before 3d</b> (filling order). &nbsp;·&nbsp; <b>Backwards:</b> to find the element, add all superscripts &rArr; <span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>5</sup></span> = 9 electrons &rArr; <span class="nuc"><sub>9</sub>F</span>.</p>
+</div>
+
+<div class="row">
+  <div class="card">
+    <h3>Noble-gas notation</h3>
+    <p>Put the noble gas <b>before</b> the element in [ ], then write the rest.</p>
+    <div class="chipsrow"><span class="pill" style="--p:#8a4fbf">[He] = 2 e&#8315;</span><span class="pill" style="--p:#8a4fbf">[Ne] = 10 e&#8315;</span><span class="pill" style="--p:#8a4fbf">[Ar] = 18 e&#8315;</span><span class="pill" style="--p:#8a4fbf">[Kr] = 36 e&#8315;</span></div>
+    <table class="tbl">
+      <tr><th>Element</th><th>Noble-gas notation</th></tr>
+      <tr><td><span class="nuc"><sub>12</sub>Mg</span></td><td>[Ne] <span class="cfg">3s<sup>2</sup></span></td></tr>
+      <tr><td><span class="nuc"><sub>14</sub>Si</span></td><td>[Ne] <span class="cfg">3s<sup>2</sup> 3p<sup>2</sup></span></td></tr>
+      <tr><td><span class="nuc"><sub>20</sub>Ca</span></td><td>[Ar] <span class="cfg">4s<sup>2</sup></span></td></tr>
+      <tr><td><span class="nuc"><sub>23</sub>V</span></td><td>[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>3</sup></span></td></tr>
+      <tr><td><span class="nuc"><sub>26</sub>Fe</span></td><td>[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>6</sup></span></td></tr>
+      <tr><td><span class="nuc"><sub>35</sub>Br</span></td><td>[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>10</sup> 4p<sup>5</sup></span> <span class="small">(ends in p<sup>5</sup> &rArr; group 17)</span></td></tr>
+    </table>
+    <p class="note">Noble gas of period 3 = <span class="nuc"><sub>18</sub>Ar</span>: <span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup> 3s<sup>2</sup> 3p<sup>6</sup></span></p>
+  </div>
+  <div class="card tint">
+    <h3>Exceptions: Cr, Cu, Ag</h3>
+    <div class="mini" style="--m:#8a4fbf"><b>Chromium <span class="nuc"><sub>24</sub>Cr</span></b><span class="wrong">[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>4</sup></span></span> &rarr; <span class="right">[Ar] <span class="cfg">4s<sup>1</sup> 3d<sup>5</sup></span></span><br><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span></span><em>4s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span><span class="box"><i class="up">&#8593;</i></span></span><em>3d</em></span></span> <span class="small">half-filled d</span></div>
+    <div class="mini" style="--m:#c9730f"><b>Copper <span class="nuc"><sub>29</sub>Cu</span></b><span class="wrong">[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>9</sup></span></span> &rarr; <span class="right">[Ar] <span class="cfg">4s<sup>1</sup> 3d<sup>10</sup></span></span><br><span class="ob sm"><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i></span></span><em>4s</em></span><span class="grp"><span class="cells"><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span><span class="box"><i class="up">&#8593;</i><i class="dn">&#8595;</i></span></span><em>3d</em></span></span> <span class="small">filled d</span></div>
+    <div class="mini" style="--m:#2b59c3"><b>Silver <span class="nuc"><sub>47</sub>Ag</span></b><span class="wrong">[Kr] <span class="cfg">5s<sup>2</sup> 4d<sup>9</sup></span></span> &rarr; <span class="right">[Kr] <span class="cfg">5s<sup>1</sup> 4d<sup>10</sup></span></span> <span class="small">same as Cu</span></div>
+    <p class="note">One s electron moves into d: <mark><b>half-filled (d<sup>5</sup>) and filled (d<sup>10</sup>) are extra stable</b></mark>.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3>Configurations of ions</h3>
+  <ul class="pen">
+    <li><b>Positive ion</b> (+): <b>remove</b> electrons from the <mark><b>highest energy level first</b></mark> &mdash; for transition metals that means <b>4s before 3d</b>.</li>
+    <li><b>Negative ion</b> (&minus;): <b>add</b> electrons to the next empty place.</li>
+  </ul>
+  <table class="tbl">
+    <tr><th>Ion</th><th>What happens</th><th>Configuration</th><th></th></tr>
+    <tr><td><span class="nuc"><sub>11</sub>Na<sup>+</sup></span></td><td>loses 1 e&#8315;</td><td>[Ne] <span class="cfg">3s<sup>1</sup></span> &rarr; <span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup></span></td><td>same as Ne</td></tr><tr><td><span class="nuc"><sub>8</sub>O<sup>2&minus;</sup></span></td><td>gains 2 e&#8315;</td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>4</sup></span> &rarr; <span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup></span></td><td>same as Ne</td></tr><tr><td><span class="nuc"><sub>9</sub>F<sup>&minus;</sup></span></td><td>gains 1 e&#8315;</td><td><span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>5</sup></span> &rarr; <span class="cfg">1s<sup>2</sup> 2s<sup>2</sup> 2p<sup>6</sup></span></td><td>same as Ne</td></tr><tr><td><span class="nuc"><sub>22</sub>Ti<sup>2+</sup></span></td><td>loses 2 e&#8315; from 4s</td><td>[Ar] <span class="cfg">4s<sup>2</sup> 3d<sup>2</sup></span> &rarr; <b>[Ar] <span class="cfg">3d<sup>2</sup></span></b></td><td>4s empties first</td></tr>
+  </table>
+  <div class="calc" style="--m:#0f8b8d"><div class="ct">Worked example: the copper ion</div><div class="given">Write the configuration of <span class="nuc"><sub>29</sub>Cu<sup>2+</sup></span>.</div><ol><li>Start from the atom: <span class="nuc"><sub>29</sub>Cu</span> = [Ar] <span class="cfg">4s<sup>1</sup> 3d<sup>10</sup></span></li><li>2+ means <b>remove 2 electrons</b>: first the 4s<sup>1</sup> electron, then one 3d electron</li></ol><div class="res"><span class="nuc"><sub>29</sub>Cu<sup>2+</sup></span> = [Ar] <span class="cfg">3d<sup>9</sup></span></div></div>
+</div>
+
+<div class="card">
+  <h3>Valence electrons &amp; electron-dot structures</h3>
+  <div class="row in">
+    <div>
+      <ul class="pen">
+        <li>Count the electrons in the <b>highest energy level (n)</b> only.</li>
+      </ul>
+      <p><span class="nuc"><sub>7</sub>N</span>: 1s<sup>2</sup> <span class="hl"><span class="cfg">2s<sup>2</sup> 2p<sup>3</sup></span></span> &rArr; <b>5</b></p>
+      <p><span class="nuc"><sub>8</sub>O</span>: 1s<sup>2</sup> <span class="hl"><span class="cfg">2s<sup>2</sup> 2p<sup>4</sup></span></span> &rArr; <b>6</b></p>
+      <p><span class="nuc"><sub>17</sub>Cl</span>: [Ne] <span class="hl"><span class="cfg">3s<sup>2</sup> 3p<sup>5</sup></span></span> &rArr; <b>7</b></p>
+      <p><span class="nuc"><sub>10</sub>Ne</span>: 1s<sup>2</sup> <span class="hl"><span class="cfg">2s<sup>2</sup> 2p<sup>6</sup></span></span> &rArr; <b>8</b> <span class="small">(not 10!)</span></p>
+    </div>
+    <div>
+      <ul class="pen">
+        <li>Symbol = nucleus + inner electrons.</li>
+        <li>Dots go <b>one on each side first</b>, then pair up (like Hund). Max <b>8</b>.</li>
+      </ul>
+      <div class="dotrow"><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">Li</span><span class="r"><b></b></span><span class="b"><b></b></span></span><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">Be</span><span class="r"><b>&bull;</b></span><span class="b"><b></b></span></span><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b></b></span><span class="s">B</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span><span class="dot"><span class="t"><b>&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">C</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">N</span><span class="r"><b>&bull;</b></span><span class="b"><b>&bull;</b></span></span><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">O</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;</b></span></span><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;</b></span><span class="s">F</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;&bull;</b></span></span><span class="dot"><span class="t"><b>&bull;&bull;</b></span><span class="l"><b>&bull;&bull;</b></span><span class="s">Ne</span><span class="r"><b>&bull;&bull;</b></span><span class="b"><b>&bull;&bull;</b></span></span></div>
+      <p class="small"><span class="nuc"><sub>4</sub>Be</span>: 2 single dots &nbsp;·&nbsp; <span class="nuc"><sub>5</sub>B</span>: 3 single dots &nbsp;·&nbsp; <span class="nuc"><sub>7</sub>N</span>: 1 pair + 3 singles</p>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ================= BIG PICTURE ================= -->
+<section id="bp" style="--c:#3f9a52;--t:#e3f4e6">
+<div class="lesson" style="--c:#3f9a52"><span class="ltag">Review</span><h2>Big Picture</h2></div>
+<p class="focusq">The whole chapter on one page.</p><div class="dash"></div>
+
+<div class="card">
+  <h3>Cheat sheet</h3>
+  <div class="cheat">
+    <div class="mini" style="--m:#d4486e"><b>Waves</b>&#957; &#8593; &rArr; &#955; &#8595; &rArr; E &#8593;<div class="res">c = &#955;&#957;</div></div>
+    <div class="mini" style="--m:#d4486e"><b>Photons</b>energy, no mass<div class="res">E = h&#957;</div></div>
+    <div class="mini" style="--m:#d4486e"><b>Spectrum</b>radio lowest &hellip; gamma highest<div class="res">R M I V U X G</div></div>
+    <div class="mini" style="--m:#2b59c3"><b>Bohr (H only)</b>down = emit, up = absorb<div class="res">&#916;E = E<sub>high</sub> &minus; E<sub>low</sub></div></div>
+    <div class="mini" style="--m:#2b59c3"><b>Series</b>Lyman 1 · Balmer 2 · Paschen 3<div class="res">UV · Visible · IR</div></div>
+    <div class="mini" style="--m:#2b59c3"><b>Quantum model</b>de Broglie · Heisenberg<div class="res">&#955; = h/m&#957;</div></div>
+    <div class="mini" style="--m:#2b59c3"><b>Level n</b>n = 1, 2, 3 &hellip;<div class="res">n&sup2; orbitals · 2n&sup2; e&#8315;</div></div>
+    <div class="mini" style="--m:#2b59c3"><b>Orbitals</b>s 1 · p 3 · d 5 · f 7<div class="res">no 3f</div></div>
+    <div class="mini" style="--m:#0f8b8d"><b>3 rules</b>Aufbau · Pauli · Hund<div class="res">4s before 3d</div></div>
+    <div class="mini" style="--m:#0f8b8d"><b>Exceptions</b>half-filled / filled d<div class="res">Cr 4s<sup>1</sup>3d<sup>5</sup> · Cu 4s<sup>1</sup>3d<sup>10</sup></div></div>
+    <div class="mini" style="--m:#0f8b8d"><b>Ions</b>remove from 4s first<div class="res">Cu<sup>2+</sup> = [Ar] 3d<sup>9</sup></div></div>
+    <div class="mini" style="--m:#0f8b8d"><b>Valence e&#8315;</b>highest n only<div class="res">N 5 · O 6 · Cl 7 · Ne 8</div></div>
+  </div>
+</div>
+
+<p class="sign">Count the electrons, follow the arrows, fill the boxes. You&rsquo;ve got this! &#9998;</p>
+</section>
+</div></body></html>
