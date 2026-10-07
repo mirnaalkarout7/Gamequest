@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Electron Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#eaf0f8; --grid:#dbe4f1; --card:#ffffff; --ink:#18233a; --soft:#5b6780; --line:#c9d4e6;
+  --blue:#2b59c3; --bluebg:#e3ebfb; --amber:#e8962a; --amberbg:#fdf0dc;
+  --good:#23915a; --goodbg:#dcf3e6; --bad:#d14343; --badbg:#fbe3e3;
+  --teal:#0f8b8d; --tealbg:#dcf2f2; --plum:#8a4fbf; --plumbg:#efe5f8;
+  --shadow:0 6px 0 #c3cfe3;
+  --disp:"Fredoka","Trebuchet MS",sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.45;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+.app{max-width:780px; margin:0 auto; padding-inline:16px; padding-block:18px 40px}
+h1,h2,h3{font-family:var(--disp); margin:0; line-height:1.1; text-wrap:balance}
+sub{font-size:.72em}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
+
+/* HUD */
+.hud{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.stage{font-family:var(--disp); font-weight:600; font-size:15px; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px}
+.stat{display:flex; align-items:center; gap:6px; font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; font-variant-numeric:tabular-nums}
+.stat.streak.hot{border-color:var(--amber); color:var(--amber)}
+.hud .grow{flex:1}
+.bar{height:12px; background:var(--card); border:2px solid var(--line); border-radius:99px; overflow:hidden; margin-bottom:16px}
+.bar i{display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--blue)); width:0; transition:width .4s}
+
+/* card */
+.card{background:var(--card); border:2px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:22px 22px 20px; display:grid; gap:16px}
+.meta{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.tag{font-family:var(--disp); font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase; border-radius:8px; padding:3px 9px}
+.tag.skill{background:var(--tealbg); color:var(--teal)}
+.tag.type{background:var(--plumbg); color:var(--plum)}
+.qnum{font-family:var(--disp); color:var(--soft); font-weight:600; margin-left:auto; font-size:14px}
+.prompt{font-size:21px; font-weight:700; line-height:1.35}
+.help{color:var(--soft); font-size:15px; margin-top:-8px}
+.mol{display:flex; justify-content:center; background:var(--bg); border-radius:16px; padding:10px}
+.mol svg{max-width:100%; height:auto}
+.mol svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.formula{font-size:22px; font-weight:700; text-align:center; background:var(--bg); border-radius:14px; padding:12px; overflow-x:auto}
+
+/* options */
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.opts.one{grid-template-columns:1fr}
+@media (max-width:560px){ .opts{grid-template-columns:1fr} }
+.opt{display:flex; align-items:center; gap:12px; text-align:left; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; min-height:54px; transition:transform .08s, border-color .15s, background .15s}
+.opt:hover:not(:disabled){border-color:var(--blue); transform:translateY(-2px)}
+.opt .k{flex:none; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-family:var(--disp); font-weight:700; background:var(--bluebg); color:var(--blue)}
+.opt.sel{border-color:var(--blue); background:var(--bluebg)}
+.opt.right{border-color:var(--good); background:var(--goodbg)}
+.opt.right .k{background:var(--good); color:#fff}
+.opt.wrong{border-color:var(--bad); background:var(--badbg)}
+.opt.wrong .k{background:var(--bad); color:#fff}
+.opt:disabled{cursor:default}
+.opt.pic{flex-direction:column; justify-content:center; padding:8px}
+.opt.pic svg{width:170px; max-width:100%; height:auto; color:var(--ink)}
+.opt.pic svg text{font-size:14px}
+.opt.pic svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.tf{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.tf .opt{justify-content:center; font-family:var(--disp); font-size:22px; font-weight:700; min-height:70px}
+
+/* chips, buckets */
+.pool{display:flex; flex-wrap:wrap; gap:8px; min-height:48px; padding:10px; border:2px dashed var(--line); border-radius:14px}
+.chip{background:var(--card); border:2px solid var(--line); border-radius:12px; padding:7px 12px; font-weight:700; transition:transform .08s}
+.chip:hover:not(:disabled){transform:translateY(-2px); border-color:var(--blue)}
+.chip.sel{border-color:var(--amber); background:var(--amberbg)}
+.chip.right{border-color:var(--good); background:var(--goodbg)}
+.chip.wrong{border-color:var(--bad); background:var(--badbg)}
+.buckets{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:520px){ .buckets{grid-template-columns:1fr} }
+.bucket{border:2px solid var(--line); border-radius:16px; padding:10px; min-height:110px; display:flex; flex-direction:column; gap:8px; background:var(--bg); text-align:left}
+.bucket h3{font-size:17px}
+.bucket .in{display:flex; flex-wrap:wrap; gap:6px}
+.bucket.ready{border-color:var(--amber); border-style:dashed}
+
+/* match */
+.match{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px}
+.match .col{display:grid; gap:8px; align-content:start}
+.mi{text-align:left; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; font-weight:700; min-height:48px}
+.mi.sel{border-color:var(--amber); background:var(--amberbg)}
+.mi[data-pair]{border-width:3px}
+.mi.right{background:var(--goodbg)} .mi.wrong{background:var(--badbg)}
+
+/* build / order */
+.answerline{display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:56px; padding:10px; border-radius:14px; background:var(--bg); border:2px solid var(--line); font-weight:700}
+.answerline .ph{color:var(--soft); font-weight:400}
+.answerline .chip{background:var(--bluebg); border-color:var(--blue)}
+.ordered{display:grid; gap:8px; counter-reset:o}
+.oslot{display:flex; align-items:center; gap:10px; padding:8px 12px; border:2px dashed var(--line); border-radius:12px; min-height:46px; background:var(--bg); font-weight:700}
+.oslot::before{counter-increment:o; content:counter(o); width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--blue); color:#fff; font-family:var(--disp); font-size:14px; flex:none}
+.oslot.right{border-style:solid; border-color:var(--good); background:var(--goodbg)}
+.oslot.wrong{border-style:solid; border-color:var(--bad); background:var(--badbg)}
+
+.inputrow{display:flex; gap:10px; flex-wrap:wrap}
+.inputrow input{flex:1; min-width:160px; font:inherit; font-size:22px; font-weight:700; padding:10px 14px; border-radius:14px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.inputrow input.right{border-color:var(--good); background:var(--goodbg)}
+.inputrow input.wrong{border-color:var(--bad); background:var(--badbg)}
+.subhint{font-size:14px; color:var(--soft)}
+
+/* actions & feedback */
+.actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.btn{font-family:var(--disp); font-weight:600; font-size:18px; border:none; border-radius:14px; padding:11px 22px; background:var(--blue); color:#fff; box-shadow:0 4px 0 #1b3a86}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--soft); box-shadow:none; border:2px solid var(--line); font-size:15px; padding:8px 14px}
+.btn.go{background:var(--good); box-shadow:0 4px 0 #166b40}
+.fb{border-radius:14px; padding:12px 14px; display:grid; gap:4px}
+.fb.good{background:var(--goodbg); border:2px solid var(--good)}
+.fb.bad{background:var(--badbg); border:2px solid var(--bad)}
+.fb b.t{font-family:var(--disp); font-size:19px}
+.fb.good b.t{color:var(--good)} .fb.bad b.t{color:var(--bad)}
+.pts{font-family:var(--disp); color:var(--amber); font-weight:700}
+
+/* screens */
+.hero{display:grid; gap:18px; text-align:left}
+.hero h1{font-size:clamp(40px,8vw,64px); font-weight:700}
+.hero h1 span{color:var(--teal)}
+.hero p{margin:0; max-width:58ch}
+.stages{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px}
+.st{border:2px solid var(--line); border-radius:14px; padding:10px 12px; background:var(--bg)}
+.st b{font-family:var(--disp); display:block; font-size:17px}
+.st small{color:var(--soft)}
+.types{display:flex; flex-wrap:wrap; gap:6px}
+.best{font-family:var(--disp); color:var(--soft)}
+.big{font-family:var(--disp); font-size:56px; font-weight:700; color:var(--teal); line-height:1}
+.skills{display:grid; gap:8px}
+.sk{display:grid; grid-template-columns:120px 1fr 52px; gap:10px; align-items:center; font-weight:700}
+.sk .t{height:14px; border-radius:99px; background:var(--bg); border:2px solid var(--line); overflow:hidden}
+.sk .t i{display:block; height:100%; background:var(--teal)}
+.sk em{font-style:normal; text-align:right; font-variant-numeric:tabular-nums; color:var(--soft)}
+.miss{display:grid; gap:8px}
+.miss div{border-left:4px solid var(--bad); padding:6px 10px; background:var(--bg); border-radius:0 10px 10px 0; font-size:15px}
+.field{display:grid; gap:6px}
+.field label{font-family:var(--disp); font-weight:600; font-size:15px}
+.fields{display:grid; grid-template-columns:2fr 1fr; gap:12px}
+@media (max-width:520px){ .fields{grid-template-columns:1fr} }
+.field input,.field select{font:inherit; font-size:18px; padding:10px 14px; border-radius:12px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.field input.err,.field select.err{border-color:var(--bad)}
+.errmsg{color:var(--bad); font-size:14px; min-height:1em}
+.player{font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; max-width:40vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cert{border:3px solid var(--teal); border-radius:18px; padding:14px 16px; background:var(--tealbg); display:grid; gap:4px}
+.cert .row{display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px}
+.cert b.nm{font-family:var(--disp); font-size:24px}
+.cert code{font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:700; letter-spacing:.08em}
+.hist{width:100%; border-collapse:collapse; font-size:15px; font-variant-numeric:tabular-nums}
+.hist th,.hist td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line)}
+.histwrap{overflow-x:auto}
+.toast{position:fixed; left:50%; top:calc(16px + env(safe-area-inset-top,0px)); transform:translateX(-50%); background:var(--ink); color:var(--card); font-family:var(--disp); font-weight:600; padding:10px 18px; border-radius:14px; z-index:5; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.card.enter{animation:pop .25s ease-out}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .3s}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+
+/* hint */
+.hintwrap{display:grid; gap:8px}
+.hintbtn{justify-self:start; display:inline-flex; align-items:center; gap:8px; font-family:var(--disp); font-weight:600; font-size:15px; color:#9a5b05; background:var(--amberbg); border:2px dashed var(--amber); border-radius:12px; padding:7px 14px}
+.hintbtn:hover{border-style:solid}
+.hintbox{background:#fff8e1; border:2px solid var(--amber); border-radius:14px; padding:10px 14px; font-size:16px}
+.hintbox b{font-family:var(--disp); color:#9a5b05; margin-right:4px}
+sup{font-size:.72em}
+.mol svg text{font-size:14px}
+</style>
+
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+// ---------- helpers ----------
+const F=s=>String(s).replace(/_(\{[^}]*\}|[0-9n+−\-]+)/g,(m,g)=>'<sub>'+g.replace(/[{}]/g,'')+'</sub>').replace(/\^(\{[^}]*\}|[0-9+−\-]+)/g,(m,g)=>'<sup>'+g.replace(/[{}]/g,'')+'</sup>');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const $=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstElementChild;};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+// ---------- molecule drawing ----------
+const S='stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+function ring(n,cx,cy,r,rot){const p=[];for(let i=0;i<n;i++){const a=(rot+i*360/n)*Math.PI/180;p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}return p;}
+function polyline(p,close){return `<polyline points="${p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}${close?' '+p[0].map(v=>v.toFixed(1)).join(','):''}" ${S}/>`;}
+function inner(a,b,c,f){f=f||.22;const m=(p)=>[p[0]+(c[0]-p[0])*f,p[1]+(c[1]-p[1])*f];const A=m(a),B=m(b);
+  const t=.15;const A2=[A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t],B2=[B[0]+(A[0]-B[0])*t,B[1]+(A[1]-B[1])*t];
+  return `<line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" ${S}/>`;}
+function sub(p,c,len,label,anchor){const dx=p[0]-c[0],dy=p[1]-c[1],d=Math.hypot(dx,dy);const e=[p[0]+dx/d*len,p[1]+dy/d*len];
+  let s=`<line x1="${p[0]}" y1="${p[1]}" x2="${e[0]}" y2="${e[1]}" ${S}/>`;
+  if(label){const ax=anchor||(dx>8?'start':dx<-8?'end':'middle');const ox=ax==='start'?4:ax==='end'?-4:0;const oy=dy>8?18:dy<-8?-6:6;
+    s+=`<text x="${e[0]+ox}" y="${e[1]+oy}" text-anchor="${ax}" font-size="17">${label}</text>`;}
+  return s;}
+const lbl=t=>t.replace(/(\d)(\D?)/g,(m,d,n)=>`<tspan font-size="12" dy="5">${d}</tspan>`+(n?`<tspan dy="-5">${n}</tspan>`:''));
+function svg(w,h,body,title){return `<svg viewBox="0 0 ${w} ${h}" width="${w}" role="img" aria-label="${title}" style="color:var(--ink)">${body}</svg>`;}
+// ---------- pictures: orbital boxes and electron-dot structures ----------
+const MOL={
+  // spec: groups separated by '|', cells separated by space: '_' empty, 'u' up, 'ud' pair. labels per group
+  _boxes(spec,labels,title){
+    const B=34,G=12; let x=8,out='';
+    spec.split('|').forEach((g,gi)=>{const cells=g.trim().split(/\s+/); const x0=x;
+      cells.forEach(c=>{out+=`<rect x="${x}" y="8" width="${B}" height="${B}" fill="none" stroke="currentColor" stroke-width="2.5"/>`;
+        const up=(cx)=>`<path d="M${cx} 36 V14 M${cx-5} 20 L${cx} 13 L${cx+5} 20" fill="none" stroke="var(--blue)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+        const dn=(cx)=>`<path d="M${cx} 14 V36 M${cx-5} 30 L${cx} 37 L${cx+5} 30" fill="none" stroke="var(--bad)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`;
+        if(c==='u') out+=up(x+B/2);
+        if(c==='ud') out+=up(x+B/2-7)+dn(x+B/2+7);
+        x+=B;});
+      out+=`<text x="${(x0+x)/2}" y="62" text-anchor="middle" font-size="14">${labels[gi]}</text>`; x+=G;});
+    return svg(x,70,out,title);},
+  _dot(sym,s,title){ // s: {t,b,l,r} counts 1 or 2
+    const w=sym.length>1?46:32, cx=50, cy=38; let out=`<text x="${cx}" y="${cy+9}" text-anchor="middle" font-size="28">${sym}</text>`;
+    const d=(x,y)=>`<circle cx="${x}" cy="${y}" r="3.4" style="fill:var(--bad)"/>`;
+    const pos={t:[cx,cy-17],b:[cx,cy+20],l:[cx-w/2-6,cy],r:[cx+w/2+6,cy]};
+    Object.entries(s).forEach(([k,n])=>{const [x,y]=pos[k];
+      if(n===1) out+=d(x,y); else out+= (k==='t'||k==='b')? d(x-5,y)+d(x+5,y) : d(x,y-5)+d(x,y+5);});
+    return svg(100,72,out,title);},
+  hA(){return MOL._boxes('ud|u|u u u',['1s','2s','2p'],'1s full, 2s one electron, 2p three single electrons');},
+  hB(){return MOL._boxes('ud|ud|ud ud ud',['1s','2s','2p'],'all orbitals full');},
+  hC(){return MOL._boxes('ud|ud|u _ _',['1s','2s','2p'],'1s full, 2s full, one electron in the first 2p orbital');},
+  hD(){return MOL._boxes('ud|u|ud _ _',['1s','2s','2p'],'1s full, 2s one electron, a pair in the first 2p orbital');},
+  pN(){return MOL._boxes('u u u',['2p'],'three 2p orbitals, one electron in each');},
+  dA(){return MOL._dot('N',{t:1,b:1,l:1,r:1},'N with four single dots');},
+  dB(){return MOL._dot('N',{t:2,b:1,l:1,r:1},'N with one pair and three single dots');},
+  dC(){return MOL._dot('N',{t:2,b:2,l:1,r:1},'N with two pairs and two single dots');},
+  dD(){return MOL._dot('N',{b:1,l:1,r:1},'N with three single dots');},
+};
+
+// ---------- questions (from the Chapter 5 SAAT set) ----------
+const STAGES=[{n:'Light & Photons',from:0},{n:'Bohr & the Quantum Model',from:8},{n:'Orbitals & the Three Rules',from:16},{n:'Writing Configurations',from:23}];
+const Q=[
+ {t:'tf',skill:'Light',q:'Sound waves are electromagnetic waves.',a:false,
+  h:'Electromagnetic waves can travel through empty space. Can sound travel through space?',
+  x:'Sound needs a medium (air, water…), so it is NOT an EM wave. Radio, microwaves, infrared, light, UV, X-rays and gamma rays are.'},
+ {t:'order',skill:'Light',q:'Put these from LOWEST to HIGHEST energy.',help:'Tap them in order.',items:['Radio waves','Infrared','Visible light','Ultraviolet','Gamma rays'],
+  h:'Remember: Raging Martians Invaded Venus Using X-ray Guns.',
+  x:'Energy rises with frequency: radio → microwave → infrared → visible → UV → X-rays → gamma.'},
+ {t:'mcq',skill:'Light',q:'Gamma rays are ___.',o:['high-energy photons','positive particles','electrons from the nucleus','neutral particles with mass'],a:0,
+  h:'Gamma rays are part of the electromagnetic spectrum, just like light.',
+  x:'Gamma rays are electromagnetic radiation: photons with the highest energy.'},
+ {t:'mcq',skill:'Light',q:'A particle that has energy but no mass is ___.',o:['a photon','an electron','a proton','a neutron'],a:0,
+  h:'Einstein used this word for a “packet” of light.',
+  x:'A photon carries one quantum of energy and has no mass.'},
+ {t:'mcq',skill:'Calculation',q:'Light has a wavelength of 3 × 10^{−7} m. What is its frequency? (c = 3 × 10^{8} m/s)',o:['1 × 10^{15} Hz','3 × 10^{15} Hz','1 × 10^{−15} Hz','9 × 10^{1} Hz'],a:0,
+  h:'c = λν',
+  x:'ν = (3 × 10^{8}) ÷ (3 × 10^{−7}) → 3 ÷ 3 = 1 and 10^{8 − (−7)} = 10^{15} → 1 × 10^{15} Hz.'},
+ {t:'mcq',skill:'Calculation',q:'A photon has a frequency of 2 × 10^{15} Hz. What is its energy? (h = 6 × 10^{−34} J·s)',o:['12 × 10^{−19} J','3 × 10^{−19} J','12 × 10^{−49} J','3 × 10^{−49} J'],a:0,
+  h:'E = hν',
+  x:'E = (6 × 10^{−34})(2 × 10^{15}) → 6 × 2 = 12 and 10^{−34 + 15} = 10^{−19} → 12 × 10^{−19} J.'},
+ {t:'match',skill:'Light',q:'Match each word to its meaning.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['Photon','particle of light with no mass'],['Quantum','minimum energy an atom can gain or lose'],['Frequency','number of waves per second'],['Wavelength','distance from crest to crest']],
+  h:'Frequency is measured in Hz (per second); wavelength is measured in metres.',
+  x:'Photon = light particle. Quantum = smallest energy packet. Frequency (Hz) and wavelength (m) are inversely related.'},
+ {t:'mcq',skill:'Light',q:'The photoelectric effect happens when ___ shines on certain metals.',o:['high-frequency light','low-frequency light','very dim light','any light at all'],a:0,
+  h:'Light must reach the threshold frequency to knock electrons out.',
+  x:'Only light at or above the threshold frequency ejects electrons. Below it, nothing happens however bright the light is.'},
+
+ {t:'mcq',skill:'Bohr model',q:'Bohr’s model explained the emission spectrum successfully for ___.',o:['hydrogen only','hydrogen and helium','all metals','group 1 elements'],a:0,
+  h:'Bohr studied the simplest atom: it has only one electron.',
+  x:'Bohr’s model worked only for hydrogen. The quantum mechanical model works for all atoms.'},
+ {t:'sort',skill:'Bohr model',q:'Does the atom absorb or emit energy?',help:'Tap a jump, then tap a box.',b:['Absorbs energy (moves up)','Emits energy (moves down)'],
+  items:[['n = 1 → n = 3',0],['n = 3 → n = 5',0],['n = 2 → n = 7',0],['n = 2 → n = 1',1],['n = 4 → n = 2',1],['n = 6 → n = 3',1]],
+  h:'Going UP to a bigger n needs energy. Coming DOWN gives energy out as light.',
+  x:'Up (higher n) = absorb. Down (lower n) = emit a photon, which makes the emission lines.'},
+ {t:'mcq',skill:'Bohr model',q:'Which electron jump emits light with the HIGHEST frequency?',o:['E_6 → E_2','E_6 → E_3','E_3 → E_2','E_2 → E_7'],a:0,
+  h:'Look for the BIGGEST drop. A jump up does not emit light at all.',
+  x:'The bigger the drop, the more energy, the higher the frequency. E_6 → E_2 is the biggest drop; E_2 → E_7 goes up, so it absorbs.'},
+ {t:'num',skill:'Calculation',q:'An electron drops from the level at −3.4 eV to the level at −13.6 eV. What is the energy of the emitted photon, in eV?',help:'Type a number (decimals are fine).',a:10.2,
+  h:'ΔE = E_{high} − E_{low}',
+  x:'ΔE = −3.4 + 13.6 = 10.2 eV.'},
+ {t:'match',skill:'Bohr model',q:'Match each series to the level the electron drops to.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['Lyman series','drops to n = 1 (ultraviolet)'],['Balmer series','drops to n = 2 (visible)'],['Paschen series','drops to n = 3 (infrared)']],
+  h:'L B P → 1, 2, 3 → UV, Visible, IR.',
+  x:'Lyman → 1, Balmer → 2, Paschen → 3. So n = 4 → n = 2 is Balmer and n = 4 → n = 3 is Paschen.'},
+ {t:'mcq',skill:'Quantum model',q:'The values of the principal quantum number (n) are ___.',o:['1, 2, 3, …','0, 1, 2, 3, …','+1, 0, −1','−½, +½'],a:0,
+  h:'n counts the energy levels, starting from the first level.',
+  x:'n takes whole numbers starting from 1. It decides the energy and size of the level.'},
+ {t:'mcq',skill:'Quantum model',q:'“It is impossible to know both the position and the velocity of an electron at the same time.” This is the ___.',o:['Heisenberg uncertainty principle','Pauli exclusion principle','Aufbau principle','Hund’s rule'],a:0,
+  h:'The word “uncertainty” is the clue.',
+  x:'Heisenberg’s uncertainty principle: we only know the probability of where an electron is.'},
+ {t:'mcq',skill:'Quantum model',q:'We cannot see the wave nature of a moving car because ___.',o:['its wavelength is very small','its wavelength is very large','it is very dense','it has no mass'],a:0,
+  h:'de Broglie: λ = h ÷ mv. What happens to λ when the mass is huge?',
+  x:'A car’s mass is huge, so λ = h/mv is far too small to notice.'},
+
+ {t:'match',skill:'Orbitals',q:'Match each sublevel to its number of orbitals.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['s','1 orbital'],['p','3 orbitals'],['d','5 orbitals'],['f','7 orbitals']],
+  h:'Odd numbers going up: 1, 3, 5, 7.',
+  x:'s = 1, p = 3, d = 5, f = 7. Each orbital holds 2 electrons, so s 2, p 6, d 10, f 14.'},
+ {t:'num',skill:'Calculation',q:'What is the maximum number of electrons in energy level n = 3?',a:18,
+  h:'Maximum number of electrons = 2n²',
+  x:'2n² = 2 × 3² = 2 × 9 = 18 (3s + 3p + 3d = 2 + 6 + 10).'},
+ {t:'odd',skill:'Orbitals',q:'Odd one out: which sublevel can NOT exist?',o:['3f','2p','4d','5s'],a:0,
+  h:'f sublevels start at energy level 4.',
+  x:'Level 3 has only s, p and d. The first f sublevel is 4f, so 3f does not exist.'},
+ {t:'mcq',skill:'Rules',q:'Which of these sublevels has the LOWEST energy?',o:['4s','3d','4p','4f'],a:0,
+  h:'Follow the diagonal arrows: which one is filled first?',
+  x:'4s fills before 3d, so 4s has the lowest energy of these.'},
+ {t:'match',skill:'Rules',q:'Match each rule to what it says.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['Aufbau principle','fill the lowest-energy orbital first'],['Pauli exclusion principle','max 2 electrons per orbital, opposite spins'],['Hund’s rule','one electron in each equal orbital before pairing']],
+  h:'Hund = “bus seats”: sit alone first, then share.',
+  x:'Aufbau = order of filling. Pauli = 2 per box with ↑↓. Hund = singles first, then pairs.'},
+ {t:'pick',skill:'Rules',q:'Which is the correct orbital diagram for boron, _{5}B?',o:['hA','hB','hC','hD'],names:['option with 2s half-full','all full (that is neon)','1s² 2s² 2p¹','2p paired too early'],a:2,
+  h:'Boron has 5 electrons: fill 1s, then 2s, then put the last one in 2p.',
+  x:'_{5}B = 1s^{2} 2s^{2} 2p^{1}: both 1s and 2s are full and one electron sits in 2p.'},
+ {t:'num',skill:'Rules',q:'How many unpaired electrons does nitrogen, _{7}N (1s^{2} 2s^{2} 2p^{3}), have?',mol:'pN',
+  h:'Hund’s rule: the 3 electrons in 2p go one in each box.',
+  a:3,x:'2p^{3} = one electron in each of the three p orbitals → 3 unpaired electrons.'},
+
+ {t:'cfg',skill:'Configurations',q:'Build the electron configuration of sodium, _{11}Na.',help:'Tap the pieces in order.',tiles:['1s²','2s²','2p⁶','3s¹','3s²','2p⁵','3p¹'],a:['1s²','2s²','2p⁶','3s¹'],
+  h:'Fill 1s (2), 2s (2), 2p (6), then put what is left in 3s. The superscripts must add up to 11.',
+  x:'2 + 2 + 6 = 10, so 1 electron is left for 3s → 1s^{2} 2s^{2} 2p^{6} 3s^{1}.'},
+ {t:'mcq',skill:'Configurations',q:'Which element has the configuration 1s^{2} 2s^{2} 2p^{5}?',o:['_{9}F','_{7}N','_{10}Ne','_{13}Al'],a:0,
+  h:'Add all the superscripts to get the atomic number.',
+  x:'2 + 2 + 5 = 9 electrons → atomic number 9 → fluorine.'},
+ {t:'mcq',skill:'Configurations',q:'What is the noble-gas configuration of iron, _{26}Fe?',o:['[Ar] 4s^{2} 3d^{6}','[Ar] 3d^{8}','[Ar] 4s^{1} 3d^{7}','[Kr] 4s^{2} 3d^{6}'],a:0,
+  h:'[Ar] = 18 electrons. 26 − 18 = 8 more: fill 4s first, then 3d.',
+  x:'After [Ar]: 4s takes 2, and the other 6 go into 3d → [Ar] 4s^{2} 3d^{6}.'},
+ {t:'mcq',skill:'Configurations',q:'What is the correct configuration of copper, _{29}Cu?',o:['[Ar] 4s^{1} 3d^{10}','[Ar] 4s^{2} 3d^{9}','[Ar] 4s^{2} 3d^{10}','[Ar] 3d^{9}'],a:0,
+  h:'Copper is an exception: a FULL d sublevel (d^{10}) is extra stable.',
+  x:'One 4s electron moves into 3d to fill it: [Ar] 4s^{1} 3d^{10}. Chromium does the same: [Ar] 4s^{1} 3d^{5}.'},
+ {t:'mcq',skill:'Configurations',q:'What is the configuration of the copper ion _{29}Cu^{2+}?',o:['[Ar] 3d^{9}','[Ar] 4s^{2} 3d^{7}','[Ar] 4s^{2} 3d^{9}','[Ar] 4s^{1} 3d^{8}'],a:0,
+  h:'Start from Cu = [Ar] 4s^{1} 3d^{10}. Remove 2 electrons, taking from 4s FIRST.',
+  x:'Remove the 4s^{1} electron, then one 3d electron → [Ar] 3d^{9}.'},
+ {t:'num',skill:'Valence',q:'How many valence electrons does neon, _{10}Ne (1s^{2} 2s^{2} 2p^{6}), have?',
+  h:'Count only the electrons in the highest energy level (n = 2).',
+  a:8,x:'2s^{2} + 2p^{6} = 8 valence electrons (not 10: the 1s electrons are inner electrons).'},
+ {t:'pick',skill:'Valence',q:'Which is the correct electron-dot structure of nitrogen, _{7}N?',o:['dA','dB','dC','dD'],names:['four single dots','one pair + three single dots','two pairs + two singles','three single dots'],a:1,
+  h:'N has 5 valence electrons: one dot on each side first, then pair the fifth.',
+  x:'5 valence electrons → four single dots, then the fifth makes a pair: one pair + three singles.'},
+];
+const TYPE={mcq:'Multiple choice',tf:'True or false',sort:'Sort it',num:'Number answer',match:'Match up',odd:'Odd one out',order:'Put in order',pick:'Pick the picture',cfg:'Build the configuration'};
+
+// ---------- game state ----------
+let i=0,score=0,streak=0,best=0,results=[],player={name:'',cls:''},startedAt=0,hintUsed=false;
+const HIST_KEY='eq-history';
+// Paste your Google Apps Script web-app URL here to collect scores in a Google Sheet (leave empty to turn off).
+const SCORE_URL='https://script.google.com/macros/s/AKfycbxqxWcG4jS6gWBLKroZBscjhfJEBmSRwIjZ4OtamJe55XvdfLjX0Jj9j2xgfPAr0Mbu6g/exec';
+const loadHist=()=>{try{return JSON.parse(store.get(HIST_KEY)||'[]')}catch(e){return[]}};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+const BEST_KEY='eq-best';
+
+function hud(){
+  const st=STAGES.filter(s=>s.from<=i).pop();
+  return `<div class="hud"><span class="stage">${st.n}</span><span class="player" title="Player">👤 ${esc(player.name)}</span><span class="grow"></span>
+   <span class="stat" title="Score">★ <b>${score}</b></span>
+   <span class="stat streak ${streak>=3?'hot':''}" title="Streak">🔥 <b>${streak}</b></span></div>
+   <div class="bar" aria-label="Progress"><i style="width:${(i/Q.length*100).toFixed(1)}%"></i></div>`;
+}
+
+function start(){
+  const b=store.get(BEST_KEY);
+  const typeTags=Object.values(TYPE).map(t=>`<span class="tag type">${t}</span>`).join('');
+  app.innerHTML=`<div class="card hero">
+    <div class="meta"><span class="tag skill">Chemistry · Chapter 5</span><span class="qnum">30 questions</span></div>
+    <h1>Electron <span>Quest</span></h1>
+    <p>Race through four stages of SAAT-style questions on light, the atom and electron configurations. Every question type tests a different skill, so read the instructions on each card. Correct answers earn 100 points, and a streak of 3 or more adds a bonus. Stuck? Open the hint &mdash; a correct answer after a hint still earns 50 points.</p>
+    <div class="stages">${STAGES.map((s,k)=>`<div class="st"><small>Stage ${k+1}</small><b>${s.n}</b><small>${(STAGES[k+1]?STAGES[k+1].from:Q.length)-s.from} questions</small></div>`).join('')}</div>
+    <div class="types">${typeTags}</div>
+    <div class="fields">
+      <div class="field"><label for="pname">Your full name</label><input id="pname" autocomplete="name" maxlength="60" placeholder="e.g. Sara Ahmed" value="${esc(store.get('eq-name')||'')}"></div>
+      <div class="field"><label for="pclass">Class</label><select id="pclass"><option value="">Choose…</option>${['12-A','12-B'].map(c=>`<option ${store.get('eq-class')===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    </div>
+    <div class="errmsg" id="perr" role="alert"></div>
+    <div class="actions"><button class="btn" id="go">Start the quest</button>${b?`<span class="best">Best score on this device: ${b}</span>`:''}</div>
+  </div>`;
+  const go=()=>{const n=document.getElementById('pname'); const nm=n.value.trim().replace(/\s+/g,' ');
+    if(nm.length<2){n.classList.add('err'); document.getElementById('perr').textContent='Please write your name before you start.'; n.focus(); return;}
+    const cs=document.getElementById('pclass'); if(!cs.value){cs.classList.add('err'); document.getElementById('perr').textContent='Please choose your class before you start.'; cs.focus(); return;}
+    player={name:nm,cls:document.getElementById('pclass').value.trim()}; store.set('eq-name',player.name); store.set('eq-class',player.cls);
+    i=0;score=0;streak=0;best=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('go').onclick=go;
+  ['pname','pclass'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')go();});
+}
+
+function toast(t){const e=$(`<div class="toast">${t}</div>`);document.body.appendChild(e);setTimeout(()=>e.remove(),1400);}
+
+function show(){
+  if(i>=Q.length) return end();
+  const st=STAGES.find(s=>s.from===i); if(st && i>0) toast('Stage '+(STAGES.indexOf(st)+1)+': '+st.n);
+  const q=Q[i];
+  app.innerHTML=hud()+`<div class="card enter" id="card">
+    <div class="meta"><span class="tag skill">${q.skill}</span><span class="tag type">${TYPE[q.t]}</span><span class="qnum">${i+1} / ${Q.length}</span></div>
+    <div class="prompt">${F(q.q)}</div>${q.help?`<div class="help">${q.help}</div>`:''}
+    ${q.mol?`<div class="mol">${MOL[q.mol]()}</div>`:''}${q.formula?`<div class="formula">${F(q.formula)}</div>`:''}
+    <div id="body"></div>${q.h?`<div class="hintwrap" id="hintwrap"><button class="hintbtn" id="hintbtn" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="#fff3c4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>Need a hint?</button><div class="hintbox" id="hintbox" hidden><b>Hint</b> ${F(q.h)}</div></div>`:''}<div id="fb"></div><div class="actions" id="act"></div></div>`;
+  hintUsed=false; const hb=document.getElementById('hintbtn'); if(hb) hb.onclick=()=>{hintUsed=true; document.getElementById('hintbox').hidden=false; hb.remove();};
+  RENDER[q.t](q,document.getElementById('body'));
+}
+
+function actions(html){document.getElementById('act').innerHTML=html;}
+function checkBtn(fn,enabled){actions(`<button class="btn" id="chk" ${enabled?'':'disabled'}>Check</button>`);document.getElementById('chk').onclick=fn;}
+function setCheck(on){const b=document.getElementById('chk'); if(b) b.disabled=!on;}
+
+function done(ok,q,correctText){
+  let gain=0;
+  if(ok){streak++;gain=hintUsed?50:100+(streak>=3?25*Math.min(streak-2,4):0);score+=gain;}
+  else{streak=0;document.getElementById('card').classList.add('shake');}
+  results.push({q,ok,correctText,hint:hintUsed}); const hbtn=document.getElementById('hintbtn'); if(hbtn) hbtn.remove();
+  document.getElementById('fb').innerHTML=`<div class="fb ${ok?'good':'bad'}"><b class="t">${ok?'Correct!':'Not quite'} ${ok?`<span class="pts">+${gain}${hintUsed?' (hint used)':''}</span>`:''}</b>
+    ${!ok&&correctText?`<div>Answer: <b>${F(correctText)}</b></div>`:''}<div>${F(q.x)}</div></div>`;
+  actions(`<button class="btn go" id="nx">${i+1<Q.length?'Next question →':'See my results'}</button>`);
+  const nx=document.getElementById('nx'); nx.focus({preventScroll:true}); nx.onclick=()=>{i++;show();window.scrollTo({top:0,behavior:'smooth'});};
+  const h=app.querySelector('.hud'); if(h) h.replaceWith($(hud()));
+}
+
+const RENDER={
+  mcq(q,el,cls){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts ${cls||''}">${order.map((k,n)=>`<button class="opt" data-k="${k}"><span class="k">${'ABCD'[n]}</span><span>${F(q.o[k])}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.o[q.a]);
+    });
+  },
+  odd(q,el){RENDER.mcq(q,el);},
+  pick(q,el){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts">${order.map((k,n)=>`<button class="opt pic" data-k="${k}" aria-label="Option ${'ABCD'[n]}">${MOL[q.o[k]]()}<span class="k">${'ABCD'[n]}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,(q.names||q.o)[q.a]);
+    });
+  },
+  tf(q,el){
+    el.innerHTML=`<div class="tf"><button class="opt" data-v="1">True</button><button class="opt" data-v="0">False</button></div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v==='1', ok=v===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if((x.dataset.v==='1')===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.a?'True':'False');
+    });
+  },
+  num(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="Your number" aria-label="Your answer"></div>`;
+    const inp=el.querySelector('input');
+    const go=()=>{const ok=Math.abs(parseFloat(String(inp.value).replace(',','.'))-q.a)<1e-9; inp.disabled=true; inp.classList.add(ok?'right':'wrong'); done(ok,q,String(q.a));};
+    checkBtn(go,false); inp.oninput=()=>setCheck(inp.value!==''); inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value!=='')go();}; inp.focus({preventScroll:true});
+  },
+  text(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer" aria-label="Your answer"></div><div class="subhint" id="prev"></div>`;
+    const inp=el.querySelector('input'), prev=el.querySelector('#prev');
+    const norm=s=>q.norm==='formula'?s.replace(/\s+/g,'').toUpperCase():s.trim().toLowerCase().replace(/\s+/g,' ');
+    const go=()=>{const v=norm(inp.value); const ok=q.a.some(a=>norm(a)===v); inp.disabled=true; inp.classList.add(ok?'right':'wrong');
+      done(ok,q,q.norm==='formula'?q.a[0].replace(/(\d+)/g,'_$1'):q.a[0]);};
+    checkBtn(go,false);
+    inp.oninput=()=>{setCheck(inp.value.trim()!==''); if(q.norm==='formula') prev.innerHTML=inp.value?('You wrote: <b>'+F(inp.value.replace(/\s+/g,'').replace(/(\d+)/g,'_$1'))+'</b>'):'';};
+    inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value.trim())go();}; inp.focus({preventScroll:true});
+  },
+  sort(q,el){
+    const items=shuffle(q.items.map((it,k)=>({t:it[0],b:it[1],k})));
+    const place={}; let sel=null;
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="buckets">${q.b.map((b,n)=>`<button class="bucket" data-b="${n}"><h3>${b}</h3><div class="in"></div></button>`).join('')}</div>`;
+    const pool=el.querySelector('#pool');
+    function draw(){
+      pool.innerHTML=''; el.querySelectorAll('.bucket .in').forEach(x=>x.innerHTML='');
+      items.forEach(it=>{const c=$(`<button class="chip ${sel===it.k?'sel':''}" data-k="${it.k}">${F(it.t)}</button>`);
+        c.onclick=(e)=>{e.stopPropagation(); if(place[it.k]!==undefined){delete place[it.k]; sel=it.k;} else sel=(sel===it.k?null:it.k); draw();};
+        (place[it.k]===undefined?pool:el.querySelector(`.bucket[data-b="${place[it.k]}"] .in`)).appendChild(c);});
+      if(!pool.children.length) pool.innerHTML='<span class="subhint">All placed. Tap a chip to move it back.</span>';
+      el.querySelectorAll('.bucket').forEach(b=>b.classList.toggle('ready',sel!==null));
+      setCheck(Object.keys(place).length===items.length);
+    }
+    el.querySelectorAll('.bucket').forEach(b=>b.onclick=()=>{if(sel===null)return; place[sel]=+b.dataset.b; sel=null; draw();});
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.chip').forEach(c=>{const it=items.find(x=>x.k==c.dataset.k); const r=place[it.k]===it.b; if(!r)ok=false; c.classList.add(r?'right':'wrong'); c.disabled=true;});
+      el.querySelectorAll('.bucket').forEach(b=>{b.disabled=true;b.classList.remove('ready');});
+      const key=q.b.map((b,n)=>b+': '+q.items.filter(x=>x[1]===n).map(x=>x[0]).join(', ')).join(' | ');
+      done(ok,q,key);
+    },false);
+    draw();
+  },
+  match(q,el){
+    const L=q.pairs.map((p,k)=>({t:p[0],k})), R=shuffle(q.pairs.map((p,k)=>({t:p[1],k})));
+    const pair={}; let sel=null; const colors=['var(--blue)','var(--amber)','var(--plum)','var(--teal)'];
+    el.innerHTML=`<div class="match"><div class="col" id="L"></div><div class="col" id="R"></div></div>`;
+    function draw(){
+      const used=Object.values(pair);
+      el.querySelector('#L').innerHTML=L.map(l=>{const pi=pair[l.k]!==undefined?Object.keys(pair).indexOf(String(l.k)):-1;
+        return `<button class="mi ${sel===l.k?'sel':''}" data-l="${l.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(l.t)}</button>`}).join('');
+      el.querySelector('#R').innerHTML=R.map(r=>{const lk=Object.keys(pair).find(k=>pair[k]===r.k);const pi=lk!==undefined?Object.keys(pair).indexOf(lk):-1;
+        return `<button class="mi" data-r="${r.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(r.t)}</button>`}).join('');
+      el.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const k=+b.dataset.l; if(pair[k]!==undefined){delete pair[k];} sel=(sel===k?null:k); draw();});
+      el.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const rk=+b.dataset.r; const lk=Object.keys(pair).find(k=>pair[k]===rk); if(lk!==undefined)delete pair[lk]; if(sel!==null){pair[sel]=rk; sel=null;} draw();});
+      setCheck(Object.keys(pair).length===L.length);
+    }
+    checkBtn(()=>{
+      let ok=true; L.forEach(l=>{const r=pair[l.k]===l.k; if(!r)ok=false;
+        el.querySelector(`[data-l="${l.k}"]`).classList.add(r?'right':'wrong');});
+      el.querySelectorAll('.mi').forEach(b=>b.disabled=true);
+      done(ok,q,q.pairs.map(p=>p[0]+' → '+p[1]).join(' | '));
+    },false);
+    draw();
+  },
+  order(q,el){
+    const pool=shuffle(q.items.map((t,k)=>({t,k}))); const seq=[];
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="ordered" id="seq"></div><button class="btn ghost" id="undo">Undo</button>`;
+    function draw(){
+      el.querySelector('#pool').innerHTML=''; pool.filter(p=>!seq.includes(p.k)).forEach(p=>{const c=$(`<button class="chip">${F(p.t)}</button>`);c.onclick=()=>{seq.push(p.k);draw();};el.querySelector('#pool').appendChild(c);});
+      if(seq.length===q.items.length) el.querySelector('#pool').innerHTML='<span class="subhint">All placed.</span>';
+      el.querySelector('#seq').innerHTML=q.items.map((_,n)=>`<div class="oslot" data-n="${n}">${seq[n]!==undefined?F(q.items[seq[n]]):''}</div>`).join('');
+      setCheck(seq.length===q.items.length);
+    }
+    el.querySelector('#undo').onclick=()=>{seq.pop();draw();};
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.oslot').forEach((s,n)=>{const r=seq[n]===n; if(!r)ok=false; s.classList.add(r?'right':'wrong');});
+      el.querySelector('#undo').remove(); done(ok,q,q.items.join(' → '));
+    },false);
+    draw();
+  },
+  complete(q,el){RENDER.build(q,el);},
+  cfg(q,el){RENDER.build(q,el);},
+  build(q,el){
+    const tiles=shuffle(q.tiles.map((t,k)=>({t,k}))); const line=[];
+    el.innerHTML=`<div class="answerline" id="line"></div><div class="pool" id="pool"></div>`;
+    function draw(){
+      const ln=el.querySelector('#line'); ln.innerHTML=line.length?'':'<span class="ph">Tap the pieces in order…</span>';
+      line.forEach((k,n)=>{const c=$(`<button class="chip">${tiles.find(x=>x.k===k).t}</button>`);c.onclick=()=>{line.splice(n,1);draw();};ln.appendChild(c);});
+      const pl=el.querySelector('#pool'); pl.innerHTML='';
+      tiles.filter(x=>!line.includes(x.k)).forEach(x=>{const c=$(`<button class="chip">${x.t}</button>`);c.onclick=()=>{line.push(x.k);draw();};pl.appendChild(c);});
+      setCheck(line.length>0);
+    }
+    checkBtn(()=>{
+      const got=line.map(k=>tiles.find(x=>x.k===k).t).join('|'); const want=q.a.join('|');
+      const ok=got===want; el.querySelector('#line').classList.add(ok?'right':'wrong');
+      el.querySelector('#line').style.borderColor=ok?'var(--good)':'var(--bad)';
+      el.querySelectorAll('.chip').forEach(c=>c.disabled=true);
+      done(ok,q,q.a.join(' '));
+    },false);
+    draw();
+  },
+};
+
+function end(){
+  const correct=results.filter(r=>r.ok).length;
+  const b=+(store.get(BEST_KEY)||0); const newBest=score>b; if(newBest) store.set(BEST_KEY,score);
+  const skills={}; results.forEach(r=>{const s=r.q.skill; skills[s]=skills[s]||[0,0]; skills[s][1]++; if(r.ok)skills[s][0]++;});
+  const now=new Date(); const mins=Math.max(1,Math.round((Date.now()-startedAt)/60000));
+  const when=now.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const h=[...(player.name+'|'+player.cls+'|'+score+'|'+correct+'|'+now.toISOString().slice(0,16))].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+  const code='EQ-'+h.toString(36).toUpperCase().padStart(6,'0').slice(-6);
+  const hist=loadHist(); hist.unshift({name:player.name,cls:player.cls,score,correct,when,mins,code}); store.set(HIST_KEY,JSON.stringify(hist.slice(0,50)));
+  const mine=hist.filter(x=>x.name===player.name);
+  const summary=`Electron Quest (Chemistry Chapter 5)\nName: ${player.name}${player.cls?'\nClass: '+player.cls:''}\nScore: ${score} points\nCorrect: ${correct}/${Q.length}\nTime: ${mins} min\nDate: ${when}\nCheck code: ${code}`;
+  const msg=correct>=27?'Electron master!':correct>=21?'Great work!':correct>=15?'Good effort, keep practising.':'Review the notes and try again.';
+  app.innerHTML=`<div class="card enter">
+    <div class="meta"><span class="tag skill">Quest complete</span>${newBest?'<span class="tag type">New best score</span>':''}</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:end">
+      <div><div class="big">${score}</div><div class="best">points</div></div>
+      <div><div class="big" style="color:var(--blue)">${correct}/${Q.length}</div><div class="best">correct</div></div>
+    </div>
+    <h2>${msg}</h2>
+    <div class="cert" id="cert">
+      <div class="row"><b class="nm">${esc(player.name)}</b><span>${player.cls?'Class '+esc(player.cls):''}</span></div>
+      <div class="row"><span>Electron Quest · Chapter 5</span><span>${when}</span></div>
+      <div class="row"><span><b>${score}</b> points · <b>${correct}/${Q.length}</b> correct · ${mins} min</span><span>Check code <code>${code}</code></span></div>
+    </div>
+    <div class="actions">${SCORE_URL?'<button class="btn" id="send">Send to my teacher</button>':''}<button class="btn go" id="copy">Copy my result</button><span class="subhint" id="copied">Send it to your teacher, or take a screenshot of the green box.</span></div>
+    <textarea id="sumtxt" readonly aria-label="Result text" style="position:absolute;left:-9999px">${esc(summary)}</textarea>
+    <h3>Your skills</h3>
+    <div class="skills">${Object.entries(skills).map(([s,[c,t]])=>`<div class="sk"><span>${s}</span><span class="t"><i style="width:${c/t*100}%"></i></span><em>${c}/${t}</em></div>`).join('')}</div>
+    ${correct<Q.length?`<h3>Review what you missed</h3><div class="miss">${results.filter(r=>!r.ok).map(r=>`<div><b>Q${Q.indexOf(r.q)+1}.</b> ${F(r.q.q)}<br>Answer: <b>${F(r.correctText)}</b></div>`).join('')}</div>`:''}
+    ${mine.length>1?`<h3>Your attempts on this device</h3><div class="histwrap"><table class="hist"><tr><th>Date</th><th>Score</th><th>Correct</th><th>Code</th></tr>${mine.slice(0,10).map(x=>`<tr><td>${x.when}</td><td>${x.score}</td><td>${x.correct}/${Q.length}</td><td>${x.code}</td></tr>`).join('')}</table></div>`:''}
+    <div class="actions"><button class="btn" id="again">Play again</button><button class="btn ghost" id="home">Back to start</button></div>
+  </div>`;
+  document.getElementById('copy').onclick=()=>{const ok=()=>{document.getElementById('copied').textContent='Copied! Paste it in your message to your teacher.';};
+    const fallback=()=>{const t=document.getElementById('sumtxt');t.style.position='static';t.style.width='100%';t.rows=8;t.focus();t.select();document.getElementById('copied').textContent='Select the text below and copy it.';};
+    try{navigator.clipboard.writeText(summary).then(ok,fallback);}catch(e){fallback();}};
+  const sb=document.getElementById('send');
+  if(sb) sb.onclick=()=>{ sb.disabled=true; sb.textContent='Sending…';
+    const payload={game:'Electron Quest',chapter:5,name:player.name,cls:player.cls,score,correct,total:Q.length,mins,when,code,
+      missed:results.filter(r=>!r.ok).map(r=>'Q'+(Q.indexOf(r.q)+1)).join(' ')};
+    fetch(SCORE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+      .then(()=>{sb.textContent='Sent ✓'; document.getElementById('copied').textContent='Your result was sent to your teacher.';})
+      .catch(()=>{sb.disabled=false; sb.textContent='Send to my teacher'; document.getElementById('copied').textContent='Could not send. Check your internet and try again.';}); };
+  document.getElementById('again').onclick=()=>{i=0;score=0;streak=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('home').onclick=start;
+}
+
+start();
+})();
+</script>
+</body>
+</html>
