@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Periodic Table Quest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+:root{
+  --bg:#eaf0f8; --grid:#dbe4f1; --card:#ffffff; --ink:#18233a; --soft:#5b6780; --line:#c9d4e6;
+  --blue:#2b59c3; --bluebg:#e3ebfb; --amber:#e8962a; --amberbg:#fdf0dc;
+  --good:#23915a; --goodbg:#dcf3e6; --bad:#d14343; --badbg:#fbe3e3;
+  --teal:#0f8b8d; --tealbg:#dcf2f2; --plum:#8a4fbf; --plumbg:#efe5f8;
+  --shadow:0 6px 0 #c3cfe3;
+  --disp:"Fredoka","Trebuchet MS",sans-serif; --body:"Atkinson Hyperlegible","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); font-size:17px; line-height:1.45;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px}
+.app{max-width:780px; margin:0 auto; padding-inline:16px; padding-block:18px 40px}
+h1,h2,h3{font-family:var(--disp); margin:0; line-height:1.1; text-wrap:balance}
+sub{font-size:.72em}
+button{font:inherit; color:inherit; cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--amber); outline-offset:2px}
+
+/* HUD */
+.hud{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:12px}
+.stage{font-family:var(--disp); font-weight:600; font-size:15px; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px}
+.stat{display:flex; align-items:center; gap:6px; font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; font-variant-numeric:tabular-nums}
+.stat.streak.hot{border-color:var(--amber); color:var(--amber)}
+.hud .grow{flex:1}
+.bar{height:12px; background:var(--card); border:2px solid var(--line); border-radius:99px; overflow:hidden; margin-bottom:16px}
+.bar i{display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--blue)); width:0; transition:width .4s}
+
+/* card */
+.card{background:var(--card); border:2px solid var(--line); border-radius:22px; box-shadow:var(--shadow); padding:22px 22px 20px; display:grid; gap:16px}
+.meta{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+.tag{font-family:var(--disp); font-weight:600; font-size:13px; letter-spacing:.04em; text-transform:uppercase; border-radius:8px; padding:3px 9px}
+.tag.skill{background:var(--tealbg); color:var(--teal)}
+.tag.type{background:var(--plumbg); color:var(--plum)}
+.qnum{font-family:var(--disp); color:var(--soft); font-weight:600; margin-left:auto; font-size:14px}
+.prompt{font-size:21px; font-weight:700; line-height:1.35}
+.help{color:var(--soft); font-size:15px; margin-top:-8px}
+.mol{display:flex; justify-content:center; background:var(--bg); border-radius:16px; padding:10px}
+.mol svg{max-width:100%; height:auto}
+.mol svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.formula{font-size:22px; font-weight:700; text-align:center; background:var(--bg); border-radius:14px; padding:12px; overflow-x:auto}
+
+/* options */
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.opts.one{grid-template-columns:1fr}
+@media (max-width:560px){ .opts{grid-template-columns:1fr} }
+.opt{display:flex; align-items:center; gap:12px; text-align:left; background:var(--card); border:2px solid var(--line); border-radius:14px; padding:12px 14px; min-height:54px; transition:transform .08s, border-color .15s, background .15s}
+.opt:hover:not(:disabled){border-color:var(--blue); transform:translateY(-2px)}
+.opt .k{flex:none; width:30px; height:30px; border-radius:9px; display:grid; place-items:center; font-family:var(--disp); font-weight:700; background:var(--bluebg); color:var(--blue)}
+.opt.sel{border-color:var(--blue); background:var(--bluebg)}
+.opt.right{border-color:var(--good); background:var(--goodbg)}
+.opt.right .k{background:var(--good); color:#fff}
+.opt.wrong{border-color:var(--bad); background:var(--badbg)}
+.opt.wrong .k{background:var(--bad); color:#fff}
+.opt:disabled{cursor:default}
+.opt.pic{flex-direction:column; justify-content:center; padding:8px}
+.opt.pic svg{width:170px; max-width:100%; height:auto; color:var(--ink)}
+.opt.pic svg text{font-size:14px}
+.opt.pic svg text{font-family:var(--body); font-weight:700; fill:var(--ink)}
+.tf{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.tf .opt{justify-content:center; font-family:var(--disp); font-size:22px; font-weight:700; min-height:70px}
+
+/* chips, buckets */
+.pool{display:flex; flex-wrap:wrap; gap:8px; min-height:48px; padding:10px; border:2px dashed var(--line); border-radius:14px}
+.chip{background:var(--card); border:2px solid var(--line); border-radius:12px; padding:7px 12px; font-weight:700; transition:transform .08s}
+.chip:hover:not(:disabled){transform:translateY(-2px); border-color:var(--blue)}
+.chip.sel{border-color:var(--amber); background:var(--amberbg)}
+.chip.right{border-color:var(--good); background:var(--goodbg)}
+.chip.wrong{border-color:var(--bad); background:var(--badbg)}
+.buckets{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media (max-width:520px){ .buckets{grid-template-columns:1fr} }
+.bucket{border:2px solid var(--line); border-radius:16px; padding:10px; min-height:110px; display:flex; flex-direction:column; gap:8px; background:var(--bg); text-align:left}
+.bucket h3{font-size:17px}
+.bucket .in{display:flex; flex-wrap:wrap; gap:6px}
+.bucket.ready{border-color:var(--amber); border-style:dashed}
+
+/* match */
+.match{display:grid; grid-template-columns:1fr 1fr; gap:10px 16px}
+.match .col{display:grid; gap:8px; align-content:start}
+.mi{text-align:left; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:10px 12px; font-weight:700; min-height:48px}
+.mi.sel{border-color:var(--amber); background:var(--amberbg)}
+.mi[data-pair]{border-width:3px}
+.mi.right{background:var(--goodbg)} .mi.wrong{background:var(--badbg)}
+
+/* build / order */
+.answerline{display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:56px; padding:10px; border-radius:14px; background:var(--bg); border:2px solid var(--line); font-weight:700}
+.answerline .ph{color:var(--soft); font-weight:400}
+.answerline .chip{background:var(--bluebg); border-color:var(--blue)}
+.ordered{display:grid; gap:8px; counter-reset:o}
+.oslot{display:flex; align-items:center; gap:10px; padding:8px 12px; border:2px dashed var(--line); border-radius:12px; min-height:46px; background:var(--bg); font-weight:700}
+.oslot::before{counter-increment:o; content:counter(o); width:26px; height:26px; border-radius:50%; display:grid; place-items:center; background:var(--blue); color:#fff; font-family:var(--disp); font-size:14px; flex:none}
+.oslot.right{border-style:solid; border-color:var(--good); background:var(--goodbg)}
+.oslot.wrong{border-style:solid; border-color:var(--bad); background:var(--badbg)}
+
+.inputrow{display:flex; gap:10px; flex-wrap:wrap}
+.inputrow input{flex:1; min-width:160px; font:inherit; font-size:22px; font-weight:700; padding:10px 14px; border-radius:14px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.inputrow input.right{border-color:var(--good); background:var(--goodbg)}
+.inputrow input.wrong{border-color:var(--bad); background:var(--badbg)}
+.subhint{font-size:14px; color:var(--soft)}
+
+/* actions & feedback */
+.actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.btn{font-family:var(--disp); font-weight:600; font-size:18px; border:none; border-radius:14px; padding:11px 22px; background:var(--blue); color:#fff; box-shadow:0 4px 0 #1b3a86}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btn.ghost{background:transparent; color:var(--soft); box-shadow:none; border:2px solid var(--line); font-size:15px; padding:8px 14px}
+.btn.go{background:var(--good); box-shadow:0 4px 0 #166b40}
+.fb{border-radius:14px; padding:12px 14px; display:grid; gap:4px}
+.fb.good{background:var(--goodbg); border:2px solid var(--good)}
+.fb.bad{background:var(--badbg); border:2px solid var(--bad)}
+.fb b.t{font-family:var(--disp); font-size:19px}
+.fb.good b.t{color:var(--good)} .fb.bad b.t{color:var(--bad)}
+.pts{font-family:var(--disp); color:var(--amber); font-weight:700}
+
+/* screens */
+.hero{display:grid; gap:18px; text-align:left}
+.hero h1{font-size:clamp(40px,8vw,64px); font-weight:700}
+.hero h1 span{color:var(--teal)}
+.hero p{margin:0; max-width:58ch}
+.stages{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px}
+.st{border:2px solid var(--line); border-radius:14px; padding:10px 12px; background:var(--bg)}
+.st b{font-family:var(--disp); display:block; font-size:17px}
+.st small{color:var(--soft)}
+.types{display:flex; flex-wrap:wrap; gap:6px}
+.best{font-family:var(--disp); color:var(--soft)}
+.big{font-family:var(--disp); font-size:56px; font-weight:700; color:var(--teal); line-height:1}
+.skills{display:grid; gap:8px}
+.sk{display:grid; grid-template-columns:120px 1fr 52px; gap:10px; align-items:center; font-weight:700}
+.sk .t{height:14px; border-radius:99px; background:var(--bg); border:2px solid var(--line); overflow:hidden}
+.sk .t i{display:block; height:100%; background:var(--teal)}
+.sk em{font-style:normal; text-align:right; font-variant-numeric:tabular-nums; color:var(--soft)}
+.miss{display:grid; gap:8px}
+.miss div{border-left:4px solid var(--bad); padding:6px 10px; background:var(--bg); border-radius:0 10px 10px 0; font-size:15px}
+.field{display:grid; gap:6px}
+.field label{font-family:var(--disp); font-weight:600; font-size:15px}
+.fields{display:grid; grid-template-columns:2fr 1fr; gap:12px}
+@media (max-width:520px){ .fields{grid-template-columns:1fr} }
+.field input,.field select{font:inherit; font-size:18px; padding:10px 14px; border-radius:12px; border:2px solid var(--line); background:var(--bg); color:var(--ink)}
+.field input.err,.field select.err{border-color:var(--bad)}
+.errmsg{color:var(--bad); font-size:14px; min-height:1em}
+.player{font-family:var(--disp); font-weight:600; background:var(--card); border:2px solid var(--line); border-radius:12px; padding:4px 12px; max-width:40vw; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.cert{border:3px solid var(--teal); border-radius:18px; padding:14px 16px; background:var(--tealbg); display:grid; gap:4px}
+.cert .row{display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 16px}
+.cert b.nm{font-family:var(--disp); font-size:24px}
+.cert code{font-family:ui-monospace,Menlo,Consolas,monospace; font-weight:700; letter-spacing:.08em}
+.hist{width:100%; border-collapse:collapse; font-size:15px; font-variant-numeric:tabular-nums}
+.hist th,.hist td{text-align:left; padding:6px 8px; border-bottom:1px solid var(--line)}
+.histwrap{overflow-x:auto}
+.toast{position:fixed; left:50%; top:calc(16px + env(safe-area-inset-top,0px)); transform:translateX(-50%); background:var(--ink); color:var(--card); font-family:var(--disp); font-weight:600; padding:10px 18px; border-radius:14px; z-index:5; box-shadow:0 8px 20px rgba(0,0,0,.25)}
+@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+.card.enter{animation:pop .25s ease-out}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .3s}
+@media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+
+/* hint */
+.hintwrap{display:grid; gap:8px}
+.hintbtn{justify-self:start; display:inline-flex; align-items:center; gap:8px; font-family:var(--disp); font-weight:600; font-size:15px; color:#9a5b05; background:var(--amberbg); border:2px dashed var(--amber); border-radius:12px; padding:7px 14px}
+.hintbtn:hover{border-style:solid}
+.hintbox{background:#fff8e1; border:2px solid var(--amber); border-radius:14px; padding:10px 14px; font-size:16px}
+.hintbox b{font-family:var(--disp); color:#9a5b05; margin-right:4px}
+sup{font-size:.72em}
+.mol svg text{font-size:14px}
+.sendst{font-family:var(--disp);font-weight:600;color:var(--soft)}
+.sendst.ok{color:var(--good)}
+.sendst.err{color:var(--bad)}
+.mol svg{max-height:240px;width:auto}
+</style>
+
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+(function(){
+// ---------- helpers ----------
+const F=s=>String(s).replace(/_(\{[^}]*\}|[0-9n+−\-]+)/g,(m,g)=>'<sub>'+g.replace(/[{}]/g,'')+'</sub>').replace(/\^(\{[^}]*\}|[0-9+−\-]+)/g,(m,g)=>'<sup>'+g.replace(/[{}]/g,'')+'</sup>');
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const $=(h)=>{const t=document.createElement('template');t.innerHTML=h.trim();return t.content.firstElementChild;};
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+// ---------- molecule drawing ----------
+const S='stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+function ring(n,cx,cy,r,rot){const p=[];for(let i=0;i<n;i++){const a=(rot+i*360/n)*Math.PI/180;p.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}return p;}
+function polyline(p,close){return `<polyline points="${p.map(q=>q.map(v=>v.toFixed(1)).join(',')).join(' ')}${close?' '+p[0].map(v=>v.toFixed(1)).join(','):''}" ${S}/>`;}
+function inner(a,b,c,f){f=f||.22;const m=(p)=>[p[0]+(c[0]-p[0])*f,p[1]+(c[1]-p[1])*f];const A=m(a),B=m(b);
+  const t=.15;const A2=[A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t],B2=[B[0]+(A[0]-B[0])*t,B[1]+(A[1]-B[1])*t];
+  return `<line x1="${A2[0]}" y1="${A2[1]}" x2="${B2[0]}" y2="${B2[1]}" ${S}/>`;}
+function sub(p,c,len,label,anchor){const dx=p[0]-c[0],dy=p[1]-c[1],d=Math.hypot(dx,dy);const e=[p[0]+dx/d*len,p[1]+dy/d*len];
+  let s=`<line x1="${p[0]}" y1="${p[1]}" x2="${e[0]}" y2="${e[1]}" ${S}/>`;
+  if(label){const ax=anchor||(dx>8?'start':dx<-8?'end':'middle');const ox=ax==='start'?4:ax==='end'?-4:0;const oy=dy>8?18:dy<-8?-6:6;
+    s+=`<text x="${e[0]+ox}" y="${e[1]+oy}" text-anchor="${ax}" font-size="17">${label}</text>`;}
+  return s;}
+const lbl=t=>t.replace(/(\d)(\D?)/g,(m,d,n)=>`<tspan font-size="12" dy="5">${d}</tspan>`+(n?`<tspan dy="-5">${n}</tspan>`:''));
+function svg(w,h,body,title){return `<svg viewBox="0 0 ${w} ${h}" width="${w}" role="img" aria-label="${title}" style="color:var(--ink)">${body}</svg>`;}
+// ---------- pictures: orbital boxes and electron-dot structures ----------
+// ---------- pictures: periodic-table outlines and element columns ----------
+const PT_CELLS=(()=>{const c=[];for(let p=1;p<=7;p++)for(let g=1;g<=18;g++){if(p===1&&g!==1&&g!==18)continue;if((p===2||p===3)&&g>=3&&g<=12)continue;c.push([p,g]);}return c;})();
+const MOL={
+  // small periodic table with highlighted cells: hl = [[period,group,color], ...]
+  _pt(hl,title){
+    const cw=24,ox=10,oy=10;let out='';
+    PT_CELLS.forEach(([p,g])=>{const h=(hl||[]).find(x=>x[0]===p&&x[1]===g);
+      out+=`<rect x="${ox+(g-1)*cw}" y="${oy+(p-1)*cw}" width="${cw-2}" height="${cw-2}" rx="2.5" fill="${h?h[2]:'#eef2f8'}" stroke="#9aa7bd" stroke-width=".8"/>`;});
+    return svg(ox*2+18*cw,oy*2+7*cw,out,title);},
+  // vertical column of element boxes; head = group number shown above
+  _col(items,head,title){
+    const w=64,h=40;let y=6,out='';
+    if(head){out+=`<text x="${w/2+6}" y="26" text-anchor="middle" font-size="18">${head}</text>`;y=36;}
+    items.forEach(t=>{out+=`<rect x="6" y="${y}" width="${w}" height="${h}" rx="5" fill="${t==='?'?'#fff3c4':'#fff'}" stroke="currentColor" stroke-width="2.2"/><text x="${w/2+6}" y="${y+27}" text-anchor="middle" font-size="19">${t}</text>`;y+=h;});
+    return svg(w+12,y+8,out,title);},
+  famHalogen(){return MOL._pt([[2,17,'#2b59c3'],[3,17,'#2b59c3'],[4,17,'#2b59c3'],[5,17,'#2b59c3'],[6,17,'#2b59c3']],'periodic table with group 17 highlighted');},
+  famTransition(){const c=[];for(let p=4;p<=7;p++)for(let g=3;g<=12;g++)c.push([p,g,'#8a4fbf']);return MOL._pt(c,'periodic table with groups 3 to 12 highlighted');},
+  famAlkEarth(){return MOL._pt([[2,2,'#e8962a'],[3,2,'#e8962a'],[4,2,'#e8962a'],[5,2,'#e8962a'],[6,2,'#e8962a'],[7,2,'#e8962a']],'periodic table with group 2 highlighted');},
+  famNoble(){return MOL._pt([[1,18,'#0f8b8d'],[2,18,'#0f8b8d'],[3,18,'#0f8b8d'],[4,18,'#0f8b8d'],[5,18,'#0f8b8d'],[6,18,'#0f8b8d'],[7,18,'#0f8b8d']],'periodic table with group 18 highlighted');},
+  cornerXY(){return MOL._pt([[2,17,'#2b59c3'],[7,1,'#d14343']],'periodic table with one element at the top right (X, blue) and one at the bottom left (Y, red)')
+    .replace('</svg>',`<text x="${10+16*24+12}" y="${10+24+16}" text-anchor="middle" font-size="15" style="fill:#fff">X</text><text x="${10+12}" y="${10+6*24+16}" text-anchor="middle" font-size="15" style="fill:#fff">Y</text></svg>`);},
+  colAl(){return MOL._col(['?','Al','Ga','In'],'13','group 13 column with an empty box above aluminium');},
+  colHal(){return MOL._col(['F','Cl','Br','I'],'','group 17 column: F, Cl, Br, I');},
+};
+
+// ---------- questions (from the Chapter 6 SAAT set) ----------
+const STAGES=[{n:'Families & Classes',from:0},{n:'Blocks & Position',from:8},{n:'Atomic Radius & Ions',from:16},{n:'Ionization & Electronegativity',from:23}];
+const Q=[
+ {t:'mcq',skill:'Families',q:'The modern periodic table contains ___.',o:['7 periods and 18 groups','6 periods and 17 groups','3 periods and 15 groups','5 periods and 16 groups'],a:0,
+  h:'Periods are the rows; groups are the columns.',
+  x:'7 rows (periods) and 18 columns (groups).'},
+ {t:'match',skill:'Families',q:'Match each group to its family name.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['Group 1','alkali metals'],['Group 2','alkaline earth metals'],['Group 17','halogens'],['Group 18','noble gases']],
+  h:'Groups 3–12 are the transition metals; the rest have special names.',
+  x:'1 alkali metals · 2 alkaline earth metals · 17 halogens · 18 noble gases.'},
+ {t:'mcq',skill:'Families',q:'The highlighted elements are called ___.',mol:'famTransition',o:['transition metals','inner transition metals','representative elements','alkaline earth metals'],a:0,
+  h:'Count the columns: these are groups 3 to 12.',
+  x:'Groups 3–12 are the transition metals (d-block), e.g. Fe, Cu, Ag and Au.'},
+ {t:'tf',skill:'Families',q:'All the elements in group 1 are metals.',a:false,
+  h:'Look at the very top of group 1.',
+  x:'Hydrogen is in group 1 but is NOT a metal.'},
+ {t:'mcq',skill:'Families',q:'Which element has chemical properties closest to sodium, _{11}Na?',o:['_{3}Li','_{10}Ne','_{12}Mg','_{17}Cl'],a:0,
+  h:'Elements in the same group have similar properties.',
+  x:'Li and Na are both in group 1 (alkali metals).'},
+ {t:'odd',skill:'Families',q:'Odd one out: which of these is NOT a noble gas?',o:['_{17}Cl','_{2}He','_{10}Ne','_{18}Ar'],a:0,
+  h:'Noble gases are in group 18.',
+  x:'Cl is a halogen (group 17). He, Ne and Ar are noble gases.'},
+ {t:'mcq',skill:'Families',q:'An atom is chemically stable and unreactive when ___.',o:['it has 8 electrons in its outer energy level','it has a high boiling point','it has a low ionization energy','it has a high electronegativity'],a:0,
+  h:'Think of the octet rule.',
+  x:'A full outer level (8 valence electrons) makes an atom stable, like the noble gases.'},
+ {t:'sort',skill:'Families',q:'Metal or nonmetal?',help:'Tap an element, then tap a box.',b:['Metal','Nonmetal'],
+  items:[['Na',0],['Mg',0],['Fe',0],['Au',0],['O',1],['Cl',1],['S',1],['Ne',1]],
+  h:'Metals are on the left of the staircase line, nonmetals on the upper right.',
+  x:'Na, Mg, Fe and Au are metals. O, Cl, S and Ne are nonmetals.'},
+
+ {t:'match',skill:'Blocks',q:'Match each block to its groups.',help:'Tap an item on the left, then its partner on the right.',
+  pairs:[['s-block','groups 1–2'],['d-block','groups 3–12'],['p-block','groups 13–18'],['f-block','inner transition (below the table)']],
+  h:'The block is the last sublevel being filled.',
+  x:'s = groups 1–2, d = 3–12, p = 13–18, f = lanthanides and actinides.'},
+ {t:'mcq',skill:'Blocks',q:'The element 1s^{2} 2s^{2} 2p^{6} 3s^{2} 3p^{6} 4s^{2} 3d^{2} belongs to the ___.',o:['transition metals','inner transition elements','alkali metals','noble gases'],a:0,
+  h:'Look at the LAST sublevel in the configuration.',
+  x:'It ends in d, so it is in the d-block: a transition metal (Ti).'},
+ {t:'mcq',skill:'Blocks',q:'An element with the configuration 1s^{2} 2s^{2} 2p^{6} 3s^{2} 3p^{6} is ___.',o:['a noble gas','a metal','a transition metal','a halogen'],a:0,
+  h:'What does a full p^{6} ending mean?',
+  x:'Ends in p^{6}: a full outer level, so it is a noble gas (Ar).'},
+ {t:'mcq',skill:'Position',q:'An element with atomic number 7 is in period ___.',o:['2','1','3','4'],a:0,
+  h:'Period number = the highest energy level in the configuration.',
+  x:'_{7}N = 1s^{2} 2s^{2} 2p^{3}: highest level is 2, so period 2.'},
+ {t:'mcq',skill:'Position',q:'Where is the element with atomic number 4?',o:['period 2, group 2','period 1, group 2','period 2, group 1','period 1, group 1'],a:0,
+  h:'Write the configuration first: highest level = period; s electrons = group (for groups 1–2).',
+  x:'_{4}Be = 1s^{2} 2s^{2}: period 2, 2 valence electrons → group 2.'},
+ {t:'mcq',skill:'Position',q:'Where is phosphorus, _{15}P?',o:['period 3, group 15','period 2, group 5','period 3, group 7','period 4, group 6'],a:0,
+  h:'For the p-block: group number = valence electrons + 10.',
+  x:'_{15}P = [Ne] 3s^{2} 3p^{3}: period 3; 5 valence electrons + 10 = group 15.'},
+ {t:'num',skill:'Position',q:'Sulfur, _{16}S, is in which group?',help:'Type the group number.',a:16,
+  h:'For the p-block: group number = valence electrons + 10.',
+  x:'_{16}S = [Ne] 3s^{2} 3p^{4}: 6 valence electrons + 10 = group 16.'},
+ {t:'mcq',skill:'Position',q:'Which element belongs in the empty box?',mol:'colAl',o:['_{5}B','_{3}Li','_{4}Be','_{6}C'],a:0,
+  h:'Every element in a group has the same number of valence electrons.',
+  x:'Group 13 has 3 valence electrons: boron, _{5}B, sits above Al.'},
+
+ {t:'mcq',skill:'Radius',q:'As we move down a group, ___.',o:['the atomic radius increases','the ionization energy increases','the atomic mass decreases','the electronegativity increases'],a:0,
+  h:'Each step down adds a new energy level.',
+  x:'More energy levels → bigger atoms. Ionization energy and electronegativity decrease; mass increases.'},
+ {t:'order',skill:'Radius',q:'Put these from SMALLEST to LARGEST atomic radius.',help:'Tap them in order.',items:['_{3}Li','_{11}Na','_{19}K','_{37}Rb'],
+  h:'They are all in group 1. Radius increases down a group.',
+  x:'Li < Na < K < Rb: each one has one more energy level.'},
+ {t:'mcq',skill:'Radius',q:'Which has the smallest atomic radius?',mol:'colHal',o:['F','Cl','Br','I'],a:0,
+  h:'Radius increases down a group.',
+  x:'F is at the top of the group, so it is the smallest.'},
+ {t:'mcq',skill:'Radius',q:'Comparing the atomic volume of _{12}Mg and _{8}O:',o:['Mg is larger','they are the same','Mg is smaller','they cannot be compared'],a:0,
+  h:'Find each on the table: Mg is lower and to the left.',
+  x:'Mg is in period 3 (one more level) and on the left, so it is larger.'},
+ {t:'tf',skill:'Ions',q:'A positive ion is smaller than the atom it came from.',a:true,
+  h:'What happens to the outer electrons when an atom forms a positive ion?',
+  x:'The atom loses its outer electrons, so the ion is smaller (Na⁺ < Na). Negative ions are bigger.'},
+ {t:'num',skill:'Ions',q:'How many electrons does the potassium ion _{19}K^{+} have?',a:18,
+  h:'Electrons in an ion = atomic number − charge.',
+  x:'19 − 1 = 18 electrons.'},
+ {t:'mcq',skill:'Ions',q:'Which element has the same electron arrangement as the chloride ion _{17}Cl^{−}?',o:['Ar','Mg','Ca','Al'],a:0,
+  h:'Count the electrons in Cl^{−}, then find the noble gas with that number.',
+  x:'Cl^{−} has 17 + 1 = 18 electrons, the same as _{18}Ar.'},
+
+ {t:'mcq',skill:'Ionization',q:'The energy needed to remove an electron from a gaseous atom is ___.',o:['ionization energy','electronegativity','bond energy','kinetic energy'],a:0,
+  h:'Removing an electron makes an ion.',
+  x:'Ionization energy = energy to remove an electron from a gaseous atom.'},
+ {t:'mcq',skill:'Ionization',q:'Which group has the highest ionization energy?',mol:'famNoble',o:['noble gases','halogens','alkali metals','transition metals'],a:0,
+  h:'Which atoms hold their electrons most tightly, with a full outer level?',
+  x:'Noble gases have the highest ionization energy; alkali metals have the lowest.'},
+ {t:'mcq',skill:'Ionization',q:'Which compound has the highest ionization energy?',o:['KF','KCl','KBr','KI'],a:0,
+  h:'Compare only the part that changes.',
+  x:'K is the same in all four. F is at the top of group 17, so KF is highest.'},
+ {t:'mcq',skill:'Ionization',q:'The second ionization energy is higher than the first because the electron is removed from ___.',o:['a positive ion with a higher charge density','an atom farther from the nucleus','a negative ion','a heavier nucleus'],a:0,
+  h:'After the first electron leaves, what is left behind?',
+  x:'A positive ion pulls its remaining electrons more strongly, so more energy is needed.'},
+ {t:'mcq',skill:'Electronegativity',q:'The ability of an atom to attract electrons in a chemical bond is ___.',o:['electronegativity','ionization energy','atomic radius','ionic radius'],a:0,
+  h:'The key words are “attract electrons in a bond”.',
+  x:'That is the definition of electronegativity.'},
+ {t:'sort',skill:'Electronegativity',q:'Look at X and Y. Which has the higher value?',mol:'cornerXY',help:'Tap a property, then tap a box.',b:['X is higher','Y is higher'],
+  items:[['electronegativity',0],['ionization energy',0],['atomic radius',1],['metallic character',1]],
+  h:'X is at the top right and Y is at the bottom left. Follow the trend arrows.',
+  x:'Top right (X): higher electronegativity and ionization energy. Bottom left (Y): larger radius, more metallic.'},
+ {t:'mcq',skill:'Electronegativity',q:'Which element is the most electronegative?',o:['fluorine','chlorine','cesium','iron'],a:0,
+  h:'Electronegativity is highest at the top right (noble gases have no value).',
+  x:'Fluorine has the highest electronegativity of all the elements.'},
+];
+const TYPE={mcq:'Multiple choice',tf:'True or false',sort:'Sort it',num:'Number answer',match:'Match up',odd:'Odd one out',order:'Put in order'};
+
+// ---------- game state ----------
+let i=0,score=0,streak=0,best=0,results=[],player={name:'',cls:''},startedAt=0,hintUsed=false;
+const HIST_KEY='pq-history';
+// Paste your Google Apps Script web-app URL here to collect scores in a Google Sheet (leave empty to turn off).
+const SCORE_URL='https://script.google.com/macros/s/AKfycbxqxWcG4jS6gWBLKroZBscjhfJEBmSRwIjZ4OtamJe55XvdfLjX0Jj9j2xgfPAr0Mbu6g/exec';
+const loadHist=()=>{try{return JSON.parse(store.get(HIST_KEY)||'[]')}catch(e){return[]}};
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const app=document.getElementById('app');
+const BEST_KEY='pq-best';
+
+function hud(){
+  const st=STAGES.filter(s=>s.from<=i).pop();
+  return `<div class="hud"><span class="stage">${st.n}</span><span class="player" title="Player">👤 ${esc(player.name)}</span><span class="grow"></span>
+   <span class="stat" title="Score">★ <b>${score}</b></span>
+   <span class="stat streak ${streak>=3?'hot':''}" title="Streak">🔥 <b>${streak}</b></span></div>
+   <div class="bar" aria-label="Progress"><i style="width:${(i/Q.length*100).toFixed(1)}%"></i></div>`;
+}
+
+function start(){
+  const b=store.get(BEST_KEY);
+  const typeTags=Object.values(TYPE).map(t=>`<span class="tag type">${t}</span>`).join('');
+  app.innerHTML=`<div class="card hero">
+    <div class="meta"><span class="tag skill">Chemistry · Chapter 6</span><span class="qnum">30 questions</span></div>
+    <h1>Periodic Table <span>Quest</span></h1>
+    <p>Race through four stages of SAAT-style questions on the periodic table: families, blocks, position and periodic trends. Every question type tests a different skill, so read the instructions on each card. Correct answers earn 100 points, and a streak of 3 or more adds a bonus. Stuck? Open the hint &mdash; a correct answer after a hint still earns 50 points.</p>
+    <div class="stages">${STAGES.map((s,k)=>`<div class="st"><small>Stage ${k+1}</small><b>${s.n}</b><small>${(STAGES[k+1]?STAGES[k+1].from:Q.length)-s.from} questions</small></div>`).join('')}</div>
+    <div class="types">${typeTags}</div>
+    <div class="fields">
+      <div class="field"><label for="pname">Your full name</label><input id="pname" autocomplete="name" maxlength="60" placeholder="e.g. Sara Ahmed" value="${esc(store.get('pq-name')||'')}"></div>
+      <div class="field"><label for="pclass">Class</label><select id="pclass"><option value="">Choose…</option>${['12-A','12-B'].map(c=>`<option ${store.get('pq-class')===c?'selected':''}>${c}</option>`).join('')}</select></div>
+    </div>
+    <div class="errmsg" id="perr" role="alert"></div>
+    <div class="actions"><button class="btn" id="go">Start the quest</button>${b?`<span class="best">Best score on this device: ${b}</span>`:''}</div>
+  </div>`;
+  const go=()=>{const n=document.getElementById('pname'); const nm=n.value.trim().replace(/\s+/g,' ');
+    if(nm.length<2){n.classList.add('err'); document.getElementById('perr').textContent='Please write your name before you start.'; n.focus(); return;}
+    const cs=document.getElementById('pclass'); if(!cs.value){cs.classList.add('err'); document.getElementById('perr').textContent='Please choose your class before you start.'; cs.focus(); return;}
+    player={name:nm,cls:document.getElementById('pclass').value.trim()}; store.set('pq-name',player.name); store.set('pq-class',player.cls);
+    i=0;score=0;streak=0;best=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('go').onclick=go;
+  ['pname','pclass'].forEach(id=>document.getElementById(id).onkeydown=e=>{if(e.key==='Enter')go();});
+}
+
+function toast(t){const e=$(`<div class="toast">${t}</div>`);document.body.appendChild(e);setTimeout(()=>e.remove(),1400);}
+
+function show(){
+  if(i>=Q.length) return end();
+  const st=STAGES.find(s=>s.from===i); if(st && i>0) toast('Stage '+(STAGES.indexOf(st)+1)+': '+st.n);
+  const q=Q[i];
+  app.innerHTML=hud()+`<div class="card enter" id="card">
+    <div class="meta"><span class="tag skill">${q.skill}</span><span class="tag type">${TYPE[q.t]}</span><span class="qnum">${i+1} / ${Q.length}</span></div>
+    <div class="prompt">${F(q.q)}</div>${q.help?`<div class="help">${q.help}</div>`:''}
+    ${q.mol?`<div class="mol">${MOL[q.mol]()}</div>`:''}${q.formula?`<div class="formula">${F(q.formula)}</div>`:''}
+    <div id="body"></div>${q.h?`<div class="hintwrap" id="hintwrap"><button class="hintbtn" id="hintbtn" aria-expanded="false"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2V16h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z" fill="#fff3c4" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>Need a hint?</button><div class="hintbox" id="hintbox" hidden><b>Hint</b> ${F(q.h)}</div></div>`:''}<div id="fb"></div><div class="actions" id="act"></div></div>`;
+  hintUsed=false; const hb=document.getElementById('hintbtn'); if(hb) hb.onclick=()=>{hintUsed=true; document.getElementById('hintbox').hidden=false; hb.remove();};
+  RENDER[q.t](q,document.getElementById('body'));
+}
+
+function actions(html){document.getElementById('act').innerHTML=html;}
+function checkBtn(fn,enabled){actions(`<button class="btn" id="chk" ${enabled?'':'disabled'}>Check</button>`);document.getElementById('chk').onclick=fn;}
+function setCheck(on){const b=document.getElementById('chk'); if(b) b.disabled=!on;}
+
+function done(ok,q,correctText){
+  let gain=0;
+  if(ok){streak++;gain=hintUsed?50:100+(streak>=3?25*Math.min(streak-2,4):0);score+=gain;}
+  else{streak=0;document.getElementById('card').classList.add('shake');}
+  results.push({q,ok,correctText,hint:hintUsed}); const hbtn=document.getElementById('hintbtn'); if(hbtn) hbtn.remove();
+  document.getElementById('fb').innerHTML=`<div class="fb ${ok?'good':'bad'}"><b class="t">${ok?'Correct!':'Not quite'} ${ok?`<span class="pts">+${gain}${hintUsed?' (hint used)':''}</span>`:''}</b>
+    ${!ok&&correctText?`<div>Answer: <b>${F(correctText)}</b></div>`:''}<div>${F(q.x)}</div></div>`;
+  actions(`<button class="btn go" id="nx">${i+1<Q.length?'Next question →':'See my results'}</button>`);
+  const nx=document.getElementById('nx'); nx.focus({preventScroll:true}); nx.onclick=()=>{i++;show();window.scrollTo({top:0,behavior:'smooth'});};
+  const h=app.querySelector('.hud'); if(h) h.replaceWith($(hud()));
+}
+
+const RENDER={
+  mcq(q,el,cls){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts ${cls||''}">${order.map((k,n)=>`<button class="opt" data-k="${k}"><span class="k">${'ABCD'[n]}</span><span>${F(q.o[k])}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.o[q.a]);
+    });
+  },
+  odd(q,el){RENDER.mcq(q,el);},
+  pick(q,el){
+    const order=shuffle(q.o.map((t,k)=>k));
+    el.innerHTML=`<div class="opts">${order.map((k,n)=>`<button class="opt pic" data-k="${k}" aria-label="Option ${'ABCD'[n]}">${MOL[q.o[k]]()}<span class="k">${'ABCD'[n]}</span></button>`).join('')}</div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k, ok=k===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if(+x.dataset.k===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,(q.names||q.o)[q.a]);
+    });
+  },
+  tf(q,el){
+    el.innerHTML=`<div class="tf"><button class="opt" data-v="1">True</button><button class="opt" data-v="0">False</button></div>`;
+    el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const v=b.dataset.v==='1', ok=v===q.a;
+      el.querySelectorAll('.opt').forEach(x=>{x.disabled=true; if((x.dataset.v==='1')===q.a)x.classList.add('right');});
+      if(!ok) b.classList.add('wrong');
+      done(ok,q,q.a?'True':'False');
+    });
+  },
+  num(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="Your number" aria-label="Your answer"></div>`;
+    const inp=el.querySelector('input');
+    const go=()=>{const ok=Math.abs(parseFloat(String(inp.value).replace(',','.'))-q.a)<1e-9; inp.disabled=true; inp.classList.add(ok?'right':'wrong'); done(ok,q,String(q.a));};
+    checkBtn(go,false); inp.oninput=()=>setCheck(inp.value!==''); inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value!=='')go();}; inp.focus({preventScroll:true});
+  },
+  text(q,el){
+    el.innerHTML=`<div class="inputrow"><input id="ans" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer" aria-label="Your answer"></div><div class="subhint" id="prev"></div>`;
+    const inp=el.querySelector('input'), prev=el.querySelector('#prev');
+    const norm=s=>q.norm==='formula'?s.replace(/\s+/g,'').toUpperCase():s.trim().toLowerCase().replace(/\s+/g,' ');
+    const go=()=>{const v=norm(inp.value); const ok=q.a.some(a=>norm(a)===v); inp.disabled=true; inp.classList.add(ok?'right':'wrong');
+      done(ok,q,q.norm==='formula'?q.a[0].replace(/(\d+)/g,'_$1'):q.a[0]);};
+    checkBtn(go,false);
+    inp.oninput=()=>{setCheck(inp.value.trim()!==''); if(q.norm==='formula') prev.innerHTML=inp.value?('You wrote: <b>'+F(inp.value.replace(/\s+/g,'').replace(/(\d+)/g,'_$1'))+'</b>'):'';};
+    inp.onkeydown=e=>{if(e.key==='Enter'&&inp.value.trim())go();}; inp.focus({preventScroll:true});
+  },
+  sort(q,el){
+    const items=shuffle(q.items.map((it,k)=>({t:it[0],b:it[1],k})));
+    const place={}; let sel=null;
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="buckets">${q.b.map((b,n)=>`<button class="bucket" data-b="${n}"><h3>${b}</h3><div class="in"></div></button>`).join('')}</div>`;
+    const pool=el.querySelector('#pool');
+    function draw(){
+      pool.innerHTML=''; el.querySelectorAll('.bucket .in').forEach(x=>x.innerHTML='');
+      items.forEach(it=>{const c=$(`<button class="chip ${sel===it.k?'sel':''}" data-k="${it.k}">${F(it.t)}</button>`);
+        c.onclick=(e)=>{e.stopPropagation(); if(place[it.k]!==undefined){delete place[it.k]; sel=it.k;} else sel=(sel===it.k?null:it.k); draw();};
+        (place[it.k]===undefined?pool:el.querySelector(`.bucket[data-b="${place[it.k]}"] .in`)).appendChild(c);});
+      if(!pool.children.length) pool.innerHTML='<span class="subhint">All placed. Tap a chip to move it back.</span>';
+      el.querySelectorAll('.bucket').forEach(b=>b.classList.toggle('ready',sel!==null));
+      setCheck(Object.keys(place).length===items.length);
+    }
+    el.querySelectorAll('.bucket').forEach(b=>b.onclick=()=>{if(sel===null)return; place[sel]=+b.dataset.b; sel=null; draw();});
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.chip').forEach(c=>{const it=items.find(x=>x.k==c.dataset.k); const r=place[it.k]===it.b; if(!r)ok=false; c.classList.add(r?'right':'wrong'); c.disabled=true;});
+      el.querySelectorAll('.bucket').forEach(b=>{b.disabled=true;b.classList.remove('ready');});
+      const key=q.b.map((b,n)=>b+': '+q.items.filter(x=>x[1]===n).map(x=>x[0]).join(', ')).join(' | ');
+      done(ok,q,key);
+    },false);
+    draw();
+  },
+  match(q,el){
+    const L=q.pairs.map((p,k)=>({t:p[0],k})), R=shuffle(q.pairs.map((p,k)=>({t:p[1],k})));
+    const pair={}; let sel=null; const colors=['var(--blue)','var(--amber)','var(--plum)','var(--teal)'];
+    el.innerHTML=`<div class="match"><div class="col" id="L"></div><div class="col" id="R"></div></div>`;
+    function draw(){
+      const used=Object.values(pair);
+      el.querySelector('#L').innerHTML=L.map(l=>{const pi=pair[l.k]!==undefined?Object.keys(pair).indexOf(String(l.k)):-1;
+        return `<button class="mi ${sel===l.k?'sel':''}" data-l="${l.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(l.t)}</button>`}).join('');
+      el.querySelector('#R').innerHTML=R.map(r=>{const lk=Object.keys(pair).find(k=>pair[k]===r.k);const pi=lk!==undefined?Object.keys(pair).indexOf(lk):-1;
+        return `<button class="mi" data-r="${r.k}" ${pi>=0?`data-pair style="border-color:${colors[pi]}"`:''}>${F(r.t)}</button>`}).join('');
+      el.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{const k=+b.dataset.l; if(pair[k]!==undefined){delete pair[k];} sel=(sel===k?null:k); draw();});
+      el.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const rk=+b.dataset.r; const lk=Object.keys(pair).find(k=>pair[k]===rk); if(lk!==undefined)delete pair[lk]; if(sel!==null){pair[sel]=rk; sel=null;} draw();});
+      setCheck(Object.keys(pair).length===L.length);
+    }
+    checkBtn(()=>{
+      let ok=true; L.forEach(l=>{const r=pair[l.k]===l.k; if(!r)ok=false;
+        el.querySelector(`[data-l="${l.k}"]`).classList.add(r?'right':'wrong');});
+      el.querySelectorAll('.mi').forEach(b=>b.disabled=true);
+      done(ok,q,q.pairs.map(p=>p[0]+' → '+p[1]).join(' | '));
+    },false);
+    draw();
+  },
+  order(q,el){
+    const pool=shuffle(q.items.map((t,k)=>({t,k}))); const seq=[];
+    el.innerHTML=`<div class="pool" id="pool"></div><div class="ordered" id="seq"></div><button class="btn ghost" id="undo">Undo</button>`;
+    function draw(){
+      el.querySelector('#pool').innerHTML=''; pool.filter(p=>!seq.includes(p.k)).forEach(p=>{const c=$(`<button class="chip">${F(p.t)}</button>`);c.onclick=()=>{seq.push(p.k);draw();};el.querySelector('#pool').appendChild(c);});
+      if(seq.length===q.items.length) el.querySelector('#pool').innerHTML='<span class="subhint">All placed.</span>';
+      el.querySelector('#seq').innerHTML=q.items.map((_,n)=>`<div class="oslot" data-n="${n}">${seq[n]!==undefined?F(q.items[seq[n]]):''}</div>`).join('');
+      setCheck(seq.length===q.items.length);
+    }
+    el.querySelector('#undo').onclick=()=>{seq.pop();draw();};
+    checkBtn(()=>{
+      let ok=true; el.querySelectorAll('.oslot').forEach((s,n)=>{const r=seq[n]===n; if(!r)ok=false; s.classList.add(r?'right':'wrong');});
+      el.querySelector('#undo').remove(); done(ok,q,q.items.join(' → '));
+    },false);
+    draw();
+  },
+  complete(q,el){RENDER.build(q,el);},
+  cfg(q,el){RENDER.build(q,el);},
+  build(q,el){
+    const tiles=shuffle(q.tiles.map((t,k)=>({t,k}))); const line=[];
+    el.innerHTML=`<div class="answerline" id="line"></div><div class="pool" id="pool"></div>`;
+    function draw(){
+      const ln=el.querySelector('#line'); ln.innerHTML=line.length?'':'<span class="ph">Tap the pieces in order…</span>';
+      line.forEach((k,n)=>{const c=$(`<button class="chip">${tiles.find(x=>x.k===k).t}</button>`);c.onclick=()=>{line.splice(n,1);draw();};ln.appendChild(c);});
+      const pl=el.querySelector('#pool'); pl.innerHTML='';
+      tiles.filter(x=>!line.includes(x.k)).forEach(x=>{const c=$(`<button class="chip">${x.t}</button>`);c.onclick=()=>{line.push(x.k);draw();};pl.appendChild(c);});
+      setCheck(line.length>0);
+    }
+    checkBtn(()=>{
+      const got=line.map(k=>tiles.find(x=>x.k===k).t).join('|'); const want=q.a.join('|');
+      const ok=got===want; el.querySelector('#line').classList.add(ok?'right':'wrong');
+      el.querySelector('#line').style.borderColor=ok?'var(--good)':'var(--bad)';
+      el.querySelectorAll('.chip').forEach(c=>c.disabled=true);
+      done(ok,q,q.a.join(' '));
+    },false);
+    draw();
+  },
+};
+
+function end(){
+  const correct=results.filter(r=>r.ok).length;
+  const b=+(store.get(BEST_KEY)||0); const newBest=score>b; if(newBest) store.set(BEST_KEY,score);
+  const skills={}; results.forEach(r=>{const s=r.q.skill; skills[s]=skills[s]||[0,0]; skills[s][1]++; if(r.ok)skills[s][0]++;});
+  const now=new Date(); const mins=Math.max(1,Math.round((Date.now()-startedAt)/60000));
+  const when=now.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  const h=[...(player.name+'|'+player.cls+'|'+score+'|'+correct+'|'+now.toISOString().slice(0,16))].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
+  const code='PQ-'+h.toString(36).toUpperCase().padStart(6,'0').slice(-6);
+  const hist=loadHist(); hist.unshift({name:player.name,cls:player.cls,score,correct,when,mins,code}); store.set(HIST_KEY,JSON.stringify(hist.slice(0,50)));
+  const mine=hist.filter(x=>x.name===player.name);
+  const summary=`Periodic Table Quest (Chemistry Chapter 6)\nName: ${player.name}${player.cls?'\nClass: '+player.cls:''}\nScore: ${score} points\nCorrect: ${correct}/${Q.length}\nTime: ${mins} min\nDate: ${when}\nCheck code: ${code}`;
+  const msg=correct>=27?'Periodic table master!':correct>=21?'Great work!':correct>=15?'Good effort, keep practising.':'Review the notes and try again.';
+  app.innerHTML=`<div class="card enter">
+    <div class="meta"><span class="tag skill">Quest complete</span>${newBest?'<span class="tag type">New best score</span>':''}</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:end">
+      <div><div class="big">${score}</div><div class="best">points</div></div>
+      <div><div class="big" style="color:var(--blue)">${correct}/${Q.length}</div><div class="best">correct</div></div>
+    </div>
+    <h2>${msg}</h2>
+    <div class="cert" id="cert">
+      <div class="row"><b class="nm">${esc(player.name)}</b><span>${player.cls?'Class '+esc(player.cls):''}</span></div>
+      <div class="row"><span>Periodic Table Quest · Chapter 6</span><span>${when}</span></div>
+      <div class="row"><span><b>${score}</b> points · <b>${correct}/${Q.length}</b> correct · ${mins} min</span><span>Check code <code>${code}</code></span></div>
+    </div>
+    <div class="actions"><span class="sendst" id="sendst">Sending your result to your teacher…</span><button class="btn ghost" id="retry" hidden>Try again</button><button class="btn go" id="copy">Copy my result</button></div><span class="subhint" id="copied"></span>
+    <textarea id="sumtxt" readonly aria-label="Result text" style="position:absolute;left:-9999px">${esc(summary)}</textarea>
+    <h3>Your skills</h3>
+    <div class="skills">${Object.entries(skills).map(([s,[c,t]])=>`<div class="sk"><span>${s}</span><span class="t"><i style="width:${c/t*100}%"></i></span><em>${c}/${t}</em></div>`).join('')}</div>
+    ${correct<Q.length?`<h3>Review what you missed</h3><div class="miss">${results.filter(r=>!r.ok).map(r=>`<div><b>Q${Q.indexOf(r.q)+1}.</b> ${F(r.q.q)}<br>Answer: <b>${F(r.correctText)}</b></div>`).join('')}</div>`:''}
+    ${mine.length>1?`<h3>Your attempts on this device</h3><div class="histwrap"><table class="hist"><tr><th>Date</th><th>Score</th><th>Correct</th><th>Code</th></tr>${mine.slice(0,10).map(x=>`<tr><td>${x.when}</td><td>${x.score}</td><td>${x.correct}/${Q.length}</td><td>${x.code}</td></tr>`).join('')}</table></div>`:''}
+    <div class="actions"><button class="btn" id="again">Play again</button><button class="btn ghost" id="home">Back to start</button></div>
+  </div>`;
+  document.getElementById('copy').onclick=()=>{const ok=()=>{document.getElementById('copied').textContent='Copied! Paste it in your message to your teacher.';};
+    const fallback=()=>{const t=document.getElementById('sumtxt');t.style.position='static';t.style.width='100%';t.rows=8;t.focus();t.select();document.getElementById('copied').textContent='Select the text below and copy it.';};
+    try{navigator.clipboard.writeText(summary).then(ok,fallback);}catch(e){fallback();}};
+  const payload={game:'Periodic Table Quest',chapter:6,name:player.name,cls:player.cls,score,correct,total:Q.length,mins,when,code,
+    missed:results.filter(r=>!r.ok).map(r=>'Q'+(Q.indexOf(r.q)+1)).join(' ')};
+  const st=document.getElementById('sendst'), rt=document.getElementById('retry');
+  const send=()=>{ st.className='sendst'; st.textContent='Sending your result to your teacher…'; rt.hidden=true;
+    fetch(SCORE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+      .then(()=>{st.className='sendst ok'; st.textContent='✓ Your result was sent to your teacher.';})
+      .catch(()=>{st.className='sendst err'; st.textContent='Could not send. Check your internet, then tap Try again.'; rt.hidden=false;}); };
+  rt.onclick=send;
+  if(SCORE_URL) send(); else st.textContent='';
+  document.getElementById('again').onclick=()=>{i=0;score=0;streak=0;results=[];startedAt=Date.now();show();};
+  document.getElementById('home').onclick=start;
+}
+
+start();
+})();
+</script>
+</body>
+</html>
