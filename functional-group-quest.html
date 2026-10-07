@@ -177,6 +177,9 @@ button:focus-visible,input:focus-visible{outline:3px solid var(--amber); outline
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .shake{animation:shake .3s}
 @media (prefers-reduced-motion: reduce){ *{animation:none!important; transition:none!important} }
+.sendst{font-family:var(--disp);font-weight:600;color:var(--soft)}
+.sendst.ok{color:var(--good)}
+.sendst.err{color:var(--bad)}
 </style>
 
 </head>
@@ -494,7 +497,7 @@ function end(){
       <div class="row"><span>Functional Group Quest · Chapter 22</span><span>${when}</span></div>
       <div class="row"><span><b>${score}</b> points · <b>${correct}/${Q.length}</b> correct · ${mins} min</span><span>Check code <code>${code}</code></span></div>
     </div>
-    <div class="actions">${SCORE_URL?'<button class="btn" id="send">Send to my teacher</button>':''}<button class="btn go" id="copy">Copy my result</button><span class="subhint" id="copied">Send it to your teacher, or take a screenshot of the green box.</span></div>
+    <div class="actions"><span class="sendst" id="sendst">Sending your result to your teacher…</span><button class="btn ghost" id="retry" hidden>Try again</button><button class="btn go" id="copy">Copy my result</button></div><span class="subhint" id="copied"></span>
     <textarea id="sumtxt" readonly aria-label="Result text" style="position:absolute;left:-9999px">${esc(summary)}</textarea>
     <h3>Your skills</h3>
     <div class="skills">${Object.entries(skills).map(([s,[c,t]])=>`<div class="sk"><span>${s}</span><span class="t"><i style="width:${c/t*100}%"></i></span><em>${c}/${t}</em></div>`).join('')}</div>
@@ -505,13 +508,15 @@ function end(){
   document.getElementById('copy').onclick=()=>{const ok=()=>{document.getElementById('copied').textContent='Copied! Paste it in your message to your teacher.';};
     const fallback=()=>{const t=document.getElementById('sumtxt');t.style.position='static';t.style.width='100%';t.rows=8;t.focus();t.select();document.getElementById('copied').textContent='Select the text below and copy it.';};
     try{navigator.clipboard.writeText(summary).then(ok,fallback);}catch(e){fallback();}};
-  const sb=document.getElementById('send');
-  if(sb) sb.onclick=()=>{ sb.disabled=true; sb.textContent='Sending…';
-    const payload={game:'Functional Group Quest',chapter:22,name:player.name,cls:player.cls,score,correct,total:Q.length,mins,when,code,
+  const payload={game:'Functional Group Quest',chapter:22,name:player.name,cls:player.cls,score,correct,total:Q.length,mins,when,code,
       missed:results.filter(r=>!r.ok).map(r=>'Q'+(Q.indexOf(r.q)+1)).join(' ')};
+  const st=document.getElementById('sendst'), rt=document.getElementById('retry');
+  const send=()=>{ st.className='sendst'; st.textContent='Sending your result to your teacher…'; rt.hidden=true;
     fetch(SCORE_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
-      .then(()=>{sb.textContent='Sent ✓'; document.getElementById('copied').textContent='Your result was sent to your teacher.';})
-      .catch(()=>{sb.disabled=false; sb.textContent='Send to my teacher'; document.getElementById('copied').textContent='Could not send. Check your internet and try again.';}); };
+      .then(()=>{st.className='sendst ok'; st.textContent='✓ Your result was sent to your teacher.';})
+      .catch(()=>{st.className='sendst err'; st.textContent='Could not send. Check your internet, then tap Try again.'; rt.hidden=false;}); };
+  rt.onclick=send;
+  if(SCORE_URL) send(); else st.textContent='';
   document.getElementById('again').onclick=()=>{i=0;score=0;streak=0;results=[];startedAt=Date.now();show();};
   document.getElementById('home').onclick=start;
 }
