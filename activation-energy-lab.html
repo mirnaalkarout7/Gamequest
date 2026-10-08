@@ -251,12 +251,18 @@ function drawDiagram(c){
 /* ---------- small hill badge in the race chambers ---------- */
 function drawBadge(c,bx,by){const bw=118,bh=74;ctx.save();
   ctx.fillStyle='rgba(8,20,25,.82)';ctx.beginPath();if(ctx.roundRect)ctx.roundRect(bx,by,bw,bh,10);else ctx.rect(bx,by,bw,bh);ctx.fill();
-  const zero=c.dH<0?by+44:by+60,k=.24;
+  const k=.24,zero=c.dH<0?by+44:by+44+c.dH*k;
   const g=(s,e)=>[bx+10+s*(bw-20),zero-e*k];
   hillPath(g,c.Ea,c.dH,40);ctx.strokeStyle=col['chamber-ink'];ctx.lineWidth=2;ctx.stroke();
-  const a=g(.2,0),p=g(.5,c.Ea);ctx.strokeStyle=col.gold;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(a[0],p[1]);ctx.stroke();
-  ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(a[0],p[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.setLineDash([]);
-  text('Eₐ',a[0]-9,(a[1]+p[1])/2,10,col.gold);
+  const a=g(.2,0),p=g(.5,c.Ea);ctx.lineWidth=2;
+  if(c.dH>0){const m=g(.2,c.dH);ctx.strokeStyle=col.bad;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(a[0],m[1]);ctx.stroke();
+    ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(a[0],m[1]);ctx.lineTo(g(.85,c.dH)[0],m[1]);ctx.stroke();ctx.setLineDash([]);
+    ctx.strokeStyle=col.gold;ctx.beginPath();ctx.moveTo(a[0],m[1]);ctx.lineTo(a[0],p[1]);ctx.stroke();
+    ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(a[0],p[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.setLineDash([]);
+    text('Eₐ',a[0]-9,(m[1]+p[1])/2,10,col.gold);text('+',a[0]-9,(a[1]+m[1])/2,11,col.bad);}
+  else{ctx.strokeStyle=col.gold;ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(a[0],p[1]);ctx.stroke();
+    ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(a[0],p[1]);ctx.lineTo(p[0],p[1]);ctx.stroke();ctx.setLineDash([]);
+    text('Eₐ',a[0]-9,(a[1]+p[1])/2,10,col.gold);}
   ctx.restore();}
 
 /* ---------- state ---------- */
@@ -274,7 +280,7 @@ const M={
  3:{title:'Mission 3: Forward or reverse?',
     q:'At the same temperature, which is faster: the forward reaction or the reverse reaction?',
     hint:'Look at the hill in each chamber before you press Start.',
-    rule:['Forward (exothermic): smaller Eₐ → faster','Reverse (endothermic): larger Eₐ → slower'],svg:'fr'}};
+    rule:['Both directions climb the same hill, to the same top','Forward (exothermic): needs only Eₐ → faster','Reverse (endothermic): needs Eₐ + the energy absorbed → slower'],svg:'fr'}};
 
 function setup(){
   chambers=[];readColors();
@@ -343,8 +349,7 @@ const SVG={
    '<circle cx="104" cy="78" r="7" fill="#c0504d"/><path d="M96 86 q-8 6 -18 6" fill="none" stroke="#c0504d" stroke-width="2" stroke-dasharray="4 3"/><path d="M76 92 l8 -5 l0 9z" fill="#c0504d"/><text x="116" y="100" font-size="12" font-weight="700" fill="#c0504d">not enough → back</text>'+
    '<circle cx="150" cy="17" r="8" fill="#f2b632" stroke="#c98a00"/><text x="164" y="20" font-size="12" font-weight="700" fill="#1f8f55">enough → products</text>'+
    '<text x="60" y="122" font-size="11" fill="#587078">reactants</text><text x="290" y="122" text-anchor="end" font-size="11" fill="#587078">products</text></svg>',
- fr:'<svg viewBox="0 0 300 130" role="img" aria-label="Forward has a smaller hill than reverse">'+svgHill(20,70,120,40,30,'#1f8f55')+svgArrow(44,70,30)+'<text x="80" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#1f8f55">forward: fast</text>'+
-   svgHill(160,100,120,70,-30,'#c0504d')+svgArrow(184,100,30)+'<text x="220" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#c0504d">reverse: slow</text></svg>'};
+ fr:'<svg viewBox="0 0 340 175" role="img" aria-label="The forward and reverse reactions climb the same hill. The reverse needs the activation energy plus the energy absorbed."><line x1="12" y1="40" x2="336" y2="40" stroke="#9bb0b5" stroke-width="1.5" stroke-dasharray="4 4"/>'+svgHill(15,80,130,40,-50,'#1f8f55')+'<line x1="36" y1="80" x2="36" y2="46" stroke="#c98a00" stroke-width="2.5"/><path d="M36 40l-5 9h10z" fill="#c98a00"/><text x="30" y="64" text-anchor="end" font-size="13" font-weight="700" fill="#c98a00">Eₐ</text><text x="80" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#1f8f55">forward (exothermic)</text>'+svgHill(205,130,130,90,50,'#c0504d')+'<line x1="222" y1="80" x2="336" y2="80" stroke="#9bb0b5" stroke-width="1.5" stroke-dasharray="4 4"/><line x1="222" y1="80" x2="222" y2="46" stroke="#c98a00" stroke-width="2.5"/><path d="M222 40l-5 9h10z" fill="#c98a00"/><line x1="222" y1="130" x2="222" y2="86" stroke="#c0504d" stroke-width="2.5"/><path d="M222 80l-5 9h10z" fill="#c0504d"/><text x="216" y="64" text-anchor="end" font-size="13" font-weight="700" fill="#c98a00">Eₐ</text><text x="216" y="104" text-anchor="end" font-size="11" font-weight="700" fill="#c0504d">+ energy</text><text x="216" y="117" text-anchor="end" font-size="11" font-weight="700" fill="#c0504d">absorbed</text><text x="270" y="18" text-anchor="middle" font-size="12" font-weight="700" fill="#c0504d">reverse (endothermic)</text><text x="80" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#1f8f55">needs Eₐ → fast</text><text x="265" y="160" text-anchor="middle" font-size="12" font-weight="700" fill="#c0504d">Eₐ + absorbed → slow</text></svg>'};
 
 /* ---------- missions ---------- */
 function setMission(n){mission=n;const m=M[n];
